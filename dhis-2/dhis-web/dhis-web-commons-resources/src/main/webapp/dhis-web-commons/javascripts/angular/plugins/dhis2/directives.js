@@ -216,13 +216,13 @@ var d2Directives = angular.module('d2Directives', [])
 .directive('d2TypeaheadValidation', function() {
     
     return {
-        require: 'ngModel',
+        require: ['typeahead', 'ngModel'],
         restrict: 'A',
-        link: function (scope, element, attrs, ctrl) {
+        link: function (scope, element, attrs, ctrls) {
             element.bind('blur', function () {                
-                if(ctrl.$viewValue && !ctrl.$modelValue){                    
-                    ctrl.$setViewValue();
-                    ctrl.$render();
+                if(ctrls[1].$viewValue && !ctrls[1].$modelValue && ctrls[0].active === -1){
+                    ctrls[1].$setViewValue();
+                    ctrls[1].$render();
                 }                
             });
         }
