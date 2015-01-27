@@ -258,7 +258,7 @@ public class SharingController
     }
 
     @RequestMapping( value = "/search", method = RequestMethod.GET, produces = { "application/json" } )
-    public void searchUserGroups( @RequestParam String key, @RequestParam Integer pageSize, HttpServletResponse response ) throws IOException
+    public void searchUserGroups( @RequestParam String key, @RequestParam( required = false ) Integer pageSize, HttpServletResponse response ) throws IOException
     {
         if ( key == null )
         {
@@ -272,7 +272,7 @@ public class SharingController
 
         List<UserGroup> userGroups = userGroupService.getUserGroupsBetweenByName( key, 0, max );
         
-        for (  UserGroup userGroup : userGroups )
+        for ( UserGroup userGroup : userGroups )
         {
             SharingUserGroupAccess sharingUserGroupAccess = new SharingUserGroupAccess();
 
