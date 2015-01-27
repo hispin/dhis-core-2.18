@@ -2433,6 +2433,11 @@ Ext.onReady( function() {
 			proxy: {
 				type: 'ajax',
 				url: gis.init.contextPath + '/api/sharing/search',
+                extraParams: {
+                    pageSize: 50
+                },
+                startParam: false,
+				limitParam: false,
 				reader: {
 					type: 'json',
 					root: 'userGroups'
