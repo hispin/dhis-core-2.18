@@ -3066,7 +3066,7 @@ Ext.onReady( function() {
 					text: NS.i18n.save,
 					handler: function() {
 						Ext.Ajax.request({
-							url: ns.core.init.contextPath + '/api/sharing?type=reportTable&id=' + sharing.object.id,
+							url: ns.core.init.contextPath + '/api/sharing?type=eventReport&id=' + sharing.object.id,
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/json'
