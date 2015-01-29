@@ -713,7 +713,7 @@ public class DefaultProgramDataEntryService
     private String populateCustomDataEntryForTextBox( DataElement dataElement, String inputHTML, String dataElementValue )
     {
         final String jsCodeForInputs = " name=\"entryfield\" tabIndex=\"$TABINDEX\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE'}\" options='$OPTIONS' maxlength=255 ";
-        final String jsCodeForOnchange = " onchange=\"saveVal( '$DATAELEMENTID' )\" onkeypress=\"return keyPress(event, this)\" ";
+        final String jsCodeForOnchange = " onchange=\"saveVal( '$DATAELEMENTID', this.value )\" onkeypress=\"return keyPress(event, this)\" ";
 
         // -------------------------------------------------------------
         // Insert value of data element in output code
