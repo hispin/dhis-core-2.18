@@ -1075,6 +1075,7 @@
                     var ctrl = $scope;
                     var baseUrl = dhis2.settings.getBaseUrl();
                     var defaultStyle = 'light_blue';
+                    var defaultStylesheetUrl = 'light_blue/light_blue.css';
                     var stylesLocation = 'dhis-web-commons/css';
 
                     ctrl.headerBar = {
@@ -1126,11 +1127,11 @@
                     }
 
                     function setHeaderTitle(applicationTitle) {
-                        ctrl.headerBar.title = applicationTitle || '';
+                        ctrl.headerBar.title = applicationTitle || 'District Health Information Software 2';
                     }
 
                     function setHeaderLink(startModule) {
-                        ctrl.headerBar.link = [baseUrl, startModule, 'index.action'].join('/');
+                        ctrl.headerBar.link = [baseUrl, startModule || 'dhis-web-dashboard-integration', 'index.action'].join('/');
                     }
 
                     function requestUserStyle() {
@@ -1144,7 +1145,7 @@
                     }
 
                     function getStylesheetUrl(stylesheet) {
-                        return [baseUrl, stylesLocation, stylesheet].join('/');
+                        return [baseUrl, stylesLocation, stylesheet || defaultStylesheetUrl].join('/');
                     }
 
                     function getStyleName(userStyle) {

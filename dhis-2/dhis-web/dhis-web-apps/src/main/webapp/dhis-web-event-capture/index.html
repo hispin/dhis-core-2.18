@@ -83,8 +83,7 @@
         <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js"></script>
 
         <link type="text/css" rel="stylesheet" href="../dhis-web-commons/font-awesome/css/font-awesome.min.css"/>
-        <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/light_blue/light_blue.css"/>
-        <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css"/>     
+        <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css"/>
         <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/menu.css">
         
         <link type="text/css" rel="stylesheet" href="styles/style.css">
@@ -92,15 +91,7 @@
     </head>
 
     <body>
-        <div id="header" ng-controller="HeaderController">
-            <div class="container-heading">
-                <img ng-click="home()" id="headerBanner" src="../dhis-web-commons/css/light_blue/logo_banner.png" style="cursor:pointer" title="{{'dhis2_home'| translate}}">                    
-            </div>            
-            <div id="headerMessage" class="bold"></div>
-
-            <div d2-menu></div>
-
-        </div>
+        <d2-header-bar></d2-header-bar>
         
         <div ng-view></div>
         
