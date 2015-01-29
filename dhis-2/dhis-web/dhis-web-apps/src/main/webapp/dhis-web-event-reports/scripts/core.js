@@ -1826,7 +1826,11 @@ Ext.onReady( function() {
 								});
                             }
 
-                            support.prototype.array.sort(objects, 'ASC', 'sortingId');
+                            // sort if not option set
+                            if (!header.optionSet) {
+                                support.prototype.array.sort(objects, 'ASC', 'sortingId');
+                            }
+                            
                             header.ids = Ext.Array.pluck(objects, 'id');
                         }
                     }
