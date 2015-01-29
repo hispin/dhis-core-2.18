@@ -126,7 +126,7 @@ public class ProgramDataEntryServiceTest
     {
         String expected = "<input id=\"StageA-DeA-val\" style=\"width:4em;text-align:center\" value=\"\" title=\"[ DeA - DataElementA - int ]\"  "
             + " name=\"entryfield\" tabIndex=\"1\"  data=\"{compulsory:false, deName:\'DataElementA\', deType:\'int\'}\" options=\'false\' "
-            + "maxlength=255  onchange=\"saveVal( \'DeA\' )\" onkeypress=\"return keyPress(event, this)\"  />";
+            + "maxlength=255  onchange=\"saveVal( \'DeA\', this.value )\" onkeypress=\"return keyPress(event, this)\"  />";
         String actual = programDataEntryService.prepareDataEntryFormForAdd( htmlCode, mockI18n, stageA );
        assertEquals( expected, actual );
     }
