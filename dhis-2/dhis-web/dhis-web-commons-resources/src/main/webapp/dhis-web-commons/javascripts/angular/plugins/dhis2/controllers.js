@@ -3,16 +3,6 @@
 /* Controllers */
 var d2Controllers = angular.module('d2Controllers', [])
 
-//Controller for header page
-.controller('HeaderController',
-        function($scope,                
-                DHIS2URL) {
-    
-    $scope.home = function(){        
-        window.location = DHIS2URL;
-    };    
-})
-
 //Controller for column show/hide
 .controller('ColumnDisplayController', 
     function($scope, 
