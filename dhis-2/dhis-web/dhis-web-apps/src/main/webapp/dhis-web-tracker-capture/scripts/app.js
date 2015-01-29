@@ -17,7 +17,7 @@ var trackerCapture = angular.module('trackerCapture',
          'd2Controllers',
          'angularLocalStorage',
          'ui.select2',
-         'd2Menu',
+         'd2HeaderBar',
          'ngCsv',
          'nvd3ChartDirectives',
          'pascalprecht.translate'])

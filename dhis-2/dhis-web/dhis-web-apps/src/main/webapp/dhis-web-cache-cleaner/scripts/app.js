@@ -14,7 +14,7 @@ var cacheCleaner = angular.module('cacheCleaner',
           'd2Controllers',
 		  'angularLocalStorage', 
 		  'pascalprecht.translate',
-          'd2Menu'])
+          'd2HeaderBar'])
               
 .value('DHIS2URL', '..')
 

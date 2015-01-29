@@ -126,15 +126,7 @@
 
     </head>
     <body>
-        <div id="header" ng-controller="HeaderController">
-            <div class="container-heading">
-                <img ng-click="home()" id="headerBanner" src="../dhis-web-commons/css/light_blue/logo_banner.png" style="cursor:pointer" title="{{'dhis2_home'| translate}}">                    
-            </div>            
-            <div id="headerMessage" class="bold"></div>
-            
-            <div d2-menu></div>
-
-        </div>    
+        <d2-header-bar></d2-header-bar>
 
         <div class="container-1" data-ng-view=''></div>    
 
