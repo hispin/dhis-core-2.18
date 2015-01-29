@@ -185,6 +185,7 @@ function showSharingDialog( type, uid ) {
       height: 555,
       buttons: {
         'Cancel': function() {
+          $('#sharingFindUserGroup').autocomplete('destroy');
           $(this).dialog('destroy');
         },
         'Save': function() {
@@ -195,6 +196,7 @@ function showSharingDialog( type, uid ) {
           data.object.userGroupAccesses = getUserGroupAccesses();
 
           saveSharingSettings(type, uid, data).done(function() {
+            $('#sharingFindUserGroup').autocomplete('destroy');
             me.dialog('destroy');
           });
         }
