@@ -34,7 +34,7 @@
     var jqLite = undefined, //Local jQuery variable to use for checking dependencies and switching jqLite and jQuery
         templates = {},
         cssDefaults = {},
-        getBaseUrl = (function () {
+        getBaseUrl = dhis2.settings.getBaseUrl = (function () {
             var href;
 
             //Add window.location.origin for IE8
@@ -63,7 +63,7 @@
                     urlParts.push(dhis2.settings.baseUrl);
                     baseUrl = urlParts.join('/');
                 } else {
-                    baseUrl = href + '/' + dhis2.settings.baseUrl;
+                    baseUrl = [href, dhis2.settings.baseUrl].join('/');
                 }
                 return baseUrl;
             }
@@ -72,7 +72,7 @@
     cssDefaults = {
         ulWrapId: "menuLinkArea",
         aMenuLinkClasses: "menu-link drop-down-menu-link"
-    }
+    };
 
     templates.itemItemplate = '' +
         '<li data-id="{{id}}" data-app-name="{{name}}" data-app-action="{{baseUrl}}{{defaultAction}}">' +
@@ -945,21 +945,29 @@
  * End of menu ui code. The code below creates the menu with the default profile and apps menus
  */
 (function () {
-    dhis2.menu.ui.initMenu = function () {
-        var helpPageLink = "";
-        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    var helpPageLink = "";
 
+    dhis2.menu.ui.initMenu = function () {
         try {
-            $.ajax({
+            jQuery.ajax({
                 type : "GET",
                 url : "../dhis-web-commons/menu/getHelpPageLinkModule.action",
                 dataType : "json",
-                async : false,
                 success : function(json) {
                     helpPageLink = json;
+                    bootstrapMenu();
                 }
             });
-            dhis2.menu.ui.createMenu("profile", [
+        } catch (e) {
+            if (console && console.error)
+                console.error(e.message, e.stack);
+        }
+    };
+
+    function bootstrapMenu() {
+        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        dhis2.menu.ui.createMenu("profile", [
                 {
                     name: "settings",
                     namespace: "/dhis-web-commons-about",
@@ -1003,30 +1011,26 @@
                     description: ""
                 }
             ],
-                {
-                    icon: "user",
-                    shortCut: "comma"
-                }
-            );
+            {
+                icon: "user",
+                shortCut: "comma"
+            }
+        );
 
-            dhis2.menu.mainAppMenu = dhis2.menu.ui.createMenu("applications",
-                "/dhis-web-commons/menu/getModules.action",
-                {
-                    searchable: !isMobile,
-                    scrollable: true,
-                    extraLink: {
-                        text: 'more_applications',
-                        url: '../dhis-web-commons-about/modules.action'
-                    },
-                    shortCut: "m"
-                }
-            );
-
-        } catch (e) {
-            if (console && console.error)
-                console.error(e.message, e.stack);
-        }
+        dhis2.menu.mainAppMenu = dhis2.menu.ui.createMenu("applications",
+            "/dhis-web-commons/menu/getModules.action",
+            {
+                searchable: !isMobile,
+                scrollable: true,
+                extraLink: {
+                    text: 'more_applications',
+                    url: '../dhis-web-commons-about/modules.action'
+                },
+                shortCut: "m"
+            }
+        );
     }
+
 
     if (window['angular']) {
 
@@ -1040,7 +1044,7 @@
             */
             .directive('d2Menu', [function () {
                 return {
-                    restrict: 'A',
+                    restrict: 'EA',
                     replace: true,
                     template: '<div id="dhisDropDownMenu"></div>',
                     //TODO: This might not be proper use of a controller
@@ -1049,6 +1053,118 @@
                     }
                 }
             }]);
+
+        angular.module('d2HeaderBar', ['d2Menu'])
+            .directive('d2HeaderBar', function () {
+                return {
+                    restrict: 'EA',
+                    replace: true,
+                    scope: {},
+                    controller: d2HeaderBarController,
+                    template: [
+                    '<div class="header-bar" id="header">',
+                        '<a ng-href="{{headerBar.link}}" title="{{headerBar.title}}" class="title-link">',
+                            '<img class="header-logo" ng-src="{{headerBar.logo}}" id="headerBanner">',
+                            '<span class="header-text" ng-bind="headerBar.title" id="headerText"></span>',
+                        '</a>',
+                        '<div d2-menu></div>',
+                    '</div>'].join('')
+                };
+
+                function d2HeaderBarController($scope, $http) {
+                    var ctrl = $scope;
+                    var baseUrl = dhis2.settings.getBaseUrl();
+                    var defaultStyle = 'light_blue';
+                    var stylesLocation = 'dhis-web-commons/css';
+
+                    ctrl.headerBar = {
+                        title: '',
+                        logo: '',
+                        link: ''
+                    };
+
+                    initialise();
+
+                    function initialise() {
+                        getSystemSettings()
+                            .success(function(systemSettings) {
+                                requestUserStyle()
+                                    .success(function (userStyleUrl) {
+                                        var userStyleName = getStyleName(userStyleUrl);
+
+                                        addUserStyleStylesheet(getStylesheetUrl(userStyleUrl));
+                                        setHeaderLogo(userStyleName, systemSettings.keyCustomTopMenuLogo);
+                                        setHeaderTitle(systemSettings.applicationTitle);
+                                        setHeaderLink(systemSettings.startModule);
+                                    })
+                                    .error(function (e) {
+                                        console && console.log(e);
+                                    });
+                            })
+                            .error(function() {
+                                throw new Error('Unable to load systemSettings');
+                            });
+                    }
+
+                    function getSystemSettings() {
+                        var settingsUrl = [baseUrl, 'api', 'systemSettings'].join('/');
+
+                        return $http.get(settingsUrl, {responseType: 'json', cache: true});
+                    }
+
+                    function setHeaderLogo(userStyleName, customTopMenuLogo) {
+                        if (customTopMenuLogo === true) {
+                            ctrl.headerBar.logo = [baseUrl, '/external-static/logo_banner.png'].join('');
+                        } else {
+                            if (isValidUserStyle(userStyleName)) {
+                                ctrl.headerBar.logo = getStyleLogoUrl(userStyleName);
+                            } else {
+                                ctrl.headerBar.logo = getStyleLogoUrl(defaultStyle);
+                            }
+
+                        }
+                    }
+
+                    function setHeaderTitle(applicationTitle) {
+                        ctrl.headerBar.title = applicationTitle || '';
+                    }
+
+                    function setHeaderLink(startModule) {
+                        ctrl.headerBar.link = [baseUrl, startModule, 'index.action'].join('/');
+                    }
+
+                    function requestUserStyle() {
+                        var currentUserStyleUrl = [baseUrl, 'api', 'userSettings', 'currentStyle'].join('/');
+
+                        return $http.get(currentUserStyleUrl, {responseType: 'text', cache: true});
+                    }
+
+                    function getStyleLogoUrl(styleName) {
+                        return [baseUrl, stylesLocation, styleName, 'logo_banner.png'].join('/');
+                    }
+
+                    function getStylesheetUrl(stylesheet) {
+                        return [baseUrl, stylesLocation, stylesheet].join('/');
+                    }
+
+                    function getStyleName(userStyle) {
+                        if (typeof userStyle === 'string' && userStyle.split('/')[0] && userStyle.split('/').length > 0) {
+                            return userStyle.split('/')[0];
+                        }
+                        return defaultStyle;
+                    }
+
+                    function isValidUserStyle(userStyle) {
+                        return typeof userStyle === 'string' && /^[A-z0-9_\-]+$/.test(userStyle);
+                    }
+
+                    function addUserStyleStylesheet(stylesheetUrl) {
+                        angular.element(document.querySelector('head'))
+                            .append('<link href="' + stylesheetUrl + '" type="text/css" rel="stylesheet" media="screen,print" />');
+                    }
+
+                }
+            });
 
     } else {
         //If there is no angular we just run our normal init function to find tags ourselves
