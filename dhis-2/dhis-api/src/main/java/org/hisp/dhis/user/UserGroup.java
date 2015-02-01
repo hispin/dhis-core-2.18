@@ -57,6 +57,7 @@ public class UserGroup
     public static final String AUTH_USER_DELETE = "F_USER_DELETE";
     public static final String AUTH_USER_VIEW = "F_USER_VIEW";
     public static final String AUTH_USER_ADD_IN_GROUP = "F_USER_ADD_WITHIN_MANAGED_GROUP";
+    public static final String AUTH_ADD_MEMBERS_TO_READ_ONLY_USER_GROUPS = "F_USER_GROUPS_READ_ONLY_ADD_MEMBERS";
 
     /**
      * Determines if a de-serialized file is compatible with this class.
