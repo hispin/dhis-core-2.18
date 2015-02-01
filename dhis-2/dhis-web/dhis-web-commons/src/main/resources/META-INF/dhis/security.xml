@@ -340,6 +340,7 @@
         <value>F_USERGROUP_MANAGING_RELATIONSHIPS_ADD</value>
         <value>F_USERGROUP_MANAGING_RELATIONSHIPS_VIEW</value>
         <value>F_USER_ADD_WITHIN_MANAGED_GROUP</value>
+        <value>F_USER_GROUPS_READ_ONLY_ADD_MEMBERS</value>
       </set>
     </property>
   </bean>
