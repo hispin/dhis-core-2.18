@@ -37,7 +37,8 @@
  * @see jQuery (http://jquery.com)
  * @see jQuery Template Plugin (http://github.com/jquery/jquery-tmpl)
  */
-(function ($, menu, undefined) {
+(function ($, undefined) {
+    var menu;
     var markup = '',
         selector = 'appsMenu';
 
@@ -137,7 +138,11 @@
         $('.app-menu ul').sortable(options).disableSelection();
     }
 
-    menu.subscribe(renderMenu);
+    $.when(dhis2.menu.ui.loadingStatus)
+        .then(function () {
+            menu = dhis2.menu.mainAppMenu.menuItems;
+            menu.subscribe(renderMenu);
+        });
 
     /**
      * jQuery events that communicate with the web api
@@ -188,4 +193,4 @@
         });
     });
 
-})(jQuery, dhis2.menu.mainAppMenu.menuItems);
+})(jQuery);

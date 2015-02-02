@@ -255,14 +255,14 @@
 
         that.getMenuItems = function () {
             return menuItems;
-        }
+        };
 
         /**
          * Get the max number of favorites
          */
         that.getMaxFavorites = function () {
             return MAX_FAVORITES;
-        }
+        };
 
         /**
          * Order the menuItems by a given list
@@ -307,7 +307,7 @@
             executeCallBacks();
 
             return that;
-        }
+        };
 
         /**
          * Adds the menu items given to the menu
@@ -363,7 +363,7 @@
 
         that.notify = function () {
             executeCallBacks();
-        }
+        };
 
         /**
          * Get the favorite apps
@@ -390,7 +390,7 @@
 
         that.sortNonFavAppsByName = function (inverse) {
             return sortAppsByName(that.getNonFavoriteApps(), inverse);
-        }
+        };
 
         /**
          * Gets the applist based on the current display order
@@ -409,7 +409,7 @@
                     break;
             }
             return favApps.concat(nonFavApps);;
-        }
+        };
 
         that.updateOrder = function (reorderedApps) {
             switch (that.displayOrder) {
@@ -423,7 +423,7 @@
                     that.orderMenuItemsByList(reorderedApps);
                     break;
             }
-        }
+        };
 
         that.save = function (saveMethod) {
             if ( ! du.isFunction(saveMethod)) {
@@ -431,7 +431,7 @@
             }
 
             return saveMethod(that.getMenuItems().getOrder());
-        }
+        };
 
         that.search = function (searchFor) {
             //Get all the apps
@@ -459,7 +459,7 @@
             });
 
             return searchMatches;
-        }
+        };
 
         if (typeof preLoadedData === 'object') {
             that.addMenuItems(preLoadedData);
@@ -490,7 +490,7 @@
             return true;
         }
         return false;
-    }
+    };
 
     /**
      * Returns the name keys for the current menus.
@@ -508,7 +508,7 @@
             }
         }
         return nameKeys;
-    }
+    };
 
     //Expose the fixUrl method so we can use externally
     dhis2.menu.fixUrlIfNeeded = fixUrlIfNeeded;

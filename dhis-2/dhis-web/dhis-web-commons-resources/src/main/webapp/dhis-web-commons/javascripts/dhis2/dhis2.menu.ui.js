@@ -140,7 +140,7 @@
                 keyCode === keys.arrowDown ||
                 keyCode === keys.arrowUp);
         }
-    }
+    };
 
     /*
      * Check for what type of jquery/jqLite we are using and assign it to jqLite.
@@ -202,7 +202,7 @@
                  $('#appsDropDown .menuDropDownBox').html(error_template);
                  */
             }
-        }
+        };
         http.send();
     }
 
@@ -244,7 +244,7 @@
             }
 
             return template;
-        }
+        };
 
         /**
          * Gets a "raw" template. This returns the template as it was saved, without parsing it.
@@ -256,7 +256,7 @@
                 console.error("Template " + name + " does not exist");
             }
             return templates[name];
-        }
+        };
 
         /**
          * Adds a template to the template cache
@@ -276,7 +276,7 @@
                 console.error("Template not allowed to be overridden using the add method, use the replace method instead");
             }
             templates[name] = template;
-        }
+        };
 
         /**
          * Replace an already existing template with a different one
@@ -289,10 +289,10 @@
                 console.error("No template to be replaced, use the add method to add templates")
             }
             templates[name] = template;
-        }
+        };
 
         return template;
-    }
+    };
 
     /**
      * Creates an error object with that has the passed in message
@@ -313,7 +313,7 @@
 
         error.toString = function () {
             return "MenuError: " + this.message + " \n";
-        }
+        };
 
         return error;
     }
@@ -415,11 +415,11 @@
                 return false;
             }
             return true;
-        }
+        };
 
         defaultMenu.isClosed = function () {
             return ! defaultMenu.isOpen();
-        }
+        };
 
         defaultMenu.open = function (hover) {
             var dropdownElement = jqLite(document.querySelector(defaultMenu.getDropdownSelector()));
@@ -432,7 +432,7 @@
                 dropdownElement.attr("data-display-clicked", "true");
             }
             defaultMenu.hooks.call('open');
-        }
+        };
 
         defaultMenu.close = function (hover) {
             var dropdownElement = jqLite(document.querySelector(defaultMenu.getDropdownSelector()));
@@ -442,21 +442,21 @@
                 dropdownElement.attr("data-display-clicked", "false");
             }
             defaultMenu.hooks.call('close');
-        }
+        };
 
         defaultMenu.closeAll = function () {
             var menuDropDowns = document.querySelectorAll("#" + defaultMenu.container + " div.app-menu-dropdown-wrap");
             jqLite(menuDropDowns).css('display', 'none');
             jqLite(menuDropDowns).attr("data-display-clicked", "false");
-        }
+        };
 
         defaultMenu.setCurrentId = function (id) {
             currentSelectedId = id;
-        }
+        };
 
         defaultMenu.getCurrentId = function () {
             return currentSelectedId;
-        }
+        };
 
         defaultMenu.goToMenuItem = function (menuElement) {
             var link, url;
@@ -471,7 +471,7 @@
             if (url) {
                 window.location = url;
             }
-        }
+        };
 
         defaultMenu.renderMenuItems = function (menuItems) {
             var result = '';
@@ -485,15 +485,15 @@
                 });
             });
             return result;
-        }
+        };
 
         defaultMenu.getButtonId = function () {
             return "#" + defaultMenu.name + "Button";
-        }
+        };
 
         defaultMenu.getDropdownSelector = function () {
             return defaultMenu.getButtonId() + " div.app-menu-dropdown-wrap";
-        }
+        };
 
         defaultMenu.getDropDownPosition = function () {
             var menuElement = document.querySelector(defaultMenu.getButtonId()),
@@ -513,7 +513,7 @@
             dropdownElement.css('display', 'none');
 
             return dropdownPosition;
-        }
+        };
 
         defaultMenu.renderers.push(function (menuData) {
             var linkItem, menuItems;
@@ -590,7 +590,7 @@
         });
 
         return createMenu(defaultMenu);
-    }
+    };
 
     scrollUi = function (menu) {
         var scrollMenu = menu;
@@ -632,7 +632,7 @@
         });
 
         return createMenu(scrollMenu);
-    }
+    };
 
     /**
      * Adds search functionality to the passed menu
@@ -709,7 +709,7 @@
         });
 
         return createMenu(searchMenu);
-    }
+    };
 
     linkButtonUi = function (menu) {
         var linkButtonMenu = menu,
@@ -734,7 +734,7 @@
         });
 
         return createMenu(linkButtonMenu);
-    }
+    };
 
     shortCutUi = function (menu) {
         var shortCutMenu = menu;
@@ -884,7 +884,7 @@
         });
 
         return createMenu(shortCutMenu);
-    }
+    };
 
     /*******************************************************************************************************************
      * Dhis2 menu ui functions
@@ -949,7 +949,7 @@
 
     dhis2.menu.ui.initMenu = function () {
         try {
-            jQuery.ajax({
+            dhis2.menu.ui.loadingStatus = jQuery.ajax({
                 type : "GET",
                 url : dhis2.settings.getBaseUrl() + "/dhis-web-commons/menu/getHelpPageLinkModule.action",
                 dataType : "json",
@@ -1175,5 +1175,4 @@
         //If there is no angular we just run our normal init function to find tags ourselves
         dhis2.menu.ui.initMenu();
     }
-
 })();
