@@ -957,7 +957,7 @@
                     helpPageLink = json;
                     bootstrapMenu();
                 },
-                failure: function () {
+                error: function () {
                     bootstrapMenu();
                 }
             });
