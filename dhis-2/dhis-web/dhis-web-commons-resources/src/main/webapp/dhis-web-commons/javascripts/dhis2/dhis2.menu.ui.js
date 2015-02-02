@@ -951,16 +951,20 @@
         try {
             jQuery.ajax({
                 type : "GET",
-                url : "../dhis-web-commons/menu/getHelpPageLinkModule.action",
+                url : dhis2.settings.getBaseUrl() + "/dhis-web-commons/menu/getHelpPageLinkModule.action",
                 dataType : "json",
                 success : function(json) {
                     helpPageLink = json;
                     bootstrapMenu();
+                },
+                failure: function () {
+                    bootstrapMenu();
                 }
             });
         } catch (e) {
-            if (console && console.error)
+            if (console && console.error) {
                 console.error(e.message, e.stack);
+            }
         }
     };
 
