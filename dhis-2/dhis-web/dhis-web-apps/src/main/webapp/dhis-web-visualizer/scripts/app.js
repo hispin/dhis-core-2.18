@@ -2346,11 +2346,17 @@ Ext.onReady( function() {
 
 			web.chart.getData = function(layout, isUpdateGui) {
 				var xLayout,
-					paramString;
+					paramString,
+                    onFailure;
 
 				if (!layout) {
 					return;
 				}
+
+                onFailure = function() {
+                    ns.app.viewport.setGui(layout, xLayout, isUpdateGui);
+                    web.mask.hide(ns.app.centerRegion);
+                };
 
 				xLayout = service.layout.getExtendedLayout(layout);
 				paramString = web.analytics.getParamString(xLayout, true);
@@ -2367,9 +2373,9 @@ Ext.onReady( function() {
 					},
 					disableCaching: false,
 					failure: function(r) {
-						web.mask.hide(ns.app.centerRegion);
+                        onFailure();
 
-						if (r.status === 413 || r.status === 414) {
+						if (Ext.Array.contains([413, 414], parseInt(r.status))) {
 							web.analytics.validateUrl(init.contextPath + '/api/analytics.json' + paramString);
 						}
                         else {
@@ -2382,7 +2388,7 @@ Ext.onReady( function() {
 							response = api.response.Response(Ext.decode(r.responseText));
 
 						if (!response) {
-							web.mask.hide(ns.app.centerRegion);
+                            onFailure();
 							return;
 						}
 
