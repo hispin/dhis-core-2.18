@@ -34,6 +34,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.common.AuditLogUtil;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.IdentifiableProperty;
@@ -318,6 +319,12 @@ public class DefaultObjectBridge
             if ( writeEnabled )
             {
                 AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_UPDATE );
+
+                if ( IdentifiableObject.class.isInstance( object ) )
+                {
+                    ((BaseIdentifiableObject) object).setAutoFields();
+                }
+
                 sessionFactory.getCurrentSession().update( object );
             }
 
