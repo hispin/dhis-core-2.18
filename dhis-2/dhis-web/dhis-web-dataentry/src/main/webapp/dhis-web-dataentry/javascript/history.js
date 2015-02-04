@@ -48,6 +48,7 @@ function CommentSaver( de, co, comment )
             url: '../api/dataValues',
             data: dataValue,
             dataType: 'json',
+            type: 'post',
             success: handleSuccess,
             error: handleError
         } );
@@ -200,6 +201,7 @@ function markValueForFollowup()
     $.ajax( { url: '../api/dataValues',
     	data: dataValue,
     	dataType: 'json',
+        type: 'post',
     	success: function( json )
 	    {
 	        if ( $( '#followup' ).attr( 'src' ) == '../images/unmarked.png' )
