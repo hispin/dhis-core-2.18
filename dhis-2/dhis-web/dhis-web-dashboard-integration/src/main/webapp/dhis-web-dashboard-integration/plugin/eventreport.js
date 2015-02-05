@@ -237,12 +237,12 @@ Ext.onReady( function() {
 
 				return function() {
 					if (!Ext.isObject(config)) {
-						console.log('Record: config is not an object: ' + config);
+						ns.alert('Record: config is not an object: ' + config, true);
 						return;
 					}
 
 					if (!Ext.isString(config.id)) {
-						alert('Record: id is not text: ' + config);
+						ns.alert('Record: id is not text: ' + config, true);
 						return;
 					}
 
@@ -384,21 +384,21 @@ Ext.onReady( function() {
 					if (layout.filters && layout.filters.length) {
 						for (var i = 0; i < layout.filters.length; i++) {
 
-							// Indicators as filter
+							// indicators as filter
 							if (layout.filters[i].dimension === dimConf.indicator.objectName) {
-								web.message.alert(ER.i18n.indicators_cannot_be_specified_as_filter || 'Indicators cannot be specified as filter');
+								ns.alert(ER.i18n.indicators_cannot_be_specified_as_filter || 'Indicators cannot be specified as filter', true);
 								return;
 							}
 
-							// Categories as filter
+							// categories as filter
 							if (layout.filters[i].dimension === dimConf.category.objectName) {
-								web.message.alert(ER.i18n.categories_cannot_be_specified_as_filter || 'Categories cannot be specified as filter');
+								ns.alert(ER.i18n.categories_cannot_be_specified_as_filter || 'Categories cannot be specified as filter', true);
 								return;
 							}
 
-							// Data sets as filter
+							// data sets as filter
 							if (layout.filters[i].dimension === dimConf.dataSet.objectName) {
-								web.message.alert(ER.i18n.data_sets_cannot_be_specified_as_filter || 'Data sets cannot be specified as filter');
+								ns.alert(ER.i18n.data_sets_cannot_be_specified_as_filter || 'Data sets cannot be specified as filter', true);
 								return;
 							}
 						}
@@ -406,25 +406,25 @@ Ext.onReady( function() {
 
 					// dc and in
 					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.indicator.objectName]) {
-						web.message.alert('Indicators and detailed data elements cannot be specified together');
+						ns.alert('Indicators and detailed data elements cannot be specified together', true);
 						return;
 					}
 
 					// dc and de
 					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.dataElement.objectName]) {
-						web.message.alert('Detailed data elements and totals cannot be specified together');
+						ns.alert('Detailed data elements and totals cannot be specified together', true);
 						return;
 					}
 
 					// dc and ds
 					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.dataSet.objectName]) {
-						web.message.alert('Data sets and detailed data elements cannot be specified together');
+						ns.alert('Data sets and detailed data elements cannot be specified together', true);
 						return;
 					}
 
 					// dc and co
 					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.category.objectName]) {
-						web.message.alert('Categories and detailed data elements cannot be specified together');
+						ns.alert('Categories and detailed data elements cannot be specified together', true);
 						return;
 					}
 
@@ -437,7 +437,7 @@ Ext.onReady( function() {
 
 					// config must be an object
 					if (!(config && Ext.isObject(config))) {
-						alert('Layout: config is not an object (' + init.el + ')');
+						ns.alert('Layout: config is not an object (' + init.el + ')', true);
 						return;
 					}
 
@@ -447,7 +447,7 @@ Ext.onReady( function() {
 
 					// at least one dimension specified as column or row
 					if (!(config.columns || config.rows)) {
-						alert(ER.i18n.at_least_one_dimension_must_be_specified_as_row_or_column);
+						ns.alert(ER.i18n.at_least_one_dimension_must_be_specified_as_row_or_column);
 						return;
 					}
 
@@ -462,7 +462,7 @@ Ext.onReady( function() {
 
 					// at least one period
 					//if (!Ext.Array.contains(objectNames, dimConf.period.objectName)) {
-						//alert(ER.i18n.at_least_one_period_must_be_specified_as_column_row_or_filter);
+						//ns.alert(ER.i18n.at_least_one_period_must_be_specified_as_column_row_or_filter);
 						//return;
 					//}
 
@@ -1979,13 +1979,6 @@ Ext.onReady( function() {
 				}
 			};
 
-			// message
-			web.message = {};
-
-			web.message.alert = function(message) {
-				console.log(message);
-			};
-
 			// analytics
 			web.analytics = {};
 
@@ -2105,7 +2098,7 @@ Ext.onReady( function() {
 
                 msg += '\n\n' + 'Hint: A good way to reduce the number of items is to use relative periods and level/group organisation unit selection modes.';
 
-                alert(msg);
+                ns.alert(msg);
 			};
 
 			// report
@@ -3297,7 +3290,7 @@ Ext.onReady( function() {
                     init.user.ouc = ouc;
                 }
                 else {
-                    alert('User is not assigned to any organisation units');
+                    ns.alert('User is not assigned to any organisation units');
                 }
 
                 fn();
@@ -3683,7 +3676,7 @@ Ext.onReady( function() {
                         table = getHtml(xLayout, xResponse);
 
                         if (table.tdCount > 20000 || (layout.hideEmptyRows && table.tdCount > 10000)) {
-                            alert('Table has too many cells. Please reduce the table and try again.');
+                            ns.alert('Table has too many cells. Please reduce the table and try again.');
 
                             if (!ns.skipMask) {
                                 web.mask.hide(ns.app.centerRegion);
@@ -3872,7 +3865,18 @@ Ext.onReady( function() {
             init.skipMask = Ext.isBoolean(config.skipMask) ? config.skipMask : false;
             init.skipFade = Ext.isBoolean(config.skipFade) ? config.skipFade : false;
 
-            // alert
+            // alerts
+            ns.alert = function(text, isLog) {
+                if (isLog) {
+                    console.log(text);
+                }
+                else {
+                    if (text) {
+                        alert(text);
+                    }
+                }
+            };
+
             init.alert = function(text) {
                 var div = Ext.get(config.el);
 
