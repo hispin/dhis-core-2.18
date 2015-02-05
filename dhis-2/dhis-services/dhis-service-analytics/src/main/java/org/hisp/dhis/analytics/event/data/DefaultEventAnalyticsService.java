@@ -429,15 +429,6 @@ public class DefaultEventAnalyticsService
             }
         }
 
-        if ( params.hasDimensionOrFilter( ORGUNIT_DIM_ID ) )
-        {
-            for ( NameableObject object : params.getDimensionOrFilter( ORGUNIT_DIM_ID ) )
-            {
-                OrganisationUnit unit = (OrganisationUnit) object;
-                unit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( unit.getId() ) );
-            }
-        }
-
         if ( asc != null )
         {
             for ( String sort : asc )
