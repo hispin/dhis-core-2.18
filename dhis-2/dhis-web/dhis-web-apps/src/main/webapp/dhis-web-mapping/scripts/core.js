@@ -368,9 +368,9 @@ Ext.onReady( function() {
                     }
                 }
                 else {
-                    html = 'No data found for<br/><br/>Indicators in group: <span style="color:#333">' + iig.name + '</span>' +
-                           '<br/>Data elements in group: <span style="color:#333">' + ideg.name + '</span>' +
-                           '<br/>Period: <span style="color:#333">' + period.name + '</span>' +
+                    html = 'No data found for<br/><br/><span style="color:#333">Indicators in group: </span>' + iig.name +
+                           '<br/><span style="color:#333">Data elements in group: </span>' + ideg.name +
+                           '<br/><span style="color:#333">Period: </span>' + period.name +
                            '<br/><br/>To change groups, please go to general settings.';
                 }
 

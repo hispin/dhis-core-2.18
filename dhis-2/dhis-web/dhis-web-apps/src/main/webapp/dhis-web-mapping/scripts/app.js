@@ -8600,7 +8600,7 @@ Ext.onReady( function() {
 				});
 
 				window = Ext.create('Ext.window.Window', {
-                    title: 'Embed in web page' + '<span style="font-weight:normal">&nbsp;|&nbsp;&nbsp;' + gis.map.name + '</span>',
+                    title: 'Embed in web page' + (gis.map && gis.map.name ? '<span style="font-weight:normal">&nbsp;|&nbsp;&nbsp;' + gis.map.name + '</span>' : ''),
 					layout: 'fit',
 					modal: true,
 					resizable: false,
