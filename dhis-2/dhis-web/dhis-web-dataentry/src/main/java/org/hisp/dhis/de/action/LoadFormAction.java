@@ -316,6 +316,7 @@ public class LoadFormAction
         // ---------------------------------------------------------------------
 
         String displayMode = dataSet.getDataSetType();
+        DataSet dsOriginal = dataSet;
 
         if ( displayMode.equals( DataSet.TYPE_DEFAULT ) )
         {
@@ -355,7 +356,7 @@ public class LoadFormAction
 
             for ( OrganisationUnit child : organisationUnit.getChildren() )
             {
-                if ( child.getDataSets().contains( dataSet ) )
+                if ( child.getDataSets().contains( dsOriginal ) )
                 {
                     organisationUnitChildren.add( child );
                 }
@@ -363,7 +364,7 @@ public class LoadFormAction
 
             Collections.sort( organisationUnitChildren, IdentifiableObjectNameComparator.INSTANCE );
 
-            if ( organisationUnit.getDataSets().contains( dataSet ) )
+            if ( organisationUnit.getDataSets().contains( dsOriginal ) )
             {
                 organisationUnits.add( organisationUnit );
             }
