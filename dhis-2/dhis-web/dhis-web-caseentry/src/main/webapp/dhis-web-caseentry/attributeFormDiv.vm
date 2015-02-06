@@ -3,7 +3,7 @@
 #end
 
 <table width="100%">
-#foreach($programAttribute in $programAttributes )
+#foreach($programAttribute in $attributes )
 	#if($program) 
 		#set($attribute = $programAttribute.attribute)
 	#end
