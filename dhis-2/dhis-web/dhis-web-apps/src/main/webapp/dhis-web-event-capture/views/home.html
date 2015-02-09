@@ -51,12 +51,6 @@
                         {{'register_event'| translate}}
                     </button>  
                 </td>
-                <td ng-if="(editingEventInFull || eventRegistration) && customForm" style='padding-left: 10px;'>
-                    <button class="button button-std not-printable"
-                            ng-click="switchDataEntryForm()">
-                        {{displayCustomForm ? 'use_default_form' : 'use_custom_form'| translate}}
-                    </button>  
-                </td>
                 <td ng-if="dhis2Events.length > 0" style='padding-left: 10px;'>
                     <button class="button button-std not-printable"
                             onclick="javascript:window.print()">
