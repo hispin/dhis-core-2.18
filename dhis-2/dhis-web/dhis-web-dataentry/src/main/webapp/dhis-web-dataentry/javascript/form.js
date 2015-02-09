@@ -219,12 +219,25 @@ $( document ).ready( function()
     {
         console.log( 'Ouwt loaded' );
                 
-        $.when( dhis2.de.loadMetaData(), dhis2.de.loadDataSetAssociations() ).done( function() {
+        $.when( dhis2.de.getMultiOrgUnitSetting(), dhis2.de.loadMetaData(), dhis2.de.loadDataSetAssociations() ).done( function() {
         	dhis2.de.setMetaDataLoaded();
         	organisationUnitSelected( ids, names );
         } );
     } );
 } );
+
+dhis2.de.getMultiOrgUnitSetting = function()
+{
+  return $.ajax({
+    url: '../api/systemSettings/multiOrganisationUnitForms',
+    dataType: 'json',
+    async: false,
+    type: 'GET',
+    success: function( data ) {
+      selection.setIncludeChildren(data);
+    }
+  });
+};
 
 dhis2.de.ajaxLogin = function()
 {
@@ -299,7 +312,7 @@ dhis2.de.loadDataSetAssociations = function()
 	} );
 	
 	return def.promise();
-}
+};
 
 dhis2.de.setMetaDataLoaded = function()
 {
@@ -308,7 +321,7 @@ dhis2.de.setMetaDataLoaded = function()
     console.log( 'Meta-data loaded' );
 
     updateForms();
-}
+};
 
 dhis2.de.discardLocalData = function() {
     if( confirm( i18n_remove_local_data ) ) {
@@ -2157,6 +2170,7 @@ function updateForms()
         .done( function() {
         	dhis2.availability.startAvailabilityCheck();
         	console.log( 'Started availability check' );
+          selection.responseReceived();
         } );
 }
 
