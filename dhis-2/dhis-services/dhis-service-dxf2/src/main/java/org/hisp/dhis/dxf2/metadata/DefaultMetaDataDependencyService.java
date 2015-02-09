@@ -29,7 +29,6 @@ package org.hisp.dhis.dxf2.metadata;
  */
 
 import com.fasterxml.jackson.annotation.JsonView;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.proxy.HibernateProxy;
@@ -41,6 +40,8 @@ import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
@@ -138,7 +139,7 @@ public class DefaultMetaDataDependencyService
     public Map<String, List<IdentifiableObject>> getIdentifiableObjectWithDependencyMap( Map<String, Object> identifiableObjectUidMap )
     {
         Map<String, List<IdentifiableObject>> identifiableObjectMap = getIdentifiableObjectMap( identifiableObjectUidMap );
-        
+
         Collection<IdentifiableObject> identifiableObjects = new HashSet<>();
 
         for ( Map.Entry<String, List<IdentifiableObject>> identifiableObjectEntry : identifiableObjectMap.entrySet() )
@@ -374,7 +375,7 @@ public class DefaultMetaDataDependencyService
             resultSet.addAll( dataElementCategoryOptionComboSet );
             resultSet.addAll( getDependencySet( dataElementCategoryOptionComboSet ) );
 
-            return resultSet;            
+            return resultSet;
         }
         else if ( identifiableObject instanceof DataElement )
         {
@@ -399,6 +400,16 @@ public class DefaultMetaDataDependencyService
 
             resultSet.addAll( organisationUnitLevelSet );
             resultSet.addAll( getDependencySet( organisationUnitLevelSet ) );
+
+            return resultSet;
+        }
+        else if ( identifiableObject instanceof DataSet )
+        {
+            Set<Section> sectionSet = new HashSet<>();
+            sectionSet.addAll( ((DataSet) identifiableObject).getSections() );
+
+            resultSet.addAll( sectionSet );
+            resultSet.addAll( getDependencySet( sectionSet ) );
 
             return resultSet;
         }
