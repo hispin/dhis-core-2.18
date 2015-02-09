@@ -28,12 +28,6 @@ package org.hisp.dhis.common.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
@@ -47,6 +41,12 @@ import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.hibernate.exception.ReadAccessDeniedException;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author bobj
@@ -136,9 +136,9 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     public final T getByName( String name )
     {
         List<T> list = getList( Restrictions.eq( "name", name ) );
-        
+
         T object = list != null && !list.isEmpty() ? list.get( 0 ) : null;
-        
+
         if ( !isReadAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ_DENIED );
@@ -157,7 +157,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
         List<T> list = getList( Restrictions.eq( "shortName", shortName ) );
 
         T object = list != null && !list.isEmpty() ? list.get( 0 ) : null;
-        
+
         if ( !isReadAllowed( object ) )
         {
             AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ_DENIED );
@@ -187,7 +187,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllEqName( String name )
     {
         return getSharingCriteria()
@@ -197,7 +197,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllEqNameIgnoreCase( String name )
     {
         return getSharingCriteria()
@@ -207,7 +207,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllEqShortName( String shortName )
     {
         return getSharingCriteria()
@@ -217,7 +217,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllEqShortNameIgnoreCase( String shortName )
     {
         return getSharingCriteria()
@@ -227,7 +227,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllLikeName( String name )
     {
         return getSharingCriteria()
@@ -237,7 +237,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllLikeName( String name, int first, int max )
     {
         return getSharingCriteria()
@@ -249,16 +249,16 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllLikeName( Set<String> nameWords, int first, int max )
     {
         Conjunction conjunction = Restrictions.conjunction();
-        
+
         for ( String word : nameWords )
         {
             conjunction.add( Restrictions.like( "name", "%" + word + "%" ).ignoreCase() );
         }
-        
+
         return getSharingCriteria()
             .add( conjunction )
             .addOrder( Order.asc( "name" ) )
@@ -268,7 +268,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllLikeShortName( String shortName )
     {
         if ( NameableObject.class.isAssignableFrom( clazz ) )
@@ -283,7 +283,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllOrderedName()
     {
         return getSharingCriteria()
@@ -292,7 +292,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllOrderedName( int first, int max )
     {
         return getSharingCriteria()
@@ -302,7 +302,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllOrderedLastUpdated()
     {
         return getSharingCriteria()
@@ -311,7 +311,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllOrderedLastUpdated( int first, int max )
     {
         return getSharingCriteria()
@@ -366,7 +366,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllGeLastUpdated( Date lastUpdated )
     {
         return getSharingCriteria()
@@ -385,7 +385,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllGeCreated( Date created )
     {
         return getSharingCriteria()
@@ -395,7 +395,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllGeCreatedOrderedName( Date created )
     {
         return getSharingCriteria()
@@ -405,7 +405,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAllGeLastUpdatedOrderedName( Date lastUpdated )
     {
         return getSharingCriteria()
@@ -420,11 +420,11 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
         return (Date) getClazzCriteria().setProjection( Projections.property( "lastUpdated" ) )
             .addOrder( Order.desc( "lastUpdated" ) )
             .setMaxResults( 1 )
-            .setCacheable( true ).uniqueResult();            
+            .setCacheable( true ).uniqueResult();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getByDataDimension( boolean dataDimension )
     {
         return getSharingCriteria()
@@ -432,24 +432,15 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
     public List<T> getByUid( Collection<String> uids )
     {
-        List<T> list = new ArrayList<>();
-
-        if ( uids != null )
+        if ( uids == null )
         {
-            for ( String uid : uids )
-            {
-                T object = getByUid( uid );
-
-                if ( object != null )
-                {
-                    list.add( object );
-                }
-            }
+            return new ArrayList<>();
         }
 
-        return list;
+        return getSharingCriteria().add( Restrictions.in( "uid", uids ) ).list();
     }
 
     @Override
