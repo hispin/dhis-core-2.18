@@ -1,23 +1,11 @@
 <script type="text/javascript">
-jQuery(document).ready(function() {
-    selection.setListenerFunction( organisationUnitSelected );
-
-    $.ajax({
-       url: '../api/systemSettings/multiOrganisationUnitForms',
-       dataType: 'json',
-       async: false,
-       type: 'get',
-       success: function(data) {
-           selection.setIncludeChildren( data );
-       }
-    });
-});
+  selection.setListenerFunction(organisationUnitSelected);
 </script>
 
 <style type="text/css">
-#leftBarContents div#orgUnitTree {
-	height: 430px;
-}
+  #leftBarContents div#orgUnitTree {
+    height : 430px;
+  }
 </style>
 
 <br>
