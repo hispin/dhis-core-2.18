@@ -36,20 +36,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.webapi.utils.InputUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataanalysis.DataAnalysisService;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -58,6 +52,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationResult;
 import org.hisp.dhis.validation.ValidationRuleService;
+import org.hisp.dhis.webapi.utils.InputUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -69,8 +64,6 @@ import com.opensymphony.xwork2.Action;
 public class ValidationAction
     implements Action
 {
-    private static final Log log = LogFactory.getLog( ValidationAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -115,13 +108,6 @@ public class ValidationAction
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
         this.dataElementCategoryService = dataElementCategoryService;
-    }
-
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
     }
 
     @Autowired
@@ -247,21 +233,22 @@ public class ValidationAction
 
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {
-            List<DeflatedDataValue> values = outlierAnalysis( organisationUnit, dataSet, period );
+            List<DeflatedDataValue> values = new ArrayList<>( minMaxOutlierAnalysisService.analyse( getCollection( organisationUnit ),
+                dataSet.getDataElements(), getCollection( period ), null ) );
 
             if ( !values.isEmpty() )
             {
                 dataValues.put( organisationUnit, values );
             }
 
-            List<ValidationResult> results = validationRuleAnalysis( organisationUnit, dataSet, period, attributeOptionCombo );
+            List<ValidationResult> results = new ArrayList<>( validationRuleService.validate( dataSet, period, organisationUnit, attributeOptionCombo ) );
 
             if ( !results.isEmpty() )
             {
                 validationResults.put( organisationUnit, results );
             }
             
-            List<DataElementOperand> violations = noValueRequiresCommentAnalysis( organisationUnit, dataSet, period );
+            List<DataElementOperand> violations = validationRuleService.validateRequiredComments( dataSet, period, organisationUnit, attributeOptionCombo );
             
             if ( !violations.isEmpty() )
             {
@@ -270,63 +257,5 @@ public class ValidationAction
         }
 
         return dataValues.isEmpty() && validationResults.isEmpty() && commentViolations.isEmpty() ? SUCCESS : INPUT;
-    }
-
-    // -------------------------------------------------------------------------
-    // Min-max and outlier analysis
-    // -------------------------------------------------------------------------
-    
-    private List<DeflatedDataValue> outlierAnalysis( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
-    {
-        List<DeflatedDataValue> deflatedDataValues = new ArrayList<>( minMaxOutlierAnalysisService.analyse( getCollection( organisationUnit ),
-            dataSet.getDataElements(), getCollection( period ), null ) );
-
-        log.debug( "Number of outlier values: " + deflatedDataValues.size() );
-
-        return deflatedDataValues;
-    }
-
-    // -------------------------------------------------------------------------
-    // Validation rule analysis
-    // -------------------------------------------------------------------------
-    
-    private List<ValidationResult> validationRuleAnalysis( OrganisationUnit organisationUnit, DataSet dataSet, Period period, DataElementCategoryOptionCombo attributeOptionCombo )
-    {
-        List<ValidationResult> validationResults = new ArrayList<>( validationRuleService.validate( dataSet, period, organisationUnit, attributeOptionCombo ) );
-
-        log.debug( "Number of validation violations: " + validationResults.size() );
-
-        return validationResults;
-    }
-
-    // -------------------------------------------------------------------------
-    // No value requires comment analysis
-    // -------------------------------------------------------------------------
-    
-    private List<DataElementOperand> noValueRequiresCommentAnalysis( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
-    {
-        List<DataElementOperand> violations = new ArrayList<>();
-     
-        if ( !dataSet.isNoValueRequiresComment() )
-        {
-            return violations;
-        }
-        
-        for ( DataElement de : dataSet.getDataElements() )
-        {
-            for ( DataElementCategoryOptionCombo co : de.getCategoryCombo().getOptionCombos() )
-            {
-                DataValue dv = dataValueService.getDataValue( de, period, organisationUnit, co );
-                
-                if ( dv == null || DataValue.FALSE.equals( dv.getValue() ) )
-                {
-                    violations.add( new DataElementOperand( de, co ) );
-                }
-            }
-        }
-        
-        log.info( "Number of missing comments: " + violations.size() );
-        
-        return violations;
     }
 }
