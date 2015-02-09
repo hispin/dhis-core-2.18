@@ -63,7 +63,6 @@
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
   </bean>
 
 </beans>
