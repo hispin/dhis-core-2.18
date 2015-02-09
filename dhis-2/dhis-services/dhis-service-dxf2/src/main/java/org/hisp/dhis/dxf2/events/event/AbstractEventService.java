@@ -627,7 +627,12 @@ public abstract class AbstractEventService
         event.setEventDate( DateUtils.getLongDateString( programStageInstance.getExecutionDate() ) );
         event.setDueDate( DateUtils.getLongDateString( programStageInstance.getDueDate() ) );
         event.setStoredBy( programStageInstance.getCompletedUser() );
-        event.setOrgUnit( programStageInstance.getOrganisationUnit().getUid() );
+
+        if ( programStageInstance.getOrganisationUnit() != null )
+        {
+            event.setOrgUnit( programStageInstance.getOrganisationUnit().getUid() );
+        }
+
         event.setProgram( programStageInstance.getProgramInstance().getProgram().getUid() );
         event.setEnrollment( programStageInstance.getProgramInstance().getUid() );
         event.setProgramStage( programStageInstance.getProgramStage().getUid() );
