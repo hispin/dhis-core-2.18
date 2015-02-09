@@ -2172,11 +2172,13 @@ Ext.onReady( function() {
 					getTotalHtmlArray,
 					getHtml,
 					getUniqueFactor = function(xAxis) {
+						var unique;
+
 						if (!xAxis) {
 							return null;
 						}
 
-						var unique = xAxis.xItems.unique;
+						unique = xAxis.xItems.unique;
 
 						if (unique) {
 							return unique.length < 2 ? 1 : (xAxis.size / unique[0].length);
@@ -2323,13 +2325,14 @@ Ext.onReady( function() {
                             cls: config.cls ? ' ' + config.cls : 'pivot-empty',
                             colSpan: config.colSpan ? config.colSpan : 1,
                             rowSpan: config.rowSpan ? config.rowSpan : 1,
-                            htmlValue: config.htmlValue ? config.htmlValue : '&nbsp;'
+                            htmlValue: config.htmlValue ? config.htmlValue : ''
                         });
                     };
 
                     getEmptyHtmlArray = function(i) {
                         var a = [];
 
+                        // if not the intersection cell
                         if (i < xColAxis.dims - 1) {
                             if (xRowAxis && xRowAxis.dims) {
                                 for (var j = 0; j < xRowAxis.dims - 1; j++) {
@@ -2356,14 +2359,31 @@ Ext.onReady( function() {
 
                             a.push(getEmptyNameTdConfig({
                                 cls: 'pivot-dim-label',
-                                htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[j]].name + ' / ' + dimConf.objectNameMap[xLayout.columnObjectNames[i]].name
+                                htmlValue: (xRowAxis ? dimConf.objectNameMap[xLayout.rowObjectNames[j]].name : '') + (xColAxis && xRowAxis ? '&nbsp;/&nbsp;' : '') + (xColAxis ? dimConf.objectNameMap[xLayout.columnObjectNames[i]].name : '')
                             }));
                         }
 
                         return a;
                     };
 
-					if (!(xColAxis && Ext.isObject(xColAxis))) {
+					if (!xColAxis) {
+
+                        // show row dimension labels
+                        if (xRowAxis && xLayout.showDimensionLabels) {
+                            var dimLabelHtml = [];
+
+                            // labels from row object names
+                            for (var i = 0; i < xLayout.rowObjectNames.length; i++) {
+                                dimLabelHtml.push(getEmptyNameTdConfig({
+                                    cls: 'pivot-dim-label',
+                                    htmlValue: dimConf.objectNameMap[xLayout.rowObjectNames[i]].name
+                                }));
+                            }
+
+                            // pivot-transparent-column unnecessary
+                            a.push(dimLabelHtml);
+                        }
+
 						return a;
 					}
 
@@ -2395,6 +2415,7 @@ Ext.onReady( function() {
 
 							// sortable column headers. last dim only.
 							if (i === xColAxis.dims - 1 && doSortableColumnHeaders()) {
+                                
 								//condoId = xColAxis.ids[j].split('-').join('');
 								condoId = xColAxis.ids[j];
 							}
@@ -2467,7 +2488,6 @@ Ext.onReady( function() {
 								obj = xRowAxis.objects.all[j][i];
 								obj.type = 'dimension';
 								obj.cls = 'pivot-dim ' + (service.layout.isHierarchy(xLayout, xResponse, obj.id) ? ' align-left' : '');
-								obj.noBreak = true;
 								obj.hidden = !(obj.rowSpan || obj.colSpan);
 								obj.htmlValue = service.layout.getItemName(xLayout, xResponse, obj.id, true);
 
@@ -2496,6 +2516,15 @@ Ext.onReady( function() {
 							}
 						}
 					}
+                    else {
+                        if (xLayout.showDimensionLabels) {
+                            axisAllObjects.push([{
+                                type: 'transparent',
+                                cls: 'pivot-transparent-row'
+                            }]);
+                        }
+                    }
+                    
 	//axisAllObjects = [ [ dim, dim ]
 	//				     [ dim, dim ]
 	//				     [ dim, dim ]
@@ -2773,9 +2802,9 @@ Ext.onReady( function() {
 					for (var i = 0, row; i < xValueObjects.length; i++) {
 						row = [];
 
-						if (xRowAxis) {
+						//if (xRowAxis) {
 							row = row.concat(axisAllObjects[i]);
-						}
+						//}
 
 						row = row.concat(xValueObjects[i]);
 
