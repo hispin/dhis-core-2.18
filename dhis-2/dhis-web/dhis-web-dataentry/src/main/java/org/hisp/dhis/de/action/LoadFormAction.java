@@ -235,6 +235,11 @@ public class LoadFormAction
     public String execute()
         throws Exception
     {
+        if ( dataSetId == null )
+        {
+            return INPUT;
+        }
+
         dataSet = dataSetService.getDataSet( dataSetId, true, false, false, true );
 
         List<DataElement> dataElements = new ArrayList<>( dataElementService.getDataElements( dataSet, null,
@@ -375,7 +380,7 @@ public class LoadFormAction
 
             displayMode = DataSet.TYPE_SECTION_MULTIORG;
         }
-        
+
         if ( displayMode.equals( DataSet.TYPE_SECTION ) )
         {
             getSectionForm( dataElements, dataSet );
@@ -399,7 +404,7 @@ public class LoadFormAction
         Collections.sort( sections, new SectionOrderComparator() );
 
         for ( Section section : sections )
-        {            
+        {
             DataElementCategoryCombo sectionCategoryCombo = section.getCategoryCombo();
 
             if ( sectionCategoryCombo != null )
