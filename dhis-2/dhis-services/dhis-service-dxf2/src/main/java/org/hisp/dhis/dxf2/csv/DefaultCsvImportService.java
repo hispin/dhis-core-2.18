@@ -197,6 +197,8 @@ public class DefaultCsvImportService
                 String categoryComboUid = getSafe( values, 11, null, 11 );
                 object.setUrl( getSafe( values, 12, null, 255 ) );
                 object.setZeroIsSignificant( Boolean.valueOf( getSafe( values, 13, "false", null ) ) );
+                String optionSetUid = getSafe( values, 14, null, 11 );
+                String commentOptionSetUid = getSafe( values, 15, null, 11 );
 
                 if ( categoryComboUid != null )
                 {
@@ -207,6 +209,20 @@ public class DefaultCsvImportService
                 else
                 {
                     object.setCategoryCombo( categoryCombo );
+                }
+                
+                if ( optionSetUid != null )
+                {
+                    OptionSet optionSet = new OptionSet();
+                    optionSet.setUid( optionSetUid );
+                    object.setOptionSet( optionSet );
+                }
+
+                if ( commentOptionSetUid != null )
+                {
+                    OptionSet optionSet = new OptionSet();
+                    optionSet.setUid( commentOptionSetUid );
+                    object.setCommentOptionSet( optionSet );
                 }
                 
                 list.add( object );
