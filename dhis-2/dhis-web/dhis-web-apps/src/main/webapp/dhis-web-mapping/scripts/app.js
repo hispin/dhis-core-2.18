@@ -8883,29 +8883,62 @@ Ext.onReady( function() {
 								showSeparator: false,
 								items: [
 									{
-										text: GIS.i18n.go_to_pivot_tables + '&nbsp;&nbsp;', //i18n
+										text: GIS.i18n.go_to_pivot_tables + '&nbsp;&nbsp;',
 										cls: 'gis-menu-item-noicon',
-										handler: function() {
-											window.location.href = gis.init.contextPath + '/dhis-web-pivot';
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled) {
+														if (e.button === 0 && !e.ctrlKey) {
+															window.location.href = gis.init.contextPath + '/dhis-web-pivot';
+														}
+														else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+															window.open(gis.init.contextPath + '/dhis-web-pivot', '_blank');
+														}
+													}
+												});
+											}
 										}
 									},
 									'-',
 									{
-										text: GIS.i18n.open_this_map_as_table + '&nbsp;&nbsp;', //i18n
+										text: GIS.i18n.open_this_map_as_table + '&nbsp;&nbsp;',
 										cls: 'gis-menu-item-noicon',
 										disabled: !(GIS.isSessionStorage && gis.util.layout.getAnalytical()),
-										handler: function() {
-											if (GIS.isSessionStorage) {
-												gis.util.layout.setSessionStorage('analytical', gis.util.layout.getAnalytical(), gis.init.contextPath + '/dhis-web-pivot/index.html?s=analytical');
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled && GIS.isSessionStorage) {
+                                                        gis.util.layout.setSessionStorage('analytical', gis.util.layout.getAnalytical());
+
+														if (e.button === 0 && !e.ctrlKey) {
+															window.location.href = gis.init.contextPath + '/dhis-web-pivot/index.html?s=analytical';
+														}
+														else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+															window.open(gis.init.contextPath + '/dhis-web-pivot/index.html?s=analytical', '_blank');
+														}
+													}
+												});
 											}
 										}
 									},
 									{
-										text: GIS.i18n.open_last_table + '&nbsp;&nbsp;', //i18n
+										text: GIS.i18n.open_last_table + '&nbsp;&nbsp;',
 										cls: 'gis-menu-item-noicon',
 										disabled: !(GIS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['table']),
-										handler: function() {
-											window.location.href = gis.init.contextPath + '/dhis-web-pivot/index.html?s=table';
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled) {
+														if (e.button === 0 && !e.ctrlKey) {
+                                                            window.location.href = gis.init.contextPath + '/dhis-web-pivot/index.html?s=table';
+                                                        }
+                                                        else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+                                                            window.open(gis.init.contextPath + '/dhis-web-pivot/index.html?s=table', '_blank');
+                                                        }
+                                                    }
+												});
+											}
 										}
 									}
 								],
@@ -8944,29 +8977,62 @@ Ext.onReady( function() {
 								showSeparator: false,
 								items: [
 									{
-										text: GIS.i18n.go_to_charts + '&nbsp;&nbsp;', //i18n
+										text: GIS.i18n.go_to_charts + '&nbsp;&nbsp;',
 										cls: 'gis-menu-item-noicon',
-										handler: function() {
-											window.location.href = gis.init.contextPath + '/dhis-web-visualizer';
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled) {
+														if (e.button === 0 && !e.ctrlKey) {
+                                                            window.location.href = gis.init.contextPath + '/dhis-web-visualizer';
+                                                        }
+                                                        else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+                                                            window.open(gis.init.contextPath + '/dhis-web-visualizer', '_blank');
+                                                        }
+                                                    }
+												});
+											}
 										}
 									},
 									'-',
 									{
-										text: GIS.i18n.open_this_map_as_chart + '&nbsp;&nbsp;', //i18n
+										text: GIS.i18n.open_this_map_as_chart + '&nbsp;&nbsp;',
 										cls: 'gis-menu-item-noicon',
 										disabled: !GIS.isSessionStorage || !gis.util.layout.getAnalytical(),
-										handler: function() {
-											if (GIS.isSessionStorage) {
-												gis.util.layout.setSessionStorage('analytical', gis.util.layout.getAnalytical(), gis.init.contextPath + '/dhis-web-visualizer/index.html?s=analytical');
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+                                                    if (!b.disabled && GIS.isSessionStorage) {
+                                                        gis.util.layout.setSessionStorage('analytical', gis.util.layout.getAnalytical());
+
+														if (e.button === 0 && !e.ctrlKey) {
+															window.location.href = gis.init.contextPath + '/dhis-web-visualizer/index.html?s=analytical';
+														}
+														else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+															window.open(gis.init.contextPath + '/dhis-web-visualizer/index.html?s=analytical', '_blank');
+														}
+													}
+												});
 											}
 										}
 									},
 									{
-										text: GIS.i18n.open_last_chart + '&nbsp;&nbsp;', //i18n
+										text: GIS.i18n.open_last_chart + '&nbsp;&nbsp;',
 										cls: 'gis-menu-item-noicon',
 										disabled: !(GIS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['chart']),
-										handler: function() {
-											window.location.href = gis.init.contextPath + '/dhis-web-visualizer/index.html?s=chart';
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled) {
+														if (e.button === 0 && !e.ctrlKey) {
+                                                            window.location.href = gis.init.contextPath + '/dhis-web-visualizer/index.html?s=chart';
+                                                        }
+                                                        else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+                                                            window.open(gis.init.contextPath + '/dhis-web-visualizer/index.html?s=chart', '_blank');
+                                                        }
+                                                    }
+												});
+											}
 										}
 									}
 								],
