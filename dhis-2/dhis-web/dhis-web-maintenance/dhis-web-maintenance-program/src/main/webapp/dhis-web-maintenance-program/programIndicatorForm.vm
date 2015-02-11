@@ -61,9 +61,13 @@
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "expression" ) <em title="$i18n.getString( "required" )" class="required">*</em></legend>
-				<table><tr><td>
-					<textarea style="width:660px" id="expression" name="expression" onkeyup='getConditionDescription();' >$encoder.htmlEncode($!programIndicator.expression)</textarea>
-				</td></tr></table>
+				<table>
+					<tr>
+						<td>
+							<textarea style="width:660px" id="expression" name="expression" onkeyup='getConditionDescription();' >$!encoder.htmlEncode($!programIndicator.expression)</textarea>
+						</td>
+					</tr>
+				</table>
 			</fieldset>
 		</td>
 	</tr>
@@ -72,7 +76,7 @@
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "description" )</legend>
-				<div id='aggregationDescription'>$!encoder.htmlEncode($description)</div>
+				<div id='aggregationDescription'>$!encoder.htmlEncode($!description)</div>
 			</fieldset>
 		</td>
 	</tr>
