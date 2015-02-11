@@ -6811,30 +6811,63 @@ Ext.onReady( function() {
 								showSeparator: false,
 								items: [
 									{
-										text: NS.i18n.go_to_event_reports + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.go_to_event_reports + '&nbsp;&nbsp;',
 										cls: 'ns-menu-item-noicon',
-										handler: function() {
-											window.location.href = ns.core.init.contextPath + '/dhis-web-event-reports';
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled) {
+														if (e.button === 0 && !e.ctrlKey) {
+															window.location.href = ns.core.init.contextPath + '/dhis-web-event-reports';
+														}
+														else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+															window.open(ns.core.init.contextPath + '/dhis-web-event-reports', '_blank');
+														}
+													}
+												});
+											}
 										}
 									},
 									'-',
 									{
-										text: NS.i18n.open_this_chart_as_table + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.open_this_chart_as_table + '&nbsp;&nbsp;',
 										cls: 'ns-menu-item-noicon',
 										disabled: !(NS.isSessionStorage && ns.app.layout),
-										handler: function() {
-											if (NS.isSessionStorage) {
-												ns.app.layout.parentGraphMap = ns.app.accordion.treePanel.getParentGraphMap();
-												ns.core.web.storage.session.set(ns.app.layout, 'eventanalytical', ns.core.init.contextPath + '/dhis-web-event-reports/index.html?s=eventanalytical');
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled && NS.isSessionStorage) {
+														ns.app.layout.parentGraphMap = ns.app.accordion.treePanel.getParentGraphMap();
+														ns.core.web.storage.session.set(ns.app.layout, 'eventanalytical');
+
+														if (e.button === 0 && !e.ctrlKey) {
+															window.location.href = ns.core.init.contextPath + '/dhis-web-event-reports/index.html?s=eventanalytical';
+														}
+														else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+															window.open(ns.core.init.contextPath + '/dhis-web-event-reports/index.html?s=eventanalytical', '_blank');
+														}
+													}
+												});
 											}
 										}
 									},
 									{
-										text: NS.i18n.open_last_table + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.open_last_table + '&nbsp;&nbsp;',
 										cls: 'ns-menu-item-noicon',
 										disabled: !(NS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['eventtable']),
-										handler: function() {
-											window.location.href = ns.core.init.contextPath + '/dhis-web-event-reports/index.html?s=eventtable';
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled) {
+														if (e.button === 0 && !e.ctrlKey) {
+															window.location.href = ns.core.init.contextPath + '/dhis-web-event-reports/index.html?s=eventtable';
+														}
+														else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+															window.open(ns.core.init.contextPath + '/dhis-web-event-reports/index.html?s=eventtable', '_blank');
+														}
+													}
+												});
+											}
 										}
 									}
 								],

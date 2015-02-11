@@ -5847,30 +5847,63 @@ Ext.onReady( function() {
 								showSeparator: false,
 								items: [
 									{
-										text: NS.i18n.go_to_pivot_tables + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.go_to_pivot_tables + '&nbsp;&nbsp;',
 										cls: 'ns-menu-item-noicon',
-										handler: function() {
-											window.location.href = ns.core.init.contextPath + '/dhis-web-pivot';
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled) {
+														if (e.button === 0 && !e.ctrlKey) {
+															window.location.href = ns.core.init.contextPath + '/dhis-web-pivot';
+														}
+														else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+															window.open(ns.core.init.contextPath + '/dhis-web-pivot', '_blank');
+														}
+													}
+												});
+											}
 										}
 									},
 									'-',
 									{
-										text: NS.i18n.open_this_chart_as_pivot_table + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.open_this_chart_as_table + '&nbsp;&nbsp;',
 										cls: 'ns-menu-item-noicon',
 										disabled: !(NS.isSessionStorage && ns.app.layout),
-										handler: function() {
-											if (NS.isSessionStorage) {
-												ns.app.layout.parentGraphMap = treePanel.getParentGraphMap();
-												ns.core.web.storage.session.set(ns.app.layout, 'analytical', ns.core.init.contextPath + '/dhis-web-pivot/index.html?s=analytical');
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled && NS.isSessionStorage) {
+														ns.app.layout.parentGraphMap = treePanel.getParentGraphMap();
+														ns.core.web.storage.session.set(ns.app.layout, 'analytical');
+
+														if (e.button === 0 && !e.ctrlKey) {
+															window.location.href = ns.core.init.contextPath + '/dhis-web-pivot/index.html?s=analytical';
+														}
+														else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+															window.open(ns.core.init.contextPath + '/dhis-web-pivot/index.html?s=analytical', '_blank');
+														}
+													}
+												});
 											}
 										}
 									},
 									{
-										text: NS.i18n.open_last_pivot_table + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.open_last_pivot_table + '&nbsp;&nbsp;',
 										cls: 'ns-menu-item-noicon',
-										disabled: !(NS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['table']),
-										handler: function() {
-											window.location.href = ns.core.init.contextPath + '/dhis-web-pivot/index.html?s=table';
+										disabled: !(NS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['chart']),
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled) {
+														if (e.button === 0 && !e.ctrlKey) {
+															window.location.href = ns.core.init.contextPath + '/dhis-web-pivot/index.html?s=chart';
+														}
+														else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+															window.open(ns.core.init.contextPath + '/dhis-web-pivot/index.html?s=chart', '_blank');
+														}
+													}
+												});
+											}
 										}
 									}
 								],
@@ -5909,30 +5942,63 @@ Ext.onReady( function() {
 								showSeparator: false,
 								items: [
 									{
-										text: NS.i18n.go_to_maps + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.go_to_maps + '&nbsp;&nbsp;',
 										cls: 'ns-menu-item-noicon',
-										handler: function() {
-											window.location.href = ns.core.init.contextPath + '/dhis-web-mapping';
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled) {
+														if (e.button === 0 && !e.ctrlKey) {
+															window.location.href = ns.core.init.contextPath + '/dhis-web-mapping';
+														}
+														else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+															window.open(ns.core.init.contextPath + '/dhis-web-mapping', '_blank');
+														}
+													}
+												});
+											}
 										}
 									},
 									'-',
 									{
-										text: NS.i18n.open_this_chart_as_map + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.open_this_chart_as_map + '&nbsp;&nbsp;',
 										cls: 'ns-menu-item-noicon',
 										disabled: !(NS.isSessionStorage && ns.app.layout),
-										handler: function() {
-											if (NS.isSessionStorage) {
-												ns.app.layout.parentGraphMap = treePanel.getParentGraphMap();
-												ns.core.web.storage.session.set(ns.app.layout, 'analytical', ns.core.init.contextPath + '/dhis-web-mapping/index.html?s=analytical');
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled && NS.isSessionStorage) {
+														ns.app.layout.parentGraphMap = treePanel.getParentGraphMap();
+														ns.core.web.storage.session.set(ns.app.layout, 'analytical');
+
+														if (e.button === 0 && !e.ctrlKey) {
+															window.location.href = ns.core.init.contextPath + '/dhis-web-mapping/index.html?s=analytical';
+														}
+														else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+															window.open(ns.core.init.contextPath + '/dhis-web-mapping/index.html?s=analytical', '_blank');
+														}
+													}
+												});
 											}
 										}
 									},
 									{
-										text: NS.i18n.open_last_map + '&nbsp;&nbsp;', //i18n
+										text: NS.i18n.open_last_map + '&nbsp;&nbsp;',
 										cls: 'ns-menu-item-noicon',
-										disabled: !(NS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['map']),
-										handler: function() {
-											window.location.href = ns.core.init.contextPath + '/dhis-web-mapping/index.html?s=map';
+										disabled: !(NS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['chart']),
+										listeners: {
+											render: function(b) {
+												this.getEl().dom.addEventListener('click', function(e) {
+													if (!b.disabled) {
+														if (e.button === 0 && !e.ctrlKey) {
+															window.location.href = ns.core.init.contextPath + '/dhis-web-mapping/index.html?s=chart';
+														}
+														else if ((e.ctrlKey && Ext.Array.contains([0,1], e.button)) || (!e.ctrlKey && e.button === 1)) {
+															window.open(ns.core.init.contextPath + '/dhis-web-mapping/index.html?s=chart', '_blank');
+														}
+													}
+												});
+											}
 										}
 									}
 								],
