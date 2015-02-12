@@ -38,7 +38,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id DefaultSqlViewService.java July 06, 2010$
  */
 @Transactional
 public class DefaultSqlViewService

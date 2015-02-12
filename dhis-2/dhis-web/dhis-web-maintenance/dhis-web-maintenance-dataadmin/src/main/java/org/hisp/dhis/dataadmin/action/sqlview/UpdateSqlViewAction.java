@@ -76,13 +76,6 @@ public class UpdateSqlViewAction
         this.sqlquery = sqlquery;
     }
 
-    private boolean query;
-
-    public void setQuery( boolean query )
-    {
-        this.query = query;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -94,7 +87,6 @@ public class UpdateSqlViewAction
 
         sqlView.setDescription( description.replaceAll( "\\s+", " " ).trim() );
         sqlView.setSqlQuery( sqlquery );
-        sqlView.setQuery( query );
 
         sqlViewService.updateSqlView( sqlView.cleanSqlQuery() );
 
