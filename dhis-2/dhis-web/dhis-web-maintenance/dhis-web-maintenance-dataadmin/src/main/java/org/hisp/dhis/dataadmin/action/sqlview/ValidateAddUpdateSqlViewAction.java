@@ -97,6 +97,13 @@ public class ValidateAddUpdateSqlViewAction
         this.sqlquery = sqlquery;
     }
 
+    private boolean query;
+
+    public void setQuery( boolean query )
+    {
+        this.query = query;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -112,6 +119,8 @@ public class ValidateAddUpdateSqlViewAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    //TODO move to service layer and validate queries made in web api
+    
     @Override
     public String execute()
     {
@@ -138,7 +147,7 @@ public class ValidateAddUpdateSqlViewAction
             return INPUT;
         }
 
-        final String validationRegex = getValidationRegex();
+        final String protectedTablesRegex = getProtectedTablesRegex();
 
         for ( String s : sqlquery.split( SEMICOLON ) )
         {
@@ -151,7 +160,7 @@ public class ValidateAddUpdateSqlViewAction
                 return INPUT;
             }
 
-            if ( tmp.concat( SPACE ).matches( validationRegex ) )
+            if ( tmp.concat( SPACE ).matches( protectedTablesRegex ) )
             {
                 message = i18n.getString( "sqlquery_is_not_allowed" );
 
@@ -159,8 +168,11 @@ public class ValidateAddUpdateSqlViewAction
             }
         }
 
-        message = sqlViewService.testSqlGrammar( sqlquery );
-
+        if ( !query )
+        {
+            message = sqlViewService.testSqlGrammar( sqlquery );
+        }
+        
         if ( message != null )
         {
             return INPUT;
@@ -173,7 +185,7 @@ public class ValidateAddUpdateSqlViewAction
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private String getValidationRegex()
+    private String getProtectedTablesRegex()
     {
         int i = 0;
         int len = PROTECTED_TABLES.size();

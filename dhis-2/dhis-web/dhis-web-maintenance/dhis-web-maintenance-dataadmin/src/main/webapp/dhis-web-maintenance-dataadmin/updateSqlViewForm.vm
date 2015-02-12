@@ -7,6 +7,7 @@
 	<div>
 		<input type="hidden" id="id" name="id" value="$!sqlViewObject.id" />
 		<input type="hidden" id="name" name="name" value="$!encoder.htmlEncode( $!sqlViewObject.name )" />
+		<input type="hidden" id="query" name="query" value="$!encoder.htmlEncode( $!sqlViewObject.query )" />
 	</div>
 
 	<table>
@@ -26,13 +27,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="query">$encoder.htmlEncode( $i18n.getString( "sql_type" ) )</label></td>
-			<td>
-				<select id="query" name="query">
-					<option value="false">$i18n.getString( "sql_view_type" ) ($i18n.getString( "created_in_database" ))</option>
-					<option value="true"#if( $sqlViewObject.query == true ) selected="selected"#end>$i18n.getString( "sql_query_type" ) ($i18n.getString( "allows_for_variables" ))</option>
-				</select>
-			</td>
+			<td><label>$encoder.htmlEncode( $i18n.getString( "sql_type" ) )</label></td>
+			<td><input type="text" disabled="disabled" value="#if( $sqlViewObject.query == true )$i18n.getString( "sql_query_type" )#else$i18n.getString( "sql_view_type" )#end"/></td>
 		</tr>
 		<tr>
 			<td><label for="sql_statement">$encoder.htmlEncode( $i18n.getString( "sql_statement" ) ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
