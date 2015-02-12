@@ -47,10 +47,14 @@ import com.google.common.collect.Maps;
 @JacksonXmlRootElement( localName = "forms", namespace = DxfNamespaces.DXF_2_0 )
 public class Forms
 {
-    // maps ou.uid => org unit.
+    /**
+     * Maps ou.uid => org unit.
+     */
     private Map<String, FormOrganisationUnit> organisationUnits = new HashMap<>();
 
-    // maps dataSet.uid => form instance
+    /**
+     * Maps dataSet.uid => form instance.
+     */
     private Map<String, Form> forms = new HashMap<>();
 
     private Map<String, List<String>> optionSets = Maps.newHashMap();
