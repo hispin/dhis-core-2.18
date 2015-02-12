@@ -34,7 +34,6 @@ import org.hisp.dhis.common.Grid;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id SqlViewExpandStore.java July 06, 2010$
  */
 public interface SqlViewExpandStore
 {
@@ -50,5 +49,11 @@ public interface SqlViewExpandStore
     
     void executeQuery( Grid grid, String sql );
 
+    /**
+     * Tests the given SQL for validity.
+     * 
+     * @param sql the SQL string.
+     * @return a non-null description if invalid, and null if valid.
+     */
     String testSqlGrammar( String sql );
 }

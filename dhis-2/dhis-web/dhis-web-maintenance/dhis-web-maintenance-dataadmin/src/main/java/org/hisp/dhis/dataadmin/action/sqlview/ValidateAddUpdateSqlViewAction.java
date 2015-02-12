@@ -28,13 +28,12 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.sqlview.SqlViewService;
 
-import java.util.Map;
+import com.opensymphony.xwork2.Action;
 
-import static org.hisp.dhis.sqlview.ResourceTableNameMap.getIgnoredNameMap;
+import static org.hisp.dhis.sqlview.SqlView.PROTECTED_TABLES;
 
 /**
  * @author Dang Duy Hieu
@@ -43,19 +42,12 @@ public class ValidateAddUpdateSqlViewAction
     implements Action
 {
     private static final String ADD = "add";
-
     private static final String SEMICOLON = ";";
-
-    private static final String SEPERATE = "|";
-
+    private static final String SEP = "|";
     private static final String SPACE = " ";
-
     private static final String INTO = " into ";
-
     private static final String REGEX_SELECT_QUERY = "^(?i)\\s*select\\s{1,}.+$";
-
     private static final String PREFIX_REGEX_IGNORE_TABLES_QUERY = "^(?i).+((?<=[^\\d\\w])(";
-
     private static final String SUFFIX_REGEX_IGNORE_TABLES_QUERY = ")(?=[^\\d\\w])).*$";
 
     // -------------------------------------------------------------------------
@@ -123,8 +115,8 @@ public class ValidateAddUpdateSqlViewAction
     @Override
     public String execute()
     {
-        message = "";
-
+        message = null;
+        
         if ( name == null || name.trim().isEmpty() )
         {
             message = i18n.getString( "name_is_null" );
@@ -146,7 +138,7 @@ public class ValidateAddUpdateSqlViewAction
             return INPUT;
         }
 
-        final String ignoredRegex = this.setUpIgnoredRegex();
+        final String validationRegex = getValidationRegex();
 
         for ( String s : sqlquery.split( SEMICOLON ) )
         {
@@ -159,7 +151,7 @@ public class ValidateAddUpdateSqlViewAction
                 return INPUT;
             }
 
-            if ( tmp.concat( SPACE ).matches( ignoredRegex ) )
+            if ( tmp.concat( SPACE ).matches( validationRegex ) )
             {
                 message = i18n.getString( "sqlquery_is_not_allowed" );
 
@@ -169,7 +161,7 @@ public class ValidateAddUpdateSqlViewAction
 
         message = sqlViewService.testSqlGrammar( sqlquery );
 
-        if ( !message.equals( "" ) )
+        if ( message != null )
         {
             return INPUT;
         }
@@ -181,20 +173,20 @@ public class ValidateAddUpdateSqlViewAction
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private String setUpIgnoredRegex()
+    private String getValidationRegex()
     {
         int i = 0;
-        int len = getIgnoredNameMap().size();
+        int len = PROTECTED_TABLES.size();
 
         StringBuffer ignoredRegex = new StringBuffer( PREFIX_REGEX_IGNORE_TABLES_QUERY );
 
-        for ( Map.Entry<String, String> entry : getIgnoredNameMap().entrySet() )
+        for ( String table : PROTECTED_TABLES )
         {
-            ignoredRegex.append( entry.getValue() );
+            ignoredRegex.append( table );
 
             if ( ++i < len )
             {
-                ignoredRegex.append( SEPERATE );
+                ignoredRegex.append( SEP );
             }
         }
 

@@ -162,7 +162,7 @@ public class JdbcSqlViewExpandStore
             return ex.getCause().getMessage();
         }
 
-        return "";
+        return null;
     }
 
     @Override
