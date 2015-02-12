@@ -126,7 +126,7 @@ public class ValidateAddUpdateSqlViewAction
 
         if ( mode.equals( ADD ) && sqlViewService.getSqlView( name ) != null )
         {
-            message = i18n.getString( "name_in_used" );
+            message = i18n.getString( "name_in_use" );
 
             return INPUT;
         }

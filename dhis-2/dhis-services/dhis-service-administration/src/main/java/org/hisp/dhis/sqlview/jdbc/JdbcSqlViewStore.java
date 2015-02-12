@@ -28,27 +28,27 @@ package org.hisp.dhis.sqlview.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.sqlview.SqlView;
-import org.hisp.dhis.sqlview.SqlViewExpandStore;
+import org.hisp.dhis.sqlview.SqlViewStore;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.springframework.jdbc.BadSqlGrammarException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-
-import java.util.Map;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id JdbcSqlViewExpandStore.java July 06, 2010$
  */
-public class JdbcSqlViewExpandStore
-    implements SqlViewExpandStore
+public class JdbcSqlViewStore
+    extends HibernateIdentifiableObjectStore<SqlView>
+    implements SqlViewStore
 {
-    private static final Log log = LogFactory.getLog( JdbcSqlViewExpandStore.class );
+    private static final Log log = LogFactory.getLog( JdbcSqlViewStore.class );
 
     private static final String PREFIX_CREATEVIEW_QUERY = "CREATE VIEW ";
     private static final String PREFIX_SELECT_QUERY = "SELECT * FROM ";
@@ -56,13 +56,6 @@ public class JdbcSqlViewExpandStore
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     private StatementBuilder statementBuilder;
 
