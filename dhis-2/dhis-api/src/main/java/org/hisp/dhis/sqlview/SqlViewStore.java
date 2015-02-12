@@ -30,14 +30,16 @@ package org.hisp.dhis.sqlview;
 
 import java.util.Map;
 
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 
 /**
  * @author Dang Duy Hieu
  */
-public interface SqlViewExpandStore
+public interface SqlViewStore
+    extends GenericIdentifiableObjectStore<SqlView>
 {
-    String ID = SqlViewExpandStore.class.getName();
+    String ID = SqlViewStore.class.getName();
 
     boolean viewTableExists( String viewTableName );
 

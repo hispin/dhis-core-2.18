@@ -88,19 +88,15 @@
     
   <!-- Sql View -->
 
-  <bean id="org.hisp.dhis.sqlview.SqlViewStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+  <bean id="org.hisp.dhis.sqlview.SqlViewStore" class="org.hisp.dhis.sqlview.jdbc.JdbcSqlViewStore">
     <property name="clazz" value="org.hisp.dhis.sqlview.SqlView" />
     <property name="sessionFactory" ref="sessionFactory" />
-  </bean>
-
-  <bean id="org.hisp.dhis.sqlview.SqlViewExpandStore" class="org.hisp.dhis.sqlview.jdbc.JdbcSqlViewExpandStore">
     <property name="jdbcTemplate" ref="jdbcTemplate" />
     <property name="statementBuilder" ref="statementBuilder" />
   </bean>
 
   <bean id="org.hisp.dhis.sqlview.SqlViewService" class="org.hisp.dhis.sqlview.DefaultSqlViewService">
     <property name="sqlViewStore" ref="org.hisp.dhis.sqlview.SqlViewStore" />
-    <property name="sqlViewExpandStore" ref="org.hisp.dhis.sqlview.SqlViewExpandStore" />
   </bean>
   
   <!-- Scheduled tasks -->
