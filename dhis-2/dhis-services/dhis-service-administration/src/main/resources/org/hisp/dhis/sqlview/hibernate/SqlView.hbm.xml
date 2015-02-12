@@ -18,6 +18,8 @@
     <property name="description" type="text" />
 
     <property name="sqlQuery" not-null="true" type="text" />
+    
+    <property name="query" />
 
     <!-- Access properties -->
     <property name="externalAccess" />

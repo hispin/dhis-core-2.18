@@ -69,11 +69,6 @@ public class RemoveSqlViewAction
     public String execute()
         throws Exception
     {
-        if ( id == null || (id.intValue() == -1) )
-        {
-            return ERROR;
-        }
-
         sqlViewService.deleteSqlView( sqlViewService.getSqlView( id ) );
 
         return SUCCESS;

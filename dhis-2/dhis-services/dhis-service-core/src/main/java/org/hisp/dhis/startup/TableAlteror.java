@@ -695,6 +695,7 @@ public class TableAlteror
         executeSql( "alter table validationrulegroup rename column validationgroupid to validationrulegroupid" );
         executeSql( "update sqlview set sqlviewid=viweid" );
         executeSql( "alter table sqlview drop column viewid" );
+        executeSql( "update sqlview set stored = false where stored is null" );
 
         executeSql( "UPDATE dashboard SET publicaccess='--------' WHERE publicaccess is null" );
 

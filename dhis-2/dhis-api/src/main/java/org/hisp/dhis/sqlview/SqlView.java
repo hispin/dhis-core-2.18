@@ -64,6 +64,8 @@ public class SqlView
 
     private String sqlQuery;
 
+    private boolean query;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -73,10 +75,11 @@ public class SqlView
 
     }
 
-    public SqlView( String name, String sqlQuery )
+    public SqlView( String name, String sqlQuery, boolean query )
     {
         this.name = name;
         this.sqlQuery = sqlQuery;
+        this.query = query;
     }
 
     // -------------------------------------------------------------------------
@@ -125,6 +128,16 @@ public class SqlView
 
         return map;
     }
+    
+    public SqlView cleanSqlQuery()
+    {
+        sqlQuery = sqlQuery.
+            replaceAll( "\\s*;\\s+", ";" ).
+            replaceAll( ";+", ";" ).
+            replaceAll( "\\s+", " " ).trim();
+        
+        return this;
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters
@@ -157,6 +170,20 @@ public class SqlView
         this.sqlQuery = sqlQuery;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isQuery()
+    {
+        return query;
+    }
+
+    public void setQuery( boolean query )
+    {
+        this.query = query;
+    }
+        
+
     @Override
     public void mergeWith( IdentifiableObject other )
     {
@@ -168,6 +195,7 @@ public class SqlView
 
             description = sqlView.getDescription() == null ? description : sqlView.getDescription();
             sqlQuery = sqlView.getSqlQuery() == null ? sqlQuery : sqlView.getSqlQuery();
+            query = sqlView.isQuery();
         }
     }
 }

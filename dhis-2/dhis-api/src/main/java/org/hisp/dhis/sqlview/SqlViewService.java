@@ -67,8 +67,6 @@ public interface SqlViewService
     
     Collection<SqlView> getAllSqlViewsNoAcl();
 
-    String makeUpForQueryStatement( String query );
-
     int getSqlViewCountByName( String name );
     
     // -------------------------------------------------------------------------
@@ -80,8 +78,28 @@ public interface SqlViewService
     String createViewTable( SqlView sqlViewInstance );
 
     void dropViewTable( String viewName );
-
-    Grid getSqlViewGrid( SqlView sqlView, Map<String, String> criteria );
+    
+    /**
+    * Returns the SQL view as a grid.
+    * 
+    * @param sqlView the SQL view to render.
+    * @param criteria the criteria on the format key:value, will be applied as
+    *        criteria on the SQL result set.
+    * @param variables the variables on the format key:value, will be substituted
+    *        with variables inside the SQL view.
+    * @return a grid.
+    */
+    Grid getSqlViewGrid( SqlView sqlView, Map<String, String> criteria, Map<String, String> variables );
+    
+    /**
+     * Substitutes the given SQL string with the given variables. SQL variables
+     * are on the format ${key}.
+     * 
+     * @param sql the SQL string.
+     * @param variables the variables.
+     * @return the substituted SQL.
+     */
+    String substituteSql( String sql, Map<String, String> variables );
     
     String testSqlGrammar( String sql );
 }

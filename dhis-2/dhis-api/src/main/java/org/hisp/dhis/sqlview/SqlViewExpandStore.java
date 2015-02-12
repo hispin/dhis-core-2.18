@@ -47,6 +47,8 @@ public interface SqlViewExpandStore
     void dropViewTable( String sqlViewName );
 
     void setUpDataSqlViewTable( Grid sqlViewGrid, String viewTableName, Map<String, String> criteria );
+    
+    void executeQuery( Grid grid, String sql );
 
     String testSqlGrammar( String sql );
 }

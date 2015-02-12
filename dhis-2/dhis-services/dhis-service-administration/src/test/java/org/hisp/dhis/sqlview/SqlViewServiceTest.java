@@ -33,6 +33,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,8 +154,8 @@ public class SqlViewServiceTest
     {
         SqlView sqlViewA = createSqlView( 'A', SQL1 );
 
-        sqlViewA.setSqlQuery( sqlViewService.makeUpForQueryStatement( sqlViewA.getSqlQuery() ) );
-
+        sqlViewA.cleanSqlQuery();
+        
         int idA = sqlViewService.saveSqlView( sqlViewA );
 
         assertEquals( sqlViewService.getSqlView( "SqlViewA" ).getId(), idA );
@@ -170,5 +173,36 @@ public class SqlViewServiceTest
 
         assertEquals( "_view_sqlviewc", sqlViewC.getViewName() );
         assertNotSame( "_view_sqlviewc", sqlViewD.getViewName() );
+    }
+    
+    @Test
+    public void testSubsituteSql()
+    {
+        Map<String, String> variables = new HashMap<>();
+        variables.put( "level", "4" );
+        variables.put( "id", "abc" );
+        
+        String sql = "select * from datavalue where level=${level} and id='${id}'";
+        
+        String expected = "select * from datavalue where level=4 and id='abc'";
+        
+        String actual = sqlViewService.substituteSql( sql, variables );
+        
+        assertEquals( expected, actual );
+    }
+
+    @Test
+    public void testSubsituteSqlMalicious()
+    {
+        Map<String, String> variables = new HashMap<>();
+        variables.put( "level", "; delete from datavalue;" );
+        
+        String sql = "select * from datavalue where level=${level}";
+        
+        String expected = "select * from datavalue where level=${level}";
+        
+        String actual = sqlViewService.substituteSql( sql, variables );
+        
+        assertEquals( expected, actual );
     }
 }
