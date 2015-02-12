@@ -46,6 +46,8 @@ public class Field
     private String categoryOptionCombo;
 
     private String value;
+    
+    private String comment;
 
     private InputType type;
 
@@ -101,6 +103,18 @@ public class Field
     public void setValue( String value )
     {
         this.value = value;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getComment()
+    {
+        return comment;
+    }
+
+    public void setComment( String comment )
+    {
+        this.comment = comment;
     }
 
     @JsonProperty

@@ -84,7 +84,7 @@ public class FormUtils
             
             for ( Section section : sections )
             {
-                List<Field> fields = inputsFromDataElements( new ArrayList<>( section.getDataElements() ), new ArrayList<>( section.getGreyedFields() ) );
+                List<Field> fields = inputFromDataElements( new ArrayList<>( section.getDataElements() ), new ArrayList<>( section.getGreyedFields() ) );
 
                 Group group = new Group();
                 group.setLabel( section.getDisplayName() );
@@ -103,7 +103,7 @@ public class FormUtils
         }
         else
         {
-            List<Field> fields = inputsFromDataElements( new ArrayList<>( dataSet.getDataElements() ) );
+            List<Field> fields = inputFromDataElements( new ArrayList<>( dataSet.getDataElements() ) );
 
             Group group = new Group();
             group.setLabel( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
@@ -167,7 +167,7 @@ public class FormUtils
         {
             for ( ProgramStageSection section : programStage.getProgramStageSections() )
             {
-                List<Field> fields = inputsFromProgramStageDataElements( section.getProgramStageDataElements() );
+                List<Field> fields = inputFromProgramStageDataElements( section.getProgramStageDataElements() );
 
                 Group group = new Group();
                 group.setLabel( section.getDisplayName() );
@@ -178,7 +178,7 @@ public class FormUtils
         }
         else
         {
-            List<Field> fields = inputsFromProgramStageDataElements(
+            List<Field> fields = inputFromProgramStageDataElements(
                 new ArrayList<>( programStage.getProgramStageDataElements() ) );
 
             Group group = new Group();
@@ -191,7 +191,7 @@ public class FormUtils
         return form;
     }
 
-    private static List<Field> inputsFromProgramStageDataElements( List<ProgramStageDataElement> programStageDataElements )
+    private static List<Field> inputFromProgramStageDataElements( List<ProgramStageDataElement> programStageDataElements )
     {
         List<DataElement> dataElements = new ArrayList<>();
 
@@ -200,15 +200,15 @@ public class FormUtils
             dataElements.add( programStageDataElement.getDataElement() );
         }
 
-        return inputsFromDataElements( dataElements, new ArrayList<DataElementOperand>() );
+        return inputFromDataElements( dataElements, new ArrayList<DataElementOperand>() );
     }
 
-    private static List<Field> inputsFromDataElements( List<DataElement> dataElements )
+    private static List<Field> inputFromDataElements( List<DataElement> dataElements )
     {
-        return inputsFromDataElements( dataElements, new ArrayList<DataElementOperand>() );
+        return inputFromDataElements( dataElements, new ArrayList<DataElementOperand>() );
     }
 
-    private static List<Field> inputsFromDataElements( List<DataElement> dataElements, final List<DataElementOperand> greyedFields )
+    private static List<Field> inputFromDataElements( List<DataElement> dataElements, final List<DataElementOperand> greyedFields )
     {
         List<Field> fields = new ArrayList<>();
 
@@ -324,14 +324,17 @@ public class FormUtils
 
     public static void fillWithDataValues( Form form, Collection<DataValue> dataValues )
     {
-        Map<String, Field> cacheMap = buildCacheMap( form );
+        Map<String, Field> operandFieldMap = buildCacheMap( form );
 
         for ( DataValue dataValue : dataValues )
         {
             DataElement dataElement = dataValue.getDataElement();
             DataElementCategoryOptionCombo categoryOptionCombo = dataValue.getCategoryOptionCombo();
 
-            cacheMap.get( dataElement.getUid() + "-" + categoryOptionCombo.getUid() ).setValue( dataValue.getValue() );
+            Field field = operandFieldMap.get( dataElement.getUid() + SEP + categoryOptionCombo.getUid() );
+            
+            field.setValue( dataValue.getValue() );
+            field.setComment( dataValue.getComment() );
         }
     }
 
