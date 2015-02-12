@@ -55,11 +55,16 @@ public class SqlView
     extends BaseIdentifiableObject
 {
     public static final String PREFIX_VIEWNAME = "_view";
-
-    private static final String CRITERIA_SEP = ":";
+    public static final String REGEX_SELECT_QUERY = "^(?i)\\s*select\\s{1,}.+$";
 
     public static final Set<String> PROTECTED_TABLES = Sets.newHashSet( "users", "userinfo", 
         "trackedentityinstance", "trackedentityattribute", "trackedentityattributevalue", "relationship" );
+    
+    public static final Set<String> ILLEGAL_KEYWORDS = Sets.newHashSet( "delete", "alter", "update", 
+        "create", "drop", "commit", "createdb", "createuser", "insert", "rename", "replace", "restore", "write" );
+
+    private static final String CRITERIA_SEP = ":";
+    private static final String REGEX_SEP = "|";
     
     // -------------------------------------------------------------------------
     // Variables
@@ -77,7 +82,6 @@ public class SqlView
 
     public SqlView()
     {
-
     }
 
     public SqlView( String name, String sqlQuery, boolean query )
@@ -132,6 +136,34 @@ public class SqlView
         }
 
         return map;
+    }
+
+    public static String getProtectedTablesRegex()
+    {
+        StringBuffer regex = new StringBuffer( "^.*?(" );
+
+        for ( String table : PROTECTED_TABLES )
+        {
+            regex.append( table ).append( REGEX_SEP );
+        }
+
+        regex.delete( regex.length() - 1, regex.length() );
+        
+        return regex.append( ").*$" ).toString();
+    }
+    
+    public static String getIllegalKeywordsRegex()
+    {
+        StringBuffer regex = new StringBuffer( "^.*?(" );
+        
+        for ( String word : ILLEGAL_KEYWORDS )
+        {
+            regex.append( word ).append( REGEX_SEP );
+        }
+        
+        regex.delete( regex.length() - 1, regex.length() );
+        
+        return regex.append( ").*$" ).toString();
     }
     
     public SqlView cleanSqlQuery()
