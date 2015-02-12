@@ -30,8 +30,11 @@ package org.hisp.dhis.sqlview;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.IllegalQueryException;
 
 /**
  * @author Dang Duy Hieu
@@ -39,8 +42,10 @@ import org.hisp.dhis.common.Grid;
  */
 public interface SqlViewService
 {
-    String ID = SqlViewService.class.getName();
-
+    final String ID = SqlViewService.class.getName();
+    final String VARIABLE_EXPRESSION = "\\$\\{(\\w+)\\}";
+    final Pattern VARIABLE_PATTERN = Pattern.compile( VARIABLE_EXPRESSION );
+    
     // -------------------------------------------------------------------------
     // SqlView
     // -------------------------------------------------------------------------
@@ -92,7 +97,7 @@ public interface SqlViewService
     Grid getSqlViewGrid( SqlView sqlView, Map<String, String> criteria, Map<String, String> variables );
     
     /**
-     * Substitutes the given SQL string with the given variables. SQL variables
+     * Substitutes the given SQL query string with the given variables. SQL variables
      * are on the format ${key}.
      * 
      * @param sql the SQL string.
@@ -100,6 +105,31 @@ public interface SqlViewService
      * @return the substituted SQL.
      */
     String substituteSql( String sql, Map<String, String> variables );
+    
+    /**
+     * Validates the given SQL view. Checks include:
+     * 
+     * <ul>
+     * <li>All necessary variables are supplied.</li>
+     * <li>Variable keys and values do not contain null values.</li>
+     * <li>Invalid tables are not present in SQL query.</li>
+     * </ul>
+     * 
+     * @param sqlView the SQL view.
+     * @param criteria the criteria.
+     * @param variables the variables.
+     * @throws IllegalQueryException if SQL view is invalid.
+     */
+    void validateSqlView( SqlView sqlView, Map<String, String> criteria, Map<String, String> variables )
+        throws IllegalQueryException;
+    
+    /**
+     * Returns the variables contained in the given SQL.
+     * 
+     * @param sql the SQL query string.
+     * @return a set of variable keys.
+     */
+    Set<String> getVariables( String sql );
     
     String testSqlGrammar( String sql );
 }

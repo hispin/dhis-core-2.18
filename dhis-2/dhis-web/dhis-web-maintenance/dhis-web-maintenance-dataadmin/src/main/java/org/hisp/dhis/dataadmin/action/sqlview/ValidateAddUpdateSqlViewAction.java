@@ -28,12 +28,12 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 
 import com.opensymphony.xwork2.Action;
-
-import static org.hisp.dhis.sqlview.SqlView.PROTECTED_TABLES;
 
 /**
  * @author Dang Duy Hieu
@@ -42,14 +42,7 @@ public class ValidateAddUpdateSqlViewAction
     implements Action
 {
     private static final String ADD = "add";
-    private static final String SEMICOLON = ";";
-    private static final String SEP = "|";
-    private static final String SPACE = " ";
-    private static final String INTO = " into ";
-    private static final String REGEX_SELECT_QUERY = "^(?i)\\s*select\\s{1,}.+$";
-    private static final String PREFIX_REGEX_IGNORE_TABLES_QUERY = "^(?i).+((?<=[^\\d\\w])(";
-    private static final String SUFFIX_REGEX_IGNORE_TABLES_QUERY = ")(?=[^\\d\\w])).*$";
-
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -119,8 +112,6 @@ public class ValidateAddUpdateSqlViewAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    //TODO move to service layer and validate queries made in web api
-    
     @Override
     public String execute()
     {
@@ -147,25 +138,17 @@ public class ValidateAddUpdateSqlViewAction
             return INPUT;
         }
 
-        final String protectedTablesRegex = getProtectedTablesRegex();
-
-        for ( String s : sqlquery.split( SEMICOLON ) )
+        try
         {
-            String tmp = new String( s.toLowerCase() ).trim();
-
-            if ( !s.matches( REGEX_SELECT_QUERY ) || tmp.contains( INTO ) )
-            {
-                message = i18n.getString( "sqlquery_is_invalid" ) + "<br/>" + i18n.getString( "sqlquery_invalid_note" );
-
-                return INPUT;
-            }
-
-            if ( tmp.concat( SPACE ).matches( protectedTablesRegex ) )
-            {
-                message = i18n.getString( "sqlquery_is_not_allowed" );
-
-                return INPUT;
-            }
+            SqlView sqlView = new SqlView( name, sqlquery, false ); // Avoid variable check
+            
+            sqlViewService.validateSqlView( sqlView, null, null );
+        }
+        catch ( IllegalQueryException ex )
+        {
+            message = ex.getMessage();
+            
+            return INPUT;
         }
 
         if ( !query )
@@ -179,31 +162,5 @@ public class ValidateAddUpdateSqlViewAction
         }
 
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private String getProtectedTablesRegex()
-    {
-        int i = 0;
-        int len = PROTECTED_TABLES.size();
-
-        StringBuffer ignoredRegex = new StringBuffer( PREFIX_REGEX_IGNORE_TABLES_QUERY );
-
-        for ( String table : PROTECTED_TABLES )
-        {
-            ignoredRegex.append( table );
-
-            if ( ++i < len )
-            {
-                ignoredRegex.append( SEP );
-            }
-        }
-
-        ignoredRegex.append( SUFFIX_REGEX_IGNORE_TABLES_QUERY );
-
-        return ignoredRegex.toString();
     }
 }

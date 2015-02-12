@@ -35,10 +35,14 @@ import static org.junit.Assert.assertNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.IllegalQueryException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.collect.Sets;
 
 /**
  * @author Dang Duy Hieu
@@ -150,7 +154,7 @@ public class SqlViewServiceTest
     }
 
     @Test
-    public void testMakeUpForQueryStatement()
+    public void testCleanSqlQuery()
     {
         SqlView sqlViewA = createSqlView( 'A', SQL1 );
 
@@ -204,5 +208,71 @@ public class SqlViewServiceTest
         String actual = sqlViewService.substituteSql( sql, variables );
         
         assertEquals( expected, actual );
+    }
+    
+    @Test
+    public void testGetVariables()
+    {
+        String sql = "select * from dataelement where valuetype = '${valueType} and aggregationtype = '${aggregationType}'";
+        
+        Set<String> expected = Sets.newHashSet( "valueType", "aggregationType" );
+        
+        Set<String> actual = sqlViewService.getVariables( sql );
+        
+        assertEquals( expected, actual );
+    }
+    
+    @Test( expected = IllegalQueryException.class )
+    public void testValidateIllegalKeywords()
+    {
+        SqlView sqlView = new SqlView( "Name", "delete * from dataelement", true );
+        
+        sqlViewService.validateSqlView( sqlView, null, null );
+    }
+
+    @Test( expected = IllegalQueryException.class )
+    public void testValidateProtectedTables()
+    {
+        SqlView sqlView = new SqlView( "Name", "select * from userinfo", true );
+        
+        sqlViewService.validateSqlView( sqlView, null, null );
+    }
+
+    @Test( expected = IllegalQueryException.class )
+    public void testValidateMissingVariables()
+    {
+        SqlView sqlView = new SqlView( "Name", "select * from dataelement where valueType = '${valueType}' and aggregationtype = '${aggregationType}'", true );
+        
+        Map<String, String> variables = new HashMap<>();
+        variables.put( "valueType", "int" );
+        
+        sqlViewService.validateSqlView( sqlView, null, variables );
+    }
+
+    @Test( expected = IllegalQueryException.class )
+    public void testValidateIllegalSemiColon()
+    {
+        SqlView sqlView = new SqlView( "Name", "select * from dataelement; delete from dataelement", true );
+        
+        sqlViewService.validateSqlView( sqlView, null, null );
+    }
+
+    @Test( expected = IllegalQueryException.class )
+    public void testValidateNotSelectQuery()
+    {
+        SqlView sqlView = new SqlView( "Name", "* from dataelement", true );
+        
+        sqlViewService.validateSqlView( sqlView, null, null );
+    }
+    
+    @Test
+    public void testValidateSuccess()
+    {
+        SqlView sqlView = new SqlView( "Name", "select * from dataelement where valueType = '${valueType}'", true );
+        
+        Map<String, String> variables = new HashMap<>();
+        variables.put( "valueType", "int" );
+        
+        sqlViewService.validateSqlView( sqlView, null, variables );
     }
 }
