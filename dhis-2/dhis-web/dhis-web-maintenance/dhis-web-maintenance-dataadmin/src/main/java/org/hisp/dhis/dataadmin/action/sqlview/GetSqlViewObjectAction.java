@@ -81,11 +81,6 @@ public class GetSqlViewObjectAction
     public String execute()
         throws Exception
     {
-        if ( id == null || (id.intValue() == -1) )
-        {
-            return ERROR;
-        }
-
         sqlViewObject = sqlViewService.getSqlView( id );
 
         return SUCCESS;

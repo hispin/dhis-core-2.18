@@ -1309,6 +1309,7 @@ public abstract class DhisConvenienceTest
         sqlView.setName( "SqlView" + uniqueCharacter );
         sqlView.setDescription( "Description" + uniqueCharacter );
         sqlView.setSqlQuery( sql );
+        sqlView.setQuery( false );
 
         return sqlView;
     }

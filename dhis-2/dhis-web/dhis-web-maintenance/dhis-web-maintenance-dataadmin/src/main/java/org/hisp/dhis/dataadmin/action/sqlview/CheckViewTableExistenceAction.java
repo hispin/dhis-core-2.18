@@ -29,7 +29,9 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  */
 
 import com.opensymphony.xwork2.Action;
+
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 
 /**
@@ -98,7 +100,14 @@ public class CheckViewTableExistenceAction
             return ERROR;
         }
 
-        String viewTableName = sqlViewService.getSqlView( id ).getViewName();
+        SqlView sqlView = sqlViewService.getSqlView( id );
+        
+        if ( sqlView.isQuery() )
+        {
+            return SUCCESS;
+        }
+        
+        String viewTableName = sqlView.getViewName();
 
         if ( !sqlViewService.viewTableExists( viewTableName ) )
         {
