@@ -485,6 +485,14 @@ public class DefaultSecurityService
     }
 
     @Override
+    public boolean canView( String type )
+    {
+        boolean requireAddToView = (Boolean) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REQUIRE_ADD_TO_VIEW, false );
+        
+        return !requireAddToView || ( canCreatePrivate( type ) || canCreatePublic( type ) );
+    }
+
+    @Override
     public boolean canCreatePrivate( String type )
     {
         Class<? extends IdentifiableObject> klass = aclService.classForType( type );

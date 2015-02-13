@@ -205,6 +205,15 @@ public interface SecurityService
     boolean canCreatePrivate( String type );
 
     /**
+     * Checks whether current user can view instances of the object. Depends on
+     * system setting for require add to view objects.
+     *
+     * @param type Type to check for view access.
+     * @return true of false depending on outcome of check
+     */
+    boolean canView( String type );
+
+    /**
      * Checks whether current user has update access to object.
      *
      * @param identifiableObject Object to check for update access.

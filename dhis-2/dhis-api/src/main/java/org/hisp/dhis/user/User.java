@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -247,6 +248,15 @@ public class User
     public boolean isSuper()
     {
         return userCredentials != null && userCredentials.isSuper();
+    }
+
+    /**
+     * Tests whether the user has the given authority. Returns true in any case
+     * if the user has the ALL authority.
+     */
+    public boolean isAuthorized( String auth )
+    {
+        return userCredentials != null && userCredentials.isAuthorized( auth );
     }
     
     public Set<UserGroup> getManagedGroups()

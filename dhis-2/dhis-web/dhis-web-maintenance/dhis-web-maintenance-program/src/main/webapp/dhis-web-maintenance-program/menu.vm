@@ -1,15 +1,15 @@
 <h2>$i18n.getString( "tracked_entity" )</h2>
 <ul>
-	<li><a href="attribute.action">$i18n.getString( "tracked_entity_attribute" )</a></li>
-	<li><a href="attributeGroup.action">$i18n.getString( "tracked_entity_attribute_group" )</a></li>
-	<li><a href="relationshipType.action">$i18n.getString( "relationship_type" )</a></li>
-	<li><a href="trackedEntity.action">$i18n.getString( "tracked_entity" )</a></li>
-	<li><a href="trackedEntityForm.action">$i18n.getString( "tracked_entity_form" )</a></li>
+	#if( $security.canView( "trackedEntityAttribute" ) )<li><a href="attribute.action">$i18n.getString( "tracked_entity_attribute" )</a></li>#end
+	#if( $security.canView( "trackedEntityAttributeGroup" ) )<li><a href="attributeGroup.action">$i18n.getString( "tracked_entity_attribute_group" )</a></li>#end
+	#if( $security.canView( "relationShipType" ) )<li><a href="relationshipType.action">$i18n.getString( "relationship_type" )</a></li>#end
+	#if( $security.canView( "trackedEntity" ) )<li><a href="trackedEntity.action">$i18n.getString( "tracked_entity" )</a></li>#end
+	#if( $security.canView( "trackedEntityForm" ) )<li><a href="trackedEntityForm.action">$i18n.getString( "tracked_entity_form" )</a></li>#end
 </ul>
 
 <h2>$i18n.getString( "programs" )</h2>
 <ul>
-	<li><a href="program.action">$i18n.getString( "program" )</a></li>
+	#if( $security.canView( "program" ) )<li><a href="program.action">$i18n.getString( "program" )</a></li>#end
 	<li><a href="caseAggregation.action">$i18n.getString( "aggregation_query_builder" )</a></li>
 </ul>
 

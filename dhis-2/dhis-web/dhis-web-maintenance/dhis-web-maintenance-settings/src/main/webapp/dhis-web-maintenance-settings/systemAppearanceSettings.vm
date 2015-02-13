@@ -9,6 +9,7 @@
                 currentStyle: getFieldValue( 'currentStyle' ),
 				startModule: getFieldValue( 'startModule' ),
 				flag: getFieldValue( 'flag' ),
+				requireAddToView: jQuery('#requireAddToView').is(':checked'),
 				customLoginPageLogo: $( '#customLoginPageLogo' ).is( ':checked' ),
 				customTopMenuLogo: $( '#customTopMenuLogo' ).is( ':checked' ),
 				localeSelect: getFieldValue( 'localeSelect' )
@@ -83,6 +84,11 @@
 	<option value="$flag" #if( $flag == $keyFlag )selected="selected"#end>$i18n.getString( $flag )</option>
     #end
 </select>
+</div>
+
+<div class="setting">
+    <input type="checkbox" id="requireAddToView" name="requireAddToView" #if( $keyRequireAddToView )checked="checked"#end>
+    <label for="requireAddToView">$i18n.getString( "require_authority_to_add_to_view_object_lists" )</label>
 </div>
 
 <div class="setting">
