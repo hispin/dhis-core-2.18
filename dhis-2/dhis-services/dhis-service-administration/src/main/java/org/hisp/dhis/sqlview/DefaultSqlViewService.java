@@ -151,9 +151,23 @@ public class DefaultSqlViewService
     }
 
     @Override
-    public String createViewTable( SqlView sqlViewInstance )
+    public String createViewTable( SqlView sqlView )
     {
-        return sqlViewStore.createViewTable( sqlViewInstance );
+        return sqlViewStore.createViewTable( sqlView );
+    }
+    
+    @Override
+    public void createAllViews()
+    {
+        Collection<SqlView> views = getAllSqlViews();
+        
+        for ( SqlView view : views )
+        {
+            if ( !view.isQuery() )
+            {
+                createViewTable( view );
+            }
+        }
     }
 
     @Override

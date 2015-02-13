@@ -8,10 +8,11 @@ function performMaintenance()
     var dataSetCompleteness = $( "#dataSetCompleteness" ).is( ":checked" );
     var prunePeriods = $( "#prunePeriods" ).is( ":checked" );
     var removeExpiredInvitations = $( "#removeExpiredInvitations" ).is( ":checked" );
+    var createSqlViews = $( "#createSqlViews" ).is( ":checked" );
     var updateCategoryOptionCombos = $( "#updateCategoryOptionCombos" ).is( ":checked" );
     
-    if ( clearAnalytics || clearDataMart || dataMartIndex || zeroValues || 
-    	dataSetCompleteness || prunePeriods || removeExpiredInvitations || updateCategoryOptionCombos )
+    if ( clearAnalytics || clearDataMart || dataMartIndex || zeroValues || dataSetCompleteness || 
+    	prunePeriods || removeExpiredInvitations || createSqlViews || updateCategoryOptionCombos )
     {
         setHeaderWaitMessage( i18n_performing_maintenance );
         
@@ -22,6 +23,7 @@ function performMaintenance()
             "&dataSetCompleteness=" + dataSetCompleteness +
             "&prunePeriods=" + prunePeriods +
             "&removeExpiredInvitations=" + removeExpiredInvitations +
+            "&createSqlViews=" + createSqlViews +
             "&updateCategoryOptionCombos=" + updateCategoryOptionCombos;
         
 		$.ajax({

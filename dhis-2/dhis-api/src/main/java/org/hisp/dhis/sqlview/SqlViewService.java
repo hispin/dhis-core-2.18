@@ -47,7 +47,7 @@ public interface SqlViewService
     final Pattern VARIABLE_PATTERN = Pattern.compile( VARIABLE_EXPRESSION );
     
     // -------------------------------------------------------------------------
-    // SqlView
+    // CRUD
     // -------------------------------------------------------------------------
 
     int saveSqlView( SqlView sqlView );
@@ -75,13 +75,15 @@ public interface SqlViewService
     int getSqlViewCountByName( String name );
     
     // -------------------------------------------------------------------------
-    // SqlView Expanded
+    // SQL view
     // -------------------------------------------------------------------------
 
     boolean viewTableExists( String viewTableName );
 
-    String createViewTable( SqlView sqlViewInstance );
+    String createViewTable( SqlView sqlView );
 
+    void createAllViews();
+    
     void dropViewTable( String viewName );
     
     /**

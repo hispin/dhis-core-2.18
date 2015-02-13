@@ -39,6 +39,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datamart.DataMartManager;
 import org.hisp.dhis.maintenance.MaintenanceService;
 import org.hisp.dhis.resourcetable.ResourceTableService;
+import org.hisp.dhis.sqlview.SqlViewService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -120,6 +121,13 @@ public class PerformMaintenanceAction
         this.categoryService = categoryService;
     }
 
+    private SqlViewService sqlViewService;
+
+    public void setSqlViewService( SqlViewService sqlViewService )
+    {
+        this.sqlViewService = sqlViewService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -171,6 +179,13 @@ public class PerformMaintenanceAction
     public void setRemoveExpiredInvitations( boolean removeExpiredInvitations )
     {
         this.removeExpiredInvitations = removeExpiredInvitations;
+    }
+
+    private boolean createSqlViews;
+    
+    public void setCreateSqlViews( boolean createSqlViews )
+    {
+        this.createSqlViews = createSqlViews;
     }
 
     private boolean updateCategoryOptionCombos;
@@ -254,6 +269,13 @@ public class PerformMaintenanceAction
             maintenanceService.removeExpiredInvitations();
             
             log.info( "'" + username + "': Removed expired invitations" );
+        }
+        
+        if ( createSqlViews )
+        {
+            sqlViewService.createAllViews();
+            
+            log.info( "'" + username + "': Created SQL views" );
         }
         
         if ( updateCategoryOptionCombos )

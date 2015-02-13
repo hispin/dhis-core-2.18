@@ -42,6 +42,7 @@ import org.hisp.dhis.maintenance.MaintenanceService;
 import org.hisp.dhis.schema.Property;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
+import org.hisp.dhis.sqlview.SqlViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,6 +51,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -89,6 +91,9 @@ public class MaintenanceController
 
     @Autowired
     private RenderService renderService;
+    
+    @Autowired
+    private SqlViewService sqlViewService;
 
     @RequestMapping( value = "/periodPruning", method = { RequestMethod.PUT, RequestMethod.POST } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
@@ -104,6 +109,13 @@ public class MaintenanceController
         maintenanceService.deleteZeroDataValues();
     }
 
+    @RequestMapping( value = "/createSqlViews", method = { RequestMethod.PUT, RequestMethod.POST } )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
+    public void createSqlViews()
+    {
+        sqlViewService.createAllViews();
+    }
+    
     @RequestMapping( value = "/categoryOptionComboUpdate", method = { RequestMethod.PUT, RequestMethod.POST } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
     public void updateCategoryOptionCombos()

@@ -95,15 +95,15 @@ public class ExecuteSqlViewQueryAction
             return ERROR;
         }
 
-        SqlView sqlViewInstance = sqlViewService.getSqlView( id );
+        SqlView sqlView = sqlViewService.getSqlView( id );
 
-        String viewName = sqlViewInstance.getViewName();
+        String viewName = sqlView.getViewName();
 
-        message = sqlViewService.createViewTable( sqlViewInstance );
+        message = sqlViewService.createViewTable( sqlView );
 
         if ( message != null && !message.isEmpty() )
         {
-            message = i18n.getString( "failed_to_create_view_table_for" ) + ": " + sqlViewInstance.getName()
+            message = i18n.getString( "failed_to_create_view_table_for" ) + ": " + sqlView.getName()
                 + "<br/><br/>" + i18n.getString( "error_at" ) + ": " + message;
 
             return ERROR;
