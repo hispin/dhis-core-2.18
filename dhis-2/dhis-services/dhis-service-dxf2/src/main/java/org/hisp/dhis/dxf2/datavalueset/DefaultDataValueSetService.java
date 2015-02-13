@@ -805,13 +805,20 @@ public class DefaultDataValueSetService
             internalValue.setAttributeOptionCombo( attrOptionCombo );
             internalValue.setValue( trimToNull( dataValue.getValue() ) );
 
+            String storedByValid = ValidationUtils.storedByIsValid( dataValue.getStoredBy() );
+            
             if ( dataValue.getStoredBy() == null || dataValue.getStoredBy().trim().isEmpty() )
             {
                 internalValue.setStoredBy( currentUser );
             }
-            else
+            else if ( storedByValid == null )
             {
                 internalValue.setStoredBy( dataValue.getStoredBy() );
+            }
+            else
+            {
+                summary.getConflicts().add( new ImportConflict( dataValue.getStoredBy(), i18n.getString( storedByValid ) ) );
+                continue;
             }
 
             internalValue.setCreated( dataValue.hasCreated() ? parseDate( dataValue.getCreated() ) : now );

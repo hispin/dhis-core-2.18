@@ -374,6 +374,32 @@ public class ValidationUtils
     }
 
     /**
+     * Checks if the given stored by value is valid. Returns null if valid and a string
+     * if invalid, possible values are:
+     * </p>
+     * <ul>
+     * <li>stored_by_length_greater_than_max_length</li>
+     * </ul>
+     *
+     * @param storedBy the stored by value.
+     * @return null if the stored by value is valid, a string if not.
+     */
+    public static String storedByIsValid( String storedBy )
+    {
+        if ( storedBy == null || storedBy.trim().isEmpty() )
+        {
+            return null;
+        }
+        
+        if ( storedBy.length() > 31 )
+        {
+            return "stored_by_length_greater_than_max_length";
+        }
+        
+        return null;
+    }
+    
+    /**
      * Checks to see if given parameter is a valid hex color string (#xxx and #xxxxxx, xxx, xxxxxx).
      *
      * @param value Value to check against
