@@ -685,6 +685,7 @@
     <property name="flags">
       <list>
         <value>afghanistan</value>
+        <value>africare</value>
         <value>akros</value>
         <value>algeria</value>
         <value>armenia</value>
