@@ -84,13 +84,13 @@ public class JdbcSqlViewStore
     }
 
     @Override
-    public String createViewTable( SqlView sqlViewInstance )
+    public String createViewTable( SqlView sqlView )
     {
-        String viewName = sqlViewInstance.getViewName();
+        String viewName = sqlView.getViewName();
 
         dropViewTable( viewName );
 
-        final String sql = PREFIX_CREATEVIEW_QUERY + statementBuilder.columnQuote( viewName ) + " AS " + sqlViewInstance.getSqlQuery();
+        final String sql = PREFIX_CREATEVIEW_QUERY + statementBuilder.columnQuote( viewName ) + " AS " + sqlView.getSqlQuery();
 
         log.debug( "Create view SQL: " + sql );
 
