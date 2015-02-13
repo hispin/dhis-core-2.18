@@ -105,6 +105,7 @@ public interface SystemSettingManager
     final String KEY_SYSTEM_NOTIFICATIONS_EMAIL = "keySystemNotificationsEmail";
     final String KEY_ANALYSIS_RELATIVE_PERIOD = "keyAnalysisRelativePeriod";
     final String KEY_CORS_WHITELIST = "keyCorsWhitelist";
+    final String KEY_REQUIRE_ADD_TO_VIEW = "keyRequireAddToView";
 
     final String DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "lastMonth";
     final String DEFAULT_FLAG = "dhis2";

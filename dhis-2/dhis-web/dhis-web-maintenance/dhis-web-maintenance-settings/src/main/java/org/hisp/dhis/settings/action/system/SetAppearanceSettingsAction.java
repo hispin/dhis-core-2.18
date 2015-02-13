@@ -136,6 +136,13 @@ public class SetAppearanceSettingsAction
         this.localeSelect = localeSelect;
     }
     
+    private boolean requireAddToView;
+    
+    public void setRequireAddToView( boolean requireAddToView )
+    {
+        this.requireAddToView = requireAddToView;
+    }
+
     private boolean customLoginPageLogo;
     
     public void setCustomLoginPageLogo( boolean customLoginPageLogo )
@@ -180,6 +187,7 @@ public class SetAppearanceSettingsAction
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_FOOTER + localeSelect, applicationFooter );
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
+        systemSettingManager.saveSystemSetting( KEY_REQUIRE_ADD_TO_VIEW, requireAddToView );
         systemSettingManager.saveSystemSetting( KEY_CUSTOM_LOGIN_PAGE_LOGO, customLoginPageLogo );
         systemSettingManager.saveSystemSetting( KEY_CUSTOM_TOP_MENU_LOGO, customTopMenuLogo );
         styleManager.setSystemStyle( currentStyle );
