@@ -105,11 +105,13 @@ public class DefaultMetaDataDependencyService
     {
         Map<String, List<IdentifiableObject>> identifiableObjectMap = new HashMap<>();
 
+        List<Schema> schemas = schemaService.getMetadataSchemas();
+        
         for ( Map.Entry<String, Object> identifiableObjectUidEntry : identifiableObjectUidMap.entrySet() )
         {
             String className = identifiableObjectUidEntry.getKey();
 
-            for ( Schema schema : schemaService.getMetadataSchemas() )
+            for ( Schema schema : schemas )
             {
                 if ( className.equals( (schema.getPlural() + "_all") ) )
                 {
@@ -239,10 +241,12 @@ public class DefaultMetaDataDependencyService
     {
         List<IdentifiableObject> dependencies = new ArrayList<>();
         List<Field> fields = ReflectionUtils.getAllFields( identifiableObject.getClass() );
-
+        
+        List<Schema> schemas = schemaService.getMetadataSchemas();
+        
         for ( Field field : fields )
         {
-            for ( Schema schema : schemaService.getMetadataSchemas() )
+            for ( Schema schema : schemas )
             {
                 if ( ReflectionUtils.isType( field, schema.getKlass() ) )
                 {
