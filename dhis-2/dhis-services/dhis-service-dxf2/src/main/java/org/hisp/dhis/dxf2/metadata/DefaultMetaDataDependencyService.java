@@ -28,10 +28,22 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonView;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.proxy.HibernateProxy;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.view.ExportView;
@@ -46,25 +58,16 @@ import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.schema.SchemaService;
 import org.hisp.dhis.system.util.ReflectionUtils;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.validation.ValidationRule;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.google.common.collect.Sets;
 
 /**
  * @author Ovidiu Rosu <rosu.ovi@gmail.com>
@@ -74,8 +77,12 @@ public class DefaultMetaDataDependencyService
 {
     private static final Log log = LogFactory.getLog( DefaultMetaDataDependencyService.class );
 
-    private final Class<?>[] SPECIAL_CASE_CLASSES = new Class<?>[]{ DataElement.class, DataElementCategoryCombo.class, Indicator.class, OrganisationUnit.class, ValidationRule.class };
+    @SuppressWarnings("unchecked")
+    private final Set<Class<? extends BaseIdentifiableObject>> SPECIAL_CASE_CLASSES = Sets.newHashSet( DataElement.class, DataElementCategoryCombo.class, Indicator.class, OrganisationUnit.class, ValidationRule.class );
 
+    @SuppressWarnings("unchecked")
+    private final Set<Class<User>> SKIP_DEPENDENCY_CHECK_CLASSES = Sets.newHashSet( User.class );
+    
     //-------------------------------------------------------------------------------------------------------
     // Dependencies
     //-------------------------------------------------------------------------------------------------------
@@ -215,6 +222,7 @@ public class DefaultMetaDataDependencyService
     private List<IdentifiableObject> computeAllDependencies( IdentifiableObject identifiableObject )
     {
         List<IdentifiableObject> finalDependencies = new ArrayList<>();
+        
         List<IdentifiableObject> dependencies = getDependencies( identifiableObject );
 
         if ( dependencies.isEmpty() )
@@ -240,6 +248,12 @@ public class DefaultMetaDataDependencyService
     private List<IdentifiableObject> getDependencies( IdentifiableObject identifiableObject )
     {
         List<IdentifiableObject> dependencies = new ArrayList<>();
+        
+        if ( identifiableObject == null || SKIP_DEPENDENCY_CHECK_CLASSES.contains( identifiableObject.getClass() ) )
+        {
+            return dependencies;
+        }
+        
         List<Field> fields = ReflectionUtils.getAllFields( identifiableObject.getClass() );
         
         List<Schema> schemas = schemaService.getMetadataSchemas();
@@ -307,15 +321,7 @@ public class DefaultMetaDataDependencyService
 
     private boolean isSpecialCase( IdentifiableObject identifiableObject )
     {
-        for ( Class<?> specialCase : SPECIAL_CASE_CLASSES )
-        {
-            if ( identifiableObject.getClass().equals( specialCase ) )
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return SPECIAL_CASE_CLASSES.contains( identifiableObject.getClass() );
     }
 
     private Set<IdentifiableObject> computeSpecialDependencyCase( IdentifiableObject identifiableObject )
@@ -390,22 +396,6 @@ public class DefaultMetaDataDependencyService
 
             resultSet.addAll( dataElementCategoryOptionComboSet );
             resultSet.addAll( getDependencySet( dataElementCategoryOptionComboSet ) );
-
-            return resultSet;
-        }
-        else if ( identifiableObject instanceof OrganisationUnit )
-        {
-            Set<OrganisationUnitLevel> organisationUnitLevelSet = new HashSet<>();
-            int level = ((OrganisationUnit) identifiableObject).getOrganisationUnitLevel();
-
-            while ( level > 0 )
-            {
-                organisationUnitLevelSet.add( organisationUnitService.getOrganisationUnitLevelByLevel( level ) );
-                level--;
-            }
-
-            resultSet.addAll( organisationUnitLevelSet );
-            resultSet.addAll( getDependencySet( organisationUnitLevelSet ) );
 
             return resultSet;
         }
