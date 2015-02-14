@@ -149,9 +149,11 @@ public class DefaultMetaDataDependencyService
 
         Set<IdentifiableObject> dependencySet = getDependencySet( identifiableObjects );
 
+        List<Schema> schemas = schemaService.getMetadataSchemas();
+        
         for ( IdentifiableObject dependency : dependencySet )
         {
-            for ( Schema schema : schemaService.getMetadataSchemas() )
+            for ( Schema schema : schemas )
             {
                 if ( schema.getKlass().equals( dependency.getClass() ) )
                 {
