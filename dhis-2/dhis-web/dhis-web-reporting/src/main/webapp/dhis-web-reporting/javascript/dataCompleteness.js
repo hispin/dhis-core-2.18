@@ -9,7 +9,6 @@ function displayPeriods()
 {
   var periodType = $( "#periodTypeId" ).val();
   var periods = dhis2.period.generator.generateReversedPeriods(periodType, currentPeriodOffset);
-  periods = dhis2.period.generator.filterFuturePeriods( periods );
 
   $( "#periodId" ).removeAttr( "disabled" );
   clearListById( "periodId" );
