@@ -534,7 +534,7 @@ public class DefaultEventAnalyticsService
             throw new IllegalQueryException( "Query item or filter is invalid: " + dimensionString );
         }
         
-        QueryItem queryItem = getQuryItemFromUid( split[0] );
+        QueryItem queryItem = getQueryItemFromUid( split[0] );
         
         if ( split.length > 1 ) // Filters specified
         {   
@@ -643,7 +643,7 @@ public class DefaultEventAnalyticsService
         return item;
     }
 
-    private QueryItem getQuryItemFromUid( String item )
+    private QueryItem getQueryItemFromUid( String item )
     {
         DataElement de = dataElementService.getDataElement( item );
 
