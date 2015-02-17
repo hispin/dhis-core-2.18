@@ -140,7 +140,7 @@ public class SqlView
 
     public static String getProtectedTablesRegex()
     {
-        StringBuffer regex = new StringBuffer( "^.*?(" );
+        StringBuffer regex = new StringBuffer( "^.*?(\"|'|`|\\s|^)(" );
 
         for ( String table : PROTECTED_TABLES )
         {
@@ -149,12 +149,12 @@ public class SqlView
 
         regex.delete( regex.length() - 1, regex.length() );
         
-        return regex.append( ").*$" ).toString();
+        return regex.append( ")(\"|'|`|\\s|$).*$" ).toString();
     }
     
     public static String getIllegalKeywordsRegex()
     {
-        StringBuffer regex = new StringBuffer( "^.*?(" );
+        StringBuffer regex = new StringBuffer( "^.*?(\\s|^)(" );
         
         for ( String word : ILLEGAL_KEYWORDS )
         {
@@ -163,7 +163,7 @@ public class SqlView
         
         regex.delete( regex.length() - 1, regex.length() );
         
-        return regex.append( ").*$" ).toString();
+        return regex.append( ")(\\s|$).*$" ).toString();
     }
     
     public SqlView cleanSqlQuery()

@@ -233,7 +233,7 @@ public class SqlViewServiceTest
     @Test( expected = IllegalQueryException.class )
     public void testValidateProtectedTables()
     {
-        SqlView sqlView = new SqlView( "Name", "select * from userinfo", true );
+        SqlView sqlView = new SqlView( "Name", "select * from userinfo where userinfoid=1", true );
         
         sqlViewService.validateSqlView( sqlView, null, null );
     }
@@ -266,7 +266,7 @@ public class SqlViewServiceTest
     }
     
     @Test
-    public void testValidateSuccess()
+    public void testValidateSuccessA()
     {
         SqlView sqlView = new SqlView( "Name", "select * from dataelement where valueType = '${valueType}'", true );
         
@@ -274,5 +274,13 @@ public class SqlViewServiceTest
         variables.put( "valueType", "int" );
         
         sqlViewService.validateSqlView( sqlView, null, variables );
+    }
+    
+    @Test
+    public void testValidateSuccessB()
+    {
+        SqlView sqlView = new SqlView( "Name", "select ug.name from usergroup ug where ug.name ~* '^OU\\s(\\w.*)\\sAgency\\s(\\w.*)\\susers$'", false );
+        
+        sqlViewService.validateSqlView( sqlView, null, null );
     }
 }
