@@ -28,10 +28,9 @@ package org.hisp.dhis.trackedentity.action.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 
@@ -45,8 +44,6 @@ import com.opensymphony.xwork2.Action;
 public class SaveDataEntryFormAction
     implements Action
 {
-    Log logger = LogFactory.getLog( getClass() );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -64,7 +61,7 @@ public class SaveDataEntryFormAction
     {
         this.programStageService = programStageService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
@@ -114,7 +111,9 @@ public class SaveDataEntryFormAction
     {
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
         
-        programId = programStage.getProgram().getId();
+        Program program = programStage.getProgram();
+        
+        programId = program.getId();
         
         DataEntryForm dataEntryForm = null;
 
@@ -135,24 +134,31 @@ public class SaveDataEntryFormAction
         // Save data-entry-form
         // ---------------------------------------------------------------------
 
+        if ( dataEntryForm == null || dataEntryForm.getHtmlCode() != designTextarea )
+        {
+            program.increaseVersion();
+        }
+        
         designTextarea = dataEntryFormService.prepareDataEntryFormForSave( designTextarea );
 
         if ( dataEntryForm == null )
         {
+            program.increaseVersion();
+            
             dataEntryForm = new DataEntryForm( name, designTextarea );
             dataEntryFormService.addDataEntryForm( dataEntryForm );
         }
         else
         {
+            
             dataEntryForm.setName( name );
             dataEntryForm.setHtmlCode( designTextarea );
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
         }            
-        
+
         programStage.setDataEntryForm( dataEntryForm );
         programStageService.updateProgramStage( programStage );
 
         return SUCCESS;
     }
-    
 }
