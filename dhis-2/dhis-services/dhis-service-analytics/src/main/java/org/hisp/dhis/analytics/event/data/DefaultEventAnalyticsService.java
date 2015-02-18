@@ -501,13 +501,13 @@ public class DefaultEventAnalyticsService
                     params.getItemFilters().add( getQueryItem( filter.getDimension(), filter.getFilter() ) );
                 }
             }
+            
+            params.setProgram( object.getProgram() );
+            params.setProgramStage( object.getProgramStage() );
+            params.setStartDate( object.getStartDate() );
+            params.setEndDate( object.getEndDate() );
         }
 
-        params.setProgram( object.getProgram() );
-        params.setProgramStage( object.getProgramStage() );
-        params.setStartDate( object.getStartDate() );
-        params.setEndDate( object.getEndDate() );
-        
         return params;
     }
     
