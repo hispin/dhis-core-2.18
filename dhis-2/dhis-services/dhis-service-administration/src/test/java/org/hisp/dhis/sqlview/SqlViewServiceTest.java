@@ -283,4 +283,12 @@ public class SqlViewServiceTest
         
         sqlViewService.validateSqlView( sqlView, null, null );
     }
+    
+    @Test
+    public void testValidateSuccessC()
+    {
+        SqlView sqlView = new SqlView( "Name", "SELECT a.dataelementid as dsd_id,a.name as dsd_name,b.dataelementid as ta_id,b.ta_name FROM dataelement a", false );
+        
+        sqlViewService.validateSqlView( sqlView, null, null );
+    }
 }

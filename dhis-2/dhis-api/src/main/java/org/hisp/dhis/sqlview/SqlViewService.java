@@ -43,8 +43,12 @@ import org.hisp.dhis.common.IllegalQueryException;
 public interface SqlViewService
 {
     final String ID = SqlViewService.class.getName();
+    
     final String VARIABLE_EXPRESSION = "\\$\\{(\\w+)\\}";
-    final Pattern VARIABLE_PATTERN = Pattern.compile( VARIABLE_EXPRESSION );
+    final String SELECT_EXPRESSION = "^(?i)\\s*select\\s+.+";
+    
+    final Pattern VARIABLE_PATTERN = Pattern.compile( VARIABLE_EXPRESSION, Pattern.DOTALL );
+    final Pattern SELECT_PATTERN = Pattern.compile( SELECT_EXPRESSION, Pattern.DOTALL );
     
     // -------------------------------------------------------------------------
     // CRUD

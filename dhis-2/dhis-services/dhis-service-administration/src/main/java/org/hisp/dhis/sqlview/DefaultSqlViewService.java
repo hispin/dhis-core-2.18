@@ -246,7 +246,7 @@ public class DefaultSqlViewService
         final Set<String> sqlVars = getVariables( sqlView.getSqlQuery() );
         final String sql = sqlView.getSqlQuery();
         
-        if ( !sqlView.getSqlQuery().matches( SqlView.REGEX_SELECT_QUERY ) )
+        if ( !SELECT_PATTERN.matcher( sqlView.getSqlQuery() ).matches() )
         {
             violation = "SQL query must be a select query";
         }
