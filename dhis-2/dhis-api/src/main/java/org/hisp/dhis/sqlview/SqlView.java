@@ -55,7 +55,6 @@ public class SqlView
     extends BaseIdentifiableObject
 {
     public static final String PREFIX_VIEWNAME = "_view";
-    public static final String REGEX_SELECT_QUERY = "^(?i)\\s*select\\s{1,}.+$";
 
     public static final Set<String> PROTECTED_TABLES = Sets.newHashSet( "users", "userinfo", 
         "trackedentityinstance", "trackedentityattribute", "trackedentityattributevalue", "relationship" );
