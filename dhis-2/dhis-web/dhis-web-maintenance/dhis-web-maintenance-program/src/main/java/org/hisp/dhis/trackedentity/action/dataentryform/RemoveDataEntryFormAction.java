@@ -106,11 +106,11 @@ public class RemoveDataEntryFormAction
     {
         DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryForm( id );
 
-        Program currentProgram = programStageService.getProgramStage( programStageId ).getProgram();
+        Program program = programStageService.getProgramStage( programStageId ).getProgram();
 
-        programId = currentProgram.getId();
+        programId = program.getId();
 
-        Set<ProgramStage> programStages = currentProgram.getProgramStages();
+        Set<ProgramStage> programStages = program.getProgramStages();
 
         for ( ProgramStage programStage : programStages )
         {
@@ -124,6 +124,8 @@ public class RemoveDataEntryFormAction
             }
         }
 
+        program.increaseVersion();
+                
         dataEntryFormService.deleteDataEntryForm( dataEntryForm );
 
         return SUCCESS;

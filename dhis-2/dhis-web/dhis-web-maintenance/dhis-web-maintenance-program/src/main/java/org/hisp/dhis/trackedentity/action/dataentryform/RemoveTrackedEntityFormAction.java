@@ -87,6 +87,8 @@ public class RemoveTrackedEntityFormAction
             Program program = programService.getProgram( id );
 
             registrationForm = formService.getFormsWithProgram( program );
+            
+            program.increaseVersion();
         }
         else
         {
