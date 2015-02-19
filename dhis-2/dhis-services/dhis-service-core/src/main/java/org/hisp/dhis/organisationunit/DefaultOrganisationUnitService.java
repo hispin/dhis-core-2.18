@@ -726,6 +726,21 @@ public class DefaultOrganisationUnitService
     }
 
     @Override
+    public Map<String, OrganisationUnit> getUuidOrganisationUnitMap()
+    {
+        Map<String, OrganisationUnit> map = new HashMap<>();
+        
+        Collection<OrganisationUnit> organisationUnits = getAllOrganisationUnits();
+        
+        for ( OrganisationUnit organisationUnit : organisationUnits )
+        {
+            map.put( organisationUnit.getUuid(), organisationUnit );
+        }
+        
+        return map;
+    }
+
+    @Override
     public boolean isInUserHierarchy( OrganisationUnit organisationUnit )
     {
         User user = currentUserService.getCurrentUser();
@@ -910,7 +925,7 @@ public class DefaultOrganisationUnitService
 
         return levelMap;
     }
-
+    
     @Override
     public int getNumberOfOrganisationUnits()
     {

@@ -66,6 +66,8 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
@@ -626,7 +628,7 @@ public class DefaultDataValueSetService
         //----------------------------------------------------------------------
 
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
-        Map<String, OrganisationUnit> orgUnitMap = orgUnitIdScheme == UUID ? getUuidOrgUnitMap() : identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
+        Map<String, OrganisationUnit> orgUnitMap = getOrgUnitMap( orgUnitIdScheme );
         Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, idScheme );
         Map<String, Period> periodMap = new HashMap<>();
 
@@ -931,17 +933,10 @@ public class DefaultDataValueSetService
         summary.setDataSetComplete( DateUtils.getMediumDateString( completeDate ) );
     }
 
-    private Map<String, OrganisationUnit> getUuidOrgUnitMap()
+    private Map<String, OrganisationUnit> getOrgUnitMap( IdentifiableProperty orgUnitIdScheme )
     {
-        Map<String, OrganisationUnit> orgUnitMap = new HashMap<>();
-
-        Collection<OrganisationUnit> allOrganisationUnits = organisationUnitService.getAllOrganisationUnits();
-
-        for ( OrganisationUnit organisationUnit : allOrganisationUnits )
-        {
-            orgUnitMap.put( organisationUnit.getUuid(), organisationUnit );
-        }
-
-        return orgUnitMap;
+        return UUID.equals( orgUnitIdScheme ) ? 
+            organisationUnitService.getUuidOrganisationUnitMap() : 
+                identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
     }
 }

@@ -262,7 +262,7 @@ public class DataValueSetServiceTest
     {
         in = new ClassPathResource( "datavalueset/dataValueSetBcode.xml" ).getInputStream();
         
-        ImportOptions options = new ImportOptions( CODE, CODE, false, true, NEW_AND_UPDATES, false );
+        ImportOptions options = new ImportOptions( CODE, CODE, CODE, false, true, NEW_AND_UPDATES, false );
         ImportSummary summary = dataValueSetService.saveDataValueSet( in, options );
 
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
@@ -289,7 +289,7 @@ public class DataValueSetServiceTest
     {
         in = new ClassPathResource( "datavalueset/dataValueSetB.xml" ).getInputStream();
         
-        ImportOptions options = new ImportOptions( UID, UID, true, true, NEW_AND_UPDATES, false );
+        ImportOptions options = new ImportOptions( UID, UID, UID, true, true, NEW_AND_UPDATES, false );
         
         ImportSummary summary = dataValueSetService.saveDataValueSet( in, options );
 
@@ -307,7 +307,7 @@ public class DataValueSetServiceTest
     {
         in = new ClassPathResource( "datavalueset/dataValueSetB.xml" ).getInputStream();
         
-        ImportOptions options = new ImportOptions( UID, UID, false, true, UPDATES, false );
+        ImportOptions options = new ImportOptions( UID, UID, UID, false, true, UPDATES, false );
         
         ImportSummary summary = dataValueSetService.saveDataValueSet( in, options );
 
