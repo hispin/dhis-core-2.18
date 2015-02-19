@@ -919,7 +919,7 @@ public class DefaultDataElementCategoryService
     public CategoryOptionGroup getCategoryOptionGroupByShortName( String shortName )
     {
         List<CategoryOptionGroup> categoryOptionGroups = new ArrayList<>(
-            categoryOptionGroupStore.getAllLikeShortName( shortName ) );
+            categoryOptionGroupStore.getAllEqShortName( shortName ) );
 
         if ( categoryOptionGroups.isEmpty() )
         {
