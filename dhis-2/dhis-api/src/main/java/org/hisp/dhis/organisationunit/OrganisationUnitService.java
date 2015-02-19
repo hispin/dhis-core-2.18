@@ -420,6 +420,8 @@ public interface OrganisationUnitService
 
     Collection<OrganisationUnit> getOrganisationUnitsBetweenByStatusLastUpdated( boolean status, Date lastUpdated, int first, int max );
 
+    Map<String, OrganisationUnit> getUuidOrganisationUnitMap();
+    
     /**
      * Retrieves all the org units within the distance from center location.
      *
