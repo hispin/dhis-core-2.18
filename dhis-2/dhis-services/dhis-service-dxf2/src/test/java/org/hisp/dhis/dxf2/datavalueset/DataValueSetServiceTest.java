@@ -196,6 +196,7 @@ public class DataValueSetServiceTest
         assertNotNull( summary );
         assertNotNull( summary.getDataValueCount() );
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
+        assertEquals( 0, summary.getConflicts().size() );
         
         Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
@@ -225,6 +226,7 @@ public class DataValueSetServiceTest
         assertNotNull( summary );
         assertNotNull( summary.getDataValueCount() );
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
+        assertEquals( 0, summary.getConflicts().size() );
 
         Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
@@ -252,6 +254,7 @@ public class DataValueSetServiceTest
         ImportSummary summary = dataValueSetService.saveDataValueSet( in );
 
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
+        assertEquals( 0, summary.getConflicts().size() );
         
         assertImportDataValues( summary );
     }
@@ -266,6 +269,7 @@ public class DataValueSetServiceTest
         ImportSummary summary = dataValueSetService.saveDataValueSet( in, options );
 
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
+        assertEquals( 0, summary.getConflicts().size() );
         
         assertImportDataValues( summary );
     }
@@ -294,6 +298,7 @@ public class DataValueSetServiceTest
         ImportSummary summary = dataValueSetService.saveDataValueSet( in, options );
 
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
+        assertEquals( 0, summary.getConflicts().size() );
         
         Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
@@ -312,6 +317,7 @@ public class DataValueSetServiceTest
         ImportSummary summary = dataValueSetService.saveDataValueSet( in, options );
 
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
+        assertEquals( 0, summary.getConflicts().size() );
         
         Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
@@ -326,6 +332,7 @@ public class DataValueSetServiceTest
         ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetC.xml" ).getInputStream() );
 
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
+        assertEquals( 0, summary.getConflicts().size() );
         
         Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
@@ -342,6 +349,7 @@ public class DataValueSetServiceTest
         ImportSummary summary = dataValueSetService.saveDataValueSet( in );
 
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
+        assertEquals( 0, summary.getConflicts().size() );
         
         Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
