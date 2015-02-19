@@ -479,6 +479,7 @@ public class Program
     }
 
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Program getRelatedProgram()
