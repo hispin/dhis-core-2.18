@@ -90,7 +90,9 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.system.callable.IdentifiableObjectCallable;
 import org.hisp.dhis.system.notification.Notifier;
+import org.hisp.dhis.system.util.CachingMap;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.DebugUtils;
 import org.hisp.dhis.system.util.ValidationUtils;
@@ -623,14 +625,24 @@ public class DefaultDataValueSetService
         boolean skipExistingCheck = importOptions.isSkipExistingCheck();
 
         //----------------------------------------------------------------------
-        // Build meta-data maps
+        // Create meta-data maps
         //----------------------------------------------------------------------
 
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
-        Map<String, OrganisationUnit> orgUnitMap = getOrgUnitMap( orgUnitIdScheme );
+        CachingMap<String, OrganisationUnit> orgUnitMap = new CachingMap<String, OrganisationUnit>();
         Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, idScheme );
         Map<String, Period> periodMap = new HashMap<>();
 
+        //----------------------------------------------------------------------
+        // Load meta-data maps
+        //----------------------------------------------------------------------
+
+        if ( importOptions.isPreheatCache() )
+        {
+            notifier.notify( id, "Loading organisation units" ).addTaskSummary( id, summary );            
+            orgUnitMap.putAll( getOrgUnitMap( orgUnitIdScheme ) );
+        }
+        
         //----------------------------------------------------------------------
         // Get outer meta-data
         //----------------------------------------------------------------------
@@ -641,7 +653,8 @@ public class DefaultDataValueSetService
 
         Period outerPeriod = PeriodType.getPeriodFromIsoString( trimToNull( dataValueSet.getPeriod() ) );
 
-        OrganisationUnit outerOrgUnit = dataValueSet.getOrgUnit() != null ? orgUnitMap.get( dataValueSet.getOrgUnit() ) : null;
+        OrganisationUnit outerOrgUnit = orgUnitMap.get( trimToNull( dataValueSet.getOrgUnit() ), 
+            new IdentifiableObjectCallable<>( identifiableObjectManager, OrganisationUnit.class, trimToNull( dataValueSet.getOrgUnit() ) ) );
 
         DataElementCategoryOptionCombo fallbackCategoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
@@ -715,7 +728,8 @@ public class DefaultDataValueSetService
 
             DataElement dataElement = dataElementMap.get( trimToNull( dataValue.getDataElement() ) );
             Period period = outerPeriod != null ? outerPeriod : PeriodType.getPeriodFromIsoString( trimToNull( dataValue.getPeriod() ) );
-            OrganisationUnit orgUnit = outerOrgUnit != null ? outerOrgUnit : orgUnitMap.get( trimToNull( dataValue.getOrgUnit() ) );
+            OrganisationUnit orgUnit = outerOrgUnit != null ? outerOrgUnit : orgUnitMap.get( trimToNull( dataValue.getOrgUnit() ), 
+                new IdentifiableObjectCallable<>( identifiableObjectManager, OrganisationUnit.class, trimToNull( dataValue.getOrgUnit() ) ) );
             DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboMap.get( trimToNull( dataValue.getCategoryOptionCombo() ) );
             DataElementCategoryOptionCombo attrOptionCombo = outerAttrOptionCombo != null ? outerAttrOptionCombo : 
                 categoryOptionComboMap.get( trimToNull( dataValue.getAttributeOptionCombo() ) );
