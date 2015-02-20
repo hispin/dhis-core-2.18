@@ -128,6 +128,13 @@ public class ImportDataValueAction
         this.importFormat = importFormat;
     }
 
+    private boolean preheatCache = true;
+    
+    public void setPreheatCache( boolean preheatCache )
+    {
+        this.preheatCache = preheatCache;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -146,7 +153,7 @@ public class ImportDataValueAction
 
         in = StreamUtils.wrapAndCheckCompressionFormat( in );
 
-        ImportOptions options = new ImportOptions( idScheme, dataElementIdScheme, orgUnitIdScheme, dryRun, true, strategy, skipExistingCheck );
+        ImportOptions options = new ImportOptions( idScheme, dataElementIdScheme, orgUnitIdScheme, dryRun, preheatCache, strategy, skipExistingCheck );
 
         log.info( options );
 
