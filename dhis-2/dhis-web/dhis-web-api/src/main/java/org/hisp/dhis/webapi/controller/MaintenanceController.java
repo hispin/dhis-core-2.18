@@ -109,6 +109,13 @@ public class MaintenanceController
         maintenanceService.deleteZeroDataValues();
     }
 
+    @RequestMapping( value = "/dropSqlViews", method = { RequestMethod.PUT, RequestMethod.POST } )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
+    public void dropSqlViews()
+    {
+        sqlViewService.dropAllSqlViews();
+    }
+    
     @RequestMapping( value = "/createSqlViews", method = { RequestMethod.PUT, RequestMethod.POST } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
     public void createSqlViews()
