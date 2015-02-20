@@ -28,6 +28,21 @@ package org.hisp.dhis.resourcetable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataapproval.DataApprovalLevelService.APPROVAL_LEVEL_UNAPPROVED;
+import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_CATEGORY_OPTION_COMBO_NAME;
+import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_DATA_ELEMENT_STRUCTURE;
+import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_DATE_PERIOD_STRUCTURE;
+import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_ORGANISATION_UNIT_STRUCTURE;
+import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_PERIOD_STRUCTURE;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.calendar.Calendar;
@@ -55,20 +70,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.resourcetable.statement.CreateCategoryOptionGroupSetTableStatement;
-import org.hisp.dhis.sqlview.SqlView;
-import org.hisp.dhis.sqlview.SqlViewService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.hisp.dhis.dataapproval.DataApprovalLevelService.APPROVAL_LEVEL_UNAPPROVED;
-import static org.hisp.dhis.resourcetable.ResourceTableStore.*;
 
 /**
  * @author Lars Helge Overland
@@ -129,13 +131,6 @@ public class DefaultResourceTableService
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
-    }
-
-    private SqlViewService sqlViewService;
-
-    public void setSqlViewService( SqlViewService sqlViewService )
-    {
-        this.sqlViewService = sqlViewService;
     }
 
     // -------------------------------------------------------------------------
@@ -511,35 +506,5 @@ public class DefaultResourceTableService
         resourceTableStore.createAndGenerateDataElementCategoryOptionCombo();
 
         log.info( "Data element category option combo table generated" );
-    }
-
-    // -------------------------------------------------------------------------
-    // SQL views
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void createAllSqlViews()
-    {
-        List<SqlView> sqlViews = new ArrayList<>( sqlViewService.getAllSqlViewsNoAcl() );
-        Collections.sort( sqlViews, IdentifiableObjectNameComparator.INSTANCE );
-
-        for ( SqlView sqlView : sqlViews )
-        {
-            sqlViewService.createViewTable( sqlView );
-        }
-    }
-
-
-    @Override
-    public void dropAllSqlViews()
-    {
-        List<SqlView> views = new ArrayList<>( sqlViewService.getAllSqlViewsNoAcl() );
-        Collections.sort( views, IdentifiableObjectNameComparator.INSTANCE );
-        Collections.reverse( views );
-
-        for ( SqlView view : views )
-        {
-            sqlViewService.dropViewTable( view.getViewName() );
-        }
     }
 }

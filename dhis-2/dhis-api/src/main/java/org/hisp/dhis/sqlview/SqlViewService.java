@@ -86,7 +86,9 @@ public interface SqlViewService
 
     String createViewTable( SqlView sqlView );
 
-    void createAllViews();
+    void createAllSqlViews();
+    
+    void dropAllSqlViews();
     
     void dropViewTable( String viewName );
     

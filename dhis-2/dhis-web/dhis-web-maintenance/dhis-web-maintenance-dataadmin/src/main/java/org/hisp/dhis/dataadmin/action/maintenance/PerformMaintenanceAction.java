@@ -207,7 +207,7 @@ public class PerformMaintenanceAction
         
         if ( clearAnalytics )
         {
-            resourceTableService.dropAllSqlViews();
+            sqlViewService.dropAllSqlViews();
             analyticsTableService.dropTables();
             completenessTableService.dropTables();
             completenessTargetTableService.dropTables();
@@ -273,7 +273,7 @@ public class PerformMaintenanceAction
         
         if ( createSqlViews )
         {
-            sqlViewService.createAllViews();
+            sqlViewService.createAllSqlViews();
             
             log.info( "'" + username + "': Created SQL views" );
         }

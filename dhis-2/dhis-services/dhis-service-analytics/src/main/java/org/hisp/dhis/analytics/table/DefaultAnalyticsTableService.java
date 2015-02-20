@@ -169,7 +169,7 @@ public class DefaultAnalyticsTableService
     @Override
     public void generateResourceTables()
     {
-        resourceTableService.dropAllSqlViews();
+        sqlViewService.dropAllSqlViews();
         resourceTableService.generateOrganisationUnitStructures();        
         resourceTableService.generateCategoryOptionComboNames();
         resourceTableService.generateCategoryOptionGroupSetTable();
@@ -181,7 +181,7 @@ public class DefaultAnalyticsTableService
         resourceTableService.generatePeriodTable();
         resourceTableService.generateDatePeriodTable();
         resourceTableService.generateDataElementCategoryOptionComboTable();
-        resourceTableService.createAllSqlViews();
+        sqlViewService.createAllSqlViews();
     }
     
     // -------------------------------------------------------------------------
@@ -285,14 +285,14 @@ public class DefaultAnalyticsTableService
     
     private void swapTables( List<AnalyticsTable> tables )
     {
-        resourceTableService.dropAllSqlViews();
+        sqlViewService.dropAllSqlViews();
         
         for ( AnalyticsTable table : tables )
         {
             tableManager.swapTable( table );
         }
         
-        resourceTableService.createAllSqlViews();
+        sqlViewService.createAllSqlViews();
     }
     
     /**
