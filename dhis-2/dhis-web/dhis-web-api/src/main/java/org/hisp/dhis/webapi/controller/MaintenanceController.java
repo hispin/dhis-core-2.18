@@ -113,7 +113,7 @@ public class MaintenanceController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
     public void createSqlViews()
     {
-        sqlViewService.createAllViews();
+        sqlViewService.createAllSqlViews();
     }
     
     @RequestMapping( value = "/categoryOptionComboUpdate", method = { RequestMethod.PUT, RequestMethod.POST } )
