@@ -42,6 +42,11 @@
 </p>
 
 <p>
+	<input type="checkbox" id="dropSqlViews"/>
+	<label for="dropSqlViews">$i18n.getString( "drop_sql_views" )</label>
+</p>
+
+<p>
 	<input type="checkbox" id="createSqlViews"/>
 	<label for="createSqlViews">$i18n.getString( "create_sql_views" )</label>
 </p>
