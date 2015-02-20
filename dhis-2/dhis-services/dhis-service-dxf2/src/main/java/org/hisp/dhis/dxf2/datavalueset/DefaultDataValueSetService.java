@@ -628,8 +628,8 @@ public class DefaultDataValueSetService
         // Create meta-data maps
         //----------------------------------------------------------------------
 
-        Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
-        CachingMap<String, OrganisationUnit> orgUnitMap = new CachingMap<String, OrganisationUnit>();
+        CachingMap<String, DataElement> dataElementMap = new CachingMap<>();
+        CachingMap<String, OrganisationUnit> orgUnitMap = new CachingMap<>();
         Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, idScheme );
         Map<String, Period> periodMap = new HashMap<>();
 
@@ -639,7 +639,8 @@ public class DefaultDataValueSetService
 
         if ( importOptions.isPreheatCache() )
         {
-            notifier.notify( id, "Loading organisation units" );
+            notifier.notify( id, "Loading data elements and organisation units" );
+            dataElementMap.putAll( identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme ) );
             orgUnitMap.putAll( getOrgUnitMap( orgUnitIdScheme ) );
         }
         
@@ -726,7 +727,8 @@ public class DefaultDataValueSetService
 
             totalCount++;
 
-            DataElement dataElement = dataElementMap.get( trimToNull( dataValue.getDataElement() ) );
+            DataElement dataElement = dataElementMap.get( trimToNull( dataValue.getDataElement() ),
+                new IdentifiableObjectCallable<>( identifiableObjectManager, DataElement.class, trimToNull( dataValue.getDataElement() ) ) );
             Period period = outerPeriod != null ? outerPeriod : PeriodType.getPeriodFromIsoString( trimToNull( dataValue.getPeriod() ) );
             OrganisationUnit orgUnit = outerOrgUnit != null ? outerOrgUnit : orgUnitMap.get( trimToNull( dataValue.getOrgUnit() ), 
                 new IdentifiableObjectCallable<>( identifiableObjectManager, OrganisationUnit.class, trimToNull( dataValue.getOrgUnit() ) ) );
