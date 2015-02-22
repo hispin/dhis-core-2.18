@@ -239,11 +239,9 @@ public class DefaultPeriodService
 
         CalendarPeriodType periodType = (CalendarPeriodType) lastPeriod.getPeriodType();
 
-        Period p = new Period();
-
         for ( int i = 0; i < historyLength; ++i )
         {
-            p = getPeriodFromDates( lastPeriod.getStartDate(), lastPeriod.getEndDate(), periodType );
+            Period p = getPeriodFromDates( lastPeriod.getStartDate(), lastPeriod.getEndDate(), periodType );
 
             periods.add( p != null ? p : lastPeriod );
 

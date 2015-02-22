@@ -55,7 +55,7 @@ import java.util.TimeZone;
 @Scope( value = "prototype", proxyMode = ScopedProxyMode.INTERFACES )
 public class PdfNodeSerializer extends AbstractNodeSerializer
 {
-    public static final String[] CONTENT_TYPES = { "application/pdf" };
+    private static final String[] CONTENT_TYPES = { "application/pdf" };
 
     private Document document;
 

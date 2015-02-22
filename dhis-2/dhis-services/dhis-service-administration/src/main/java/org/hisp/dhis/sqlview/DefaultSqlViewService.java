@@ -262,7 +262,7 @@ public class DefaultSqlViewService
         
         if ( sqlView == null || sqlView.getSqlQuery() == null )
         {
-            violation = "SQL query is null";
+            throw new IllegalQueryException( "SQL query is null" );
         }
         
         final Set<String> sqlVars = getVariables( sqlView.getSqlQuery() );

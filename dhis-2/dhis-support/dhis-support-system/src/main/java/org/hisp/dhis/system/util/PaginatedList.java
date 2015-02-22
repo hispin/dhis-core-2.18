@@ -127,7 +127,7 @@ public class PaginatedList<T>
     {
         List<List<T>> pages = new ArrayList<>();
         
-        List<T> page = new ArrayList<>();
+        List<T> page = null;
         
         while ( ( page = nextPage() ) != null )
         {

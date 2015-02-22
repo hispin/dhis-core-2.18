@@ -103,7 +103,7 @@ public class WeightedPaginatedList<T extends Weighted>
     {
         List<List<T>> pages = new ArrayList<>();
         
-        List<T> page = new ArrayList<>();
+        List<T> page = null;
         
         while ( ( page = nextPage() ) != null )
         {

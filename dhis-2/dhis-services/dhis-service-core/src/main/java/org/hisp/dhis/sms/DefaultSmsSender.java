@@ -162,6 +162,8 @@ public class DefaultSmsSender
                 toSendList.addAll( users );
             }
 
+            int maxChar = MAX_CHAR;
+            
             Set<String> phoneNumbers = null;
 
             if ( transportService != null && transportService.isEnabled() )
@@ -180,11 +182,11 @@ public class DefaultSmsSender
                     {
                         if ( !Character.UnicodeBlock.of( each ).equals( UnicodeBlock.BASIC_LATIN ) )
                         {
-                            MAX_CHAR = 40;
+                            maxChar = 40;
                             break;
                         }
                     }
-                    if ( text.length() > MAX_CHAR )
+                    if ( text.length() > maxChar )
                     {
                         List<String> splitTextList = new ArrayList<>();
                         splitTextList = splitLongUnicodeString( text, splitTextList );

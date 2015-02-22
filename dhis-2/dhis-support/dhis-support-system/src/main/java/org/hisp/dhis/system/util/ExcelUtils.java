@@ -257,7 +257,7 @@ public class ExcelUtils
             i++;
             MetaValue rowMeta = (MetaValue) rowIt.next();
 
-            cellFormat = (i % 2 == 1) ? parFormat : oddFormat;
+            cellFormat = (i % 2 != 0) ? parFormat : oddFormat;
 
             try
             {

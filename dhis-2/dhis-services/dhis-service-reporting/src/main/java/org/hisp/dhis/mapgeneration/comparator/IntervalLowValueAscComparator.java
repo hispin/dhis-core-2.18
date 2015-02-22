@@ -38,7 +38,7 @@ import org.hisp.dhis.mapgeneration.Interval;
 public class IntervalLowValueAscComparator
     implements Comparator<Interval>
 {
-    public static IntervalLowValueAscComparator INSTANCE = new IntervalLowValueAscComparator();
+    public static final IntervalLowValueAscComparator INSTANCE = new IntervalLowValueAscComparator();
     
     @Override
     public int compare( Interval i1, Interval i2 )

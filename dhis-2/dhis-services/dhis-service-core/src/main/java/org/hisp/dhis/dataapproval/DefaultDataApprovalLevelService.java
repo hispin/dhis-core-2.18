@@ -462,7 +462,7 @@ public class DefaultDataApprovalLevelService
 
         int index = dataApprovalLevel.getLevel() - 1;
         
-        if ( index >= 0 & index < dataApprovalLevels.size() )
+        if ( index >= 0 && index < dataApprovalLevels.size() )
         {
             dataApprovalLevelStore.delete( dataApprovalLevel );
 

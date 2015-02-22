@@ -132,24 +132,28 @@ public class SimplisticHttpGetGateWay
             log.debug( "Adding sender " + sender + " " + getGatewayId() );
             requestParameters.put( SENDER, sender );
         }
+        
+        String urlString = urlTemplate;
+        
+        for ( String key : requestParameters.keySet() )
+        {
+            if ( requestParameters.get( key ) != null )
+            {
+                urlString = StringUtils.replace( urlString, "{" + key + "}",
+                    URLEncoder.encode( requestParameters.get( key ), "UTF-8" ) );
+            }
+        }
+        
+        log.info( "RequestURL: " + urlString + " " + getGatewayId() );
+
+        String line, response = "";
+        BufferedReader reader = null;
+        
         try
         {
-            String urlString = urlTemplate;
-            
-            for ( String key : requestParameters.keySet() )
-            {
-                if ( requestParameters.get( key ) != null )
-                {
-                    urlString = StringUtils.replace( urlString, "{" + key + "}",
-                        URLEncoder.encode( requestParameters.get( key ), "UTF-8" ) );
-                }
-            }
-            
-            log.info( "RequestURL: " + urlString + " " + getGatewayId() );
             URL requestURL = new URL( urlString );
             URLConnection conn = requestURL.openConnection();
-            BufferedReader reader = new BufferedReader( new InputStreamReader( conn.getInputStream() ) );
-            String line, response = "";
+            reader = new BufferedReader( new InputStreamReader( conn.getInputStream() ) );
             
             while ( (line = reader.readLine()) != null )
             {
@@ -166,10 +170,14 @@ public class SimplisticHttpGetGateWay
             reader.close();
 
         }
-        catch ( Exception e )
+        catch ( IOException e )
         {
             log.warn( "Couldn't send message " + getGatewayId() );
             return false;
+        }
+        finally
+        {
+            reader.close();
         }
 
         return true;

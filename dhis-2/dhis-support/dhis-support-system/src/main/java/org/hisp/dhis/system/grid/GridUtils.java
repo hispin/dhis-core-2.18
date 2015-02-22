@@ -589,21 +589,21 @@ public class GridUtils
      */
     public static String getValue( TagNode cell )
     {
-        String value = EMPTY;
+        StringBuilder builder = new StringBuilder();
 
         for ( Node child : cell.getChildren().toNodeArray() )
         {
             if ( child instanceof CompositeTag )
             {
-                value += ((CompositeTag) child).getStringText();
+                builder.append( ((CompositeTag) child).getStringText() );
             }
             else
             {
-                value = value + child.getText();
+                builder.append( child.getText() );
             }
         }
         
-        return value.trim().replaceAll( "&nbsp;", EMPTY );
+        return builder.toString().trim().replaceAll( "&nbsp;", EMPTY );
     }
     
     /**

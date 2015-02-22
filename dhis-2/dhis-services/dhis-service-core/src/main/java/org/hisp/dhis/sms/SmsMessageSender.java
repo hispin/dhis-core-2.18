@@ -78,12 +78,18 @@ public class SmsMessageSender
     {
         String message = null;
 
-        Map<String, String> gatewayMap = outboundSmsTransportService != null ? outboundSmsTransportService
-            .getGatewayMap() : null;
+        if ( outboundSmsTransportService == null )
+        {
+            return "No gateway";
+        }
+        
+        Map<String, String> gatewayMap = outboundSmsTransportService.getGatewayMap();
 
         String gatewayId = StringUtils.trimToNull( outboundSmsTransportService.getDefaultGateway() );
+        
+        boolean gatewayEnabled = outboundSmsTransportService.isEnabled();
 
-        if ( gatewayMap == null || gatewayId == null || !outboundSmsTransportService.isEnabled() )
+        if ( gatewayMap == null || gatewayId == null || !gatewayEnabled )
         {
             return "No gateway";
         }
