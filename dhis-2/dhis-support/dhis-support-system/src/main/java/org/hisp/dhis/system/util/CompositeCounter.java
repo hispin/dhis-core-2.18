@@ -55,13 +55,13 @@ public class CompositeCounter
     
     private String getKey( Object... objects )
     {
-        String key = "";
+        StringBuilder builder = new StringBuilder();
         
         for ( Object o : objects )
         {
-            key += o.hashCode() + SEPARATOR;
+            builder.append( o.hashCode() ).append( SEPARATOR );
         }
         
-        return key;
+        return builder.toString();
     }
 }

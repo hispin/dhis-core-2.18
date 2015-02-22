@@ -56,7 +56,7 @@ import java.util.TimeZone;
 @Scope( value = "prototype", proxyMode = ScopedProxyMode.INTERFACES )
 public class CsvNodeSerializer extends AbstractNodeSerializer
 {
-    public static final String[] CONTENT_TYPES = { "application/csv", "text/csv" };
+    private static final String[] CONTENT_TYPES = { "application/csv", "text/csv" };
 
     private static CsvMapper csvMapper = new CsvMapper();
 

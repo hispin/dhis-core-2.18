@@ -61,6 +61,8 @@ public class DateUtils
         new SimpleDateFormat( "yyyy" )
     };
 
+    //TODO replace with FastDateParser, SimpleDateFormat is not thead-safe
+    
     public static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" );
     public static final SimpleDateFormat ACCESS_DATE_FORMAT = new SimpleDateFormat( "yyyy/MM/dd HH:mm:ss" );
     public static final SimpleDateFormat HTTP_DATE_FORMAT = new SimpleDateFormat( "EEE, dd MMM yyyy HH:mm:ss" );

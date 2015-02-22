@@ -291,8 +291,7 @@ public class DefaultDataApprovalService
 
             if ( !status.getPermissions().isMayUnaccept() )
             {
-                log.warn( "unacceptData: data may not be unaccepted, state " + ( status == null ? "(null)" : status.getState().name() )
-                        + " " + da + " " + status.getPermissions() );
+                log.warn( "unacceptData: data may not be unaccepted, state " + status.getState().name() + " " + da + " " + status.getPermissions() );
 
                 throw new DataMayNotBeUnacceptedException();
             }

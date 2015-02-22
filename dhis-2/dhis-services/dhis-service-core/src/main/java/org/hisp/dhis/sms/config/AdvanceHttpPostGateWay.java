@@ -86,43 +86,50 @@ public class AdvanceHttpPostGateWay
                 log.debug( "Adding sender " + sender + " " + getGatewayId() );
                 requestParameters.put( SENDER, sender );
             }
+            
+            String urlString = urlTemplate;
+            
+            for ( String key : requestParameters.keySet() )
+            {
+                if ( requestParameters.get( key ) != null )
+                {
+                    urlString = StringUtils.replace( urlString, "{" + key + "}",
+                        URLEncoder.encode( requestParameters.get( key ), "UTF-8" ) );
+                }
+            }
+            
+            log.info( "RequestURL: " + urlString + " " + getGatewayId() );
+                        
+            String line, response = "";
+            BufferedReader reader = null;
+            
             try
             {
-                String urlString = urlTemplate;
+                URL requestURL = new URL( urlString );                
+                URLConnection conn = requestURL.openConnection();                
+                reader = new BufferedReader( new InputStreamReader( conn.getInputStream() ) );
                 
-                for ( String key : requestParameters.keySet() )
-                {
-                    if ( requestParameters.get( key ) != null )
-                    {
-                        urlString = StringUtils.replace( urlString, "{" + key + "}",
-                            URLEncoder.encode( requestParameters.get( key ), "UTF-8" ) );
-                    }
-                }
-                
-                log.info( "RequestURL: " + urlString + " " + getGatewayId() );
-                URL requestURL = new URL( urlString );
-                URLConnection conn = requestURL.openConnection();
-                BufferedReader reader = new BufferedReader( new InputStreamReader( conn.getInputStream() ) );
-                String line, response = "";
                 while ( (line = reader.readLine()) != null )
                 {
                     response += line;
                 }
-
+                
                 HttpURLConnection httpConnection = (HttpURLConnection) conn;
+                
                 if ( httpConnection.getResponseCode() != HttpURLConnection.HTTP_OK )
                 {
                     log.warn( "Couldn't send message, got response " + response + " " + getGatewayId() );
                     return 0;
                 }
-
-                reader.close();
-
             }
-            catch ( Exception e )
+            catch ( IOException ex )
             {
                 log.warn( "Couldn't send message " + outboundMessage + " " + getGatewayId() );
                 return 0;
+            }
+            finally
+            {
+                reader.close();
             }
 
             return 1;

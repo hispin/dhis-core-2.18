@@ -34,7 +34,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Chau Thu Tran
@@ -49,9 +48,6 @@ public class EventChartDeletionHandler
 
     @Autowired
     private EventChartService eventChartService;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     // -------------------------------------------------------------------------
     // DeletionHandler implementation

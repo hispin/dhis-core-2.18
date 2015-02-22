@@ -221,6 +221,7 @@ public class AppController
         if ( config == null )
         {
             ContextUtils.conflictResponse( response, "No config specified" );
+            return;
         }
         
         String appBaseUrl = StringUtils.trimToNull( config.get( AppManager.KEY_APP_BASE_URL ) );

@@ -299,11 +299,11 @@ public class InternalMapLayer
      */
     public void setAutomaticIntervalSet( int length )
     {
-        if ( MapView.METHOD_EQUAL_INTERVALS == method )
+        if ( MapView.METHOD_EQUAL_INTERVALS.equals( method ) )
         {
             setEqualRangeIntervalSet( length );
         }
-        else if ( MapView.METHOD_EQUAL_COUNTS == method )
+        else if ( MapView.METHOD_EQUAL_COUNTS.equals( method ) )
         {
             setEqualCountIntervalSet( length );
         }

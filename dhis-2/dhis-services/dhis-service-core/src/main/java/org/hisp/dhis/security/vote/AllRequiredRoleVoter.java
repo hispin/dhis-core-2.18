@@ -63,7 +63,7 @@ public class AllRequiredRoleVoter
 
                 for ( GrantedAuthority authority : authentication.getAuthorities() )
                 {
-                    if ( attribute.getAttribute().equals( authority ) )
+                    if ( attribute.getAttribute().equals( authority.getAuthority() ) )
                     {
                         found = true;
                         break;

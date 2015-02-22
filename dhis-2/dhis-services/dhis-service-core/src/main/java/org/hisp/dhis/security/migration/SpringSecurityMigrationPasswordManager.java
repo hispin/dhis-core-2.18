@@ -39,8 +39,6 @@ public class SpringSecurityMigrationPasswordManager
     extends SpringSecurityPasswordManager
     implements MigrationPasswordManager
 {
-    public static String legacyPasswordEncoderClassName;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -50,7 +48,6 @@ public class SpringSecurityMigrationPasswordManager
     public void setLegacyPasswordEncoder( PasswordEncoder legacyPasswordEncoder )
     {
         this.legacyPasswordEncoder = legacyPasswordEncoder;
-        legacyPasswordEncoderClassName = legacyPasswordEncoder.getClass().getName();
     }
 
     private UsernameSaltSource usernameSaltSource;

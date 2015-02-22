@@ -60,19 +60,13 @@ public class DefaultOutboundSmsTransportService
 {
     private static final Log log = LogFactory.getLog( DefaultOutboundSmsTransportService.class );
 
-    private final String BULK_GATEWAY = "bulk_gw";
-
-    private final String CLICKATELL_GATEWAY = "clickatell_gw";
-
-    private final String HTTP_GATEWAY = "generic_http_gw";
-
-    private final String MODEM_GATEWAY = "modem_gw";
-
-    private final String SMPP_GATEWAY = "smpp_gw";
-
-    public static Map<String, String> gatewayMap = new HashMap<>(); //TODO fix, poor solution
-
-    private GateWayFactory gatewayFactory = new GateWayFactory();
+    private static final String BULK_GATEWAY = "bulk_gw";
+    private static final String CLICKATELL_GATEWAY = "clickatell_gw";
+    private static final String HTTP_GATEWAY = "generic_http_gw";
+    private static final String MODEM_GATEWAY = "modem_gw";
+    private static final String SMPP_GATEWAY = "smpp_gw";
+    
+    public static final Map<String, String> gatewayMap = new HashMap<>(); //TODO fix, poor solution
 
     private SmsConfiguration config;
 
@@ -95,6 +89,7 @@ public class DefaultOutboundSmsTransportService
         {
             reloadConfig();
         }
+        
         return gatewayMap;
     }
 
@@ -200,10 +195,12 @@ public class DefaultOutboundSmsTransportService
         }
         else
         {
+            GateWayFactory gatewayFactory = new GateWayFactory();
+            
             for ( SmsGatewayConfig gatewayConfig : config.getGateways() )
             {
                 try
-                {
+                {                    
                     gateway = gatewayFactory.create( gatewayConfig );
 
                     service.addGateway( gateway );
@@ -493,7 +490,7 @@ public class DefaultOutboundSmsTransportService
         return Service.getInstance();
     }
 
-    private class OutboundNotification
+    private static class OutboundNotification
         implements IOutboundMessageNotification
     {
         @Override

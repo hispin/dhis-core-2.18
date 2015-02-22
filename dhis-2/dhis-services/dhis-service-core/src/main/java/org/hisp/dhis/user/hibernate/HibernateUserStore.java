@@ -102,6 +102,8 @@ public class HibernateUserStore
                 "and a not in (:auths) ) ";
         }
         
+        // TODO handle users with no user roles
+        
         if ( params.isDisjointRoles() && params.getUser() != null )
         {
             hql += hlp.whereAnd() + " not exists (" +

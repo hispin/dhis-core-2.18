@@ -187,7 +187,7 @@ public class DefaultSecurityService
     {
         if ( credentials == null )
         {
-            log.warn( "Could not send invite message as user does is null: " + credentials );
+            log.warn( "Could not send invite message as user does is null" );
             return "no_user_credentials";
         }
         

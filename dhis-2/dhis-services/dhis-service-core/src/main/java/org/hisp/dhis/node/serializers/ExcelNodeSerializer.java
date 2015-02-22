@@ -62,7 +62,7 @@ import java.util.TimeZone;
 @Scope( value = "prototype", proxyMode = ScopedProxyMode.INTERFACES )
 public class ExcelNodeSerializer extends AbstractNodeSerializer
 {
-    public static final String[] CONTENT_TYPES = { "application/vnd.ms-excel" };
+    private static final String[] CONTENT_TYPES = { "application/vnd.ms-excel" };
 
     @Override
     public List<String> contentTypes()
