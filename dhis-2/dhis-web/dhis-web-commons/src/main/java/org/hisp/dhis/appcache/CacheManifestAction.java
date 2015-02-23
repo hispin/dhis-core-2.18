@@ -49,7 +49,7 @@ import com.opensymphony.xwork2.Action;
  * @author Abyot Asalefew Gizaw <abyota@gmail.com>
  *
  */
-public class CacheManifest
+public class CacheManifestAction
     implements Action
 {
 
