@@ -136,7 +136,6 @@ dhis2.dsr.displayPeriods = function()
 dhis2.dsr.displayPeriodsInternal = function( periodType, offset )
 {
     var periods = dhis2.period.generator.generateReversedPeriods(periodType, offset);
-    periods = dhis2.period.generator.filterFuturePeriodsExceptCurrent( periods );
 
     $( "#periodId" ).removeAttr( "disabled" );
     clearListById( "periodId" );
