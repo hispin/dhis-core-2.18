@@ -38,9 +38,9 @@ import java.io.InputStream;
 import javax.servlet.ServletContext;
 
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.system.SystemInfo;
 import org.hisp.dhis.system.SystemService;
-import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -52,12 +52,11 @@ import com.opensymphony.xwork2.Action;
 public class CacheManifestAction
     implements Action
 {
-
-    @Autowired
-    private UserSettingService userSettingService;
-
     @Autowired
     private SystemService systemService;
+    
+    @Autowired
+    private LocaleManager localeManager;
 
     private String appPath;
 
@@ -98,12 +97,13 @@ public class CacheManifestAction
         File i18nFolder = null;
         StringBuffer stringBuffer = null;
 
-        String locale = userSettingService.getUserSetting( UserSettingService.KEY_UI_LOCALE ).toString();
+        String locale = localeManager.getCurrentLocale().toString();
         SystemInfo info = systemService.getSystemInfo();
         String revisionTag = "#Revision:" + info.getRevision();
 
         String defaultTranslationFile = "i18n_app.properties";
         String translationFile = "";
+        
         if ( locale.equalsIgnoreCase( "en" ) )
         {
             translationFile = defaultTranslationFile;
