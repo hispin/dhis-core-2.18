@@ -623,5 +623,7 @@
   </bean>
 
   <bean id="org.hisp.dhis.appcache.AppCacheAction" class="org.hisp.dhis.appcache.AppCacheAction" />
+  
+  <bean id="org.hisp.dhis.appcache.CacheManifestAction" class="org.hisp.dhis.appcache.CacheManifestAction" />  
 
 </beans>
