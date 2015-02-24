@@ -222,11 +222,13 @@ Ext.onReady( function() {
         };
 
         layer.registerMouseDownEvent = function() {
-            layer.events.register('mousedown', null, layer.onMouseDown);
-        };
 
-        layer.unregisterMouseDownEvent = function() {
-            layer.events.unregister('mousedown', null, layer.onMouseDown);
+            // clear mousedown listeners
+            if (layer.events && layer.events.listeners && Ext.isArray(layer.events.listeners.mousedown)) {
+                layer.events.listeners.mousedown = [];
+            }
+
+            layer.events.register('mousedown', null, layer.onMouseDown);
         };
 
 		defaultHoverSelect = function fn(feature) {
@@ -272,15 +274,13 @@ Ext.onReady( function() {
 
 		defaultHoverUnselect = function fn(feature) {
 			defaultHoverWindow.destroy();
-
-            // remove mouse click event
-            layer.unregisterMouseDownEvent();
-
-            // destroy popups
-            //destroyDataPopups();
 		};
 
         defaultLeftClickSelect = function fn(feature, e) {
+            if (!feature) {
+                return;
+            }
+
             var generator = gis.init.periodGenerator,
                 periodType = gis.init.systemSettings.infrastructuralPeriodType.name,
                 attr = feature.attributes,
