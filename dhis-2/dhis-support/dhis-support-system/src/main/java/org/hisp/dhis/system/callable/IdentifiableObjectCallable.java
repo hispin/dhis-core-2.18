@@ -57,4 +57,10 @@ public class IdentifiableObjectCallable<T extends IdentifiableObject>
     {
         return manager.get( clazz, uid );
     }
+    
+    public IdentifiableObjectCallable<T> setUid( String uid )
+    {
+        this.uid = uid;
+        return this;
+    }
 }
