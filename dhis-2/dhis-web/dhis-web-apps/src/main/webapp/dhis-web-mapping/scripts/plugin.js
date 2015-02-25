@@ -6673,6 +6673,11 @@ Ext.onReady(function() {
                                         updateStore,
                                         optionSetConfig;
 
+                                    if (!optionSets.length) {
+                                        fn();
+                                        return;
+                                    }
+
                                     optionSetConfig = {
                                         url: contextPath + '/api/optionSets.' + type + '?fields=id,name,version,options[code,name]&paging=false' + url,
                                         disableCaching: false,
