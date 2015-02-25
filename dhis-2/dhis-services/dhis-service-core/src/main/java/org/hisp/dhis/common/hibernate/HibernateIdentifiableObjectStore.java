@@ -435,7 +435,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     @SuppressWarnings( "unchecked" )
     public List<T> getByUid( Collection<String> uids )
     {
-        if ( uids == null )
+        if ( uids == null || uids.isEmpty() )
         {
             return new ArrayList<>();
         }
