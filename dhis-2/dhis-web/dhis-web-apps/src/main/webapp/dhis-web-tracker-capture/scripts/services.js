@@ -368,7 +368,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
 })
 
 /* Service for getting tracked entity instances */
-.factory('TEIService', function($http, $q, AttributesFactory, OptionSetService, CurrentSelection, DateUtils) {
+.factory('TEIService', function($http, $q, AttributesFactory, OptionSetService, orderByFilter, DateUtils) {
 
     return {        
         convertFromApiToUser: function(promise, optionSets){            
@@ -531,7 +531,8 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                 }
                 if(!selectedProgram && !selectedEnrollment){
                     //show attributes in no program            
-                    AttributesFactory.getWithoutProgram().then(function(atts){                
+                    AttributesFactory.getWithoutProgram().then(function(atts){                        
+                        atts = orderByFilter(atts, '-sortOrderInListNoProgram').reverse();
                         selectedTei.attributes = AttributesFactory.showRequiredAttributes(atts,selectedTei.attributes, false);     
                         def.resolve(selectedTei);
                     });
@@ -713,7 +714,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
                     }
                 }
 
-                if(!processed && fromEnrollment){//attribute was empty, so a chance to put some value
+                if(!processed){//attribute was empty, so a chance to put some value
                     teiAttributes.push({show: true, order: i, allowFutureDate: requiredAttributes[i].allowFutureDate ? requiredAttributes[i].allowFutureDate : false, mandatory: requiredAttributes[i].mandatory ? requiredAttributes[i].mandatory : false, attribute: requiredAttributes[i].id, displayName: requiredAttributes[i].name, type: requiredAttributes[i].valueType, value: ''});
                 }                   
             }

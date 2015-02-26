@@ -59,9 +59,9 @@ trackerCapture.controller('DashboardController',
 
                     //get enrollments for the selected tei
                     EnrollmentService.getByEntity($scope.selectedTeiId).then(function(response){                    
-
+						var enrollments = angular.isObject(response) && response.enrollments ? response.enrollments : [];
                         var selectedEnrollment = null;
-                        if(response.enrollments.length === 1 && response.enrollments[0].status === 'ACTIVE'){
+                        if(enrollments.length === 1 && enrollments[0].status === 'ACTIVE'){
                             selectedEnrollment = response.enrollments[0];
                         }
                         
@@ -81,7 +81,7 @@ trackerCapture.controller('DashboardController',
                             }); 
 
                             //broadcast selected items for dashboard controllers
-                            CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, prs: $scope.programs, pr: $scope.selectedProgram, enrollments: response.enrollments, selectedEnrollment: selectedEnrollment, optionSets: $scope.optionSets});
+                            CurrentSelection.set({tei: $scope.selectedTei, te: $scope.trackedEntity, prs: $scope.programs, pr: $scope.selectedProgram, enrollments: enrollments, selectedEnrollment: selectedEnrollment, optionSets: $scope.optionSets});
                             $scope.broadCastSelections();                        
                         });
                     });

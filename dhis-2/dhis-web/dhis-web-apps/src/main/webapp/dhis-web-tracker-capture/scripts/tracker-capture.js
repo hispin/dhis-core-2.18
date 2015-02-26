@@ -408,7 +408,7 @@ function getAttribute( id )
         return $.ajax( {
             url: '../api/trackedEntityAttributes.json',
             type: 'GET',
-            data: 'filter=id:eq:' + id +'&fields=id,name,code,version,description,valueType,inherit,displayOnVisitSchedule,displayInListNoProgram,unique,optionSet[id,version]'
+            data: 'filter=id:eq:' + id +'&fields=id,name,code,version,description,valueType,confidential,inherit,sortOrderInVisitSchedule,sortOrderInListNoProgram,displayOnVisitSchedule,displayInListNoProgram,unique,optionSet[id,version]'
         }).done( function( response ){            
             _.each( _.values( response.trackedEntityAttributes ), function( teAttribute ) {
                 dhis2.tc.store.set( 'attributes', teAttribute );

@@ -8,6 +8,7 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         function($scope,
                 $modal,
                 $location,
+                orderByFilter,
                 Paginator,
                 storage,
                 OptionSetService,
@@ -168,7 +169,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             AttributesFactory.getWithoutProgram().then(function(atts){
                 $scope.attributes = atts;
                 setTimeout(function () {
-                    $scope.$apply(function () {                        
+                    $scope.$apply(function () {
+                        $scope.attributes = orderByFilter(atts, '-sortOrderInListNoProgram').reverse();
                         $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
                         $scope.gridColumns = TEIGridService.generateGridColumns($scope.attributes, $scope.selectedOuMode.name);
                     });

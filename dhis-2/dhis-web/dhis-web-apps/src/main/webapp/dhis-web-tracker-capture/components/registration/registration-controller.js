@@ -3,6 +3,7 @@ trackerCapture.controller('RegistrationController',
                 $scope,
                 $location,
                 $timeout,
+                orderByFilter,
                 AttributesFactory,
                 DHIS2EventFactory,
                 TEService,
@@ -61,7 +62,7 @@ trackerCapture.controller('RegistrationController',
         }
         else{            
             AttributesFactory.getWithoutProgram().then(function(atts){
-                $scope.attributes = atts;
+                $scope.attributes = orderByFilter(atts, '-sortOrderInListNoProgram').reverse();                
                 $scope.attributesById = [];
                 angular.forEach(atts, function(att){
                     $scope.attributesById[att.id] = att;
