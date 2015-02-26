@@ -180,8 +180,11 @@ class DataApprovalPermissionsEvaluator
         boolean mayApproveAtNextLevel = ( s == DataApprovalState.ACCEPTED_HERE || ( s == DataApprovalState.APPROVED_HERE && ! acceptanceRequiredForApproval ) ) && 
             ( ( authorizedToApprove && userLevel == nextApproveDataLevel ) || ( authorizedToApproveAtLowerLevels && userLevel < nextApproveDataLevel ) );
 
-        boolean mayAcceptOrUnacceptAtLevel = authorizedToAcceptAtLowerLevels &&
-                ( userLevel == dataLevel - 1 || ( userLevel < dataLevel && authorizedToApproveAtLowerLevels ) );
+        // TODO More testing needed
+
+        boolean mayAcceptOrUnacceptAtLevel = authorizedToAcceptAtLowerLevels && ( userLevel == dataLevel - 1 || ( userLevel < dataLevel && authorizedToApproveAtLowerLevels ) );
+                
+        // boolean mayAcceptOrUnacceptAtLevel = authorizedToAcceptAtLowerLevels && ( userLevel <= dataLevel );
 
         boolean mayApprove = ( s.isApprovable() && mayApproveOrUnapproveAtLevel ) || mayApproveAtNextLevel;
 
