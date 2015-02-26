@@ -52,8 +52,8 @@ import java.util.Map;
  */
 public class IdentifiableObjectUtils
 {
+    public static final String SEPARATOR = "-";
     private static final String SEPARATOR_JOIN = ", ";
-    private static final String SEPARATOR = "-";
     private static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" );
 
     public static final Map<String, String> CLASS_ALIAS = new HashMap<String, String>()
