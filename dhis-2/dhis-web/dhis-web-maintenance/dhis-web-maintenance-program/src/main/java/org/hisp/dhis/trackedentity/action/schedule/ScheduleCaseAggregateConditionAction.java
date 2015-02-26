@@ -157,7 +157,7 @@ public class ScheduleCaseAggregateConditionAction
                 Map<String, String> keyCronMap = new HashMap<>();
 
                 keyCronMap.put( CaseAggregateConditionSchedulingManager.TASK_AGGREGATE_QUERY_BUILDER,
-                    Scheduler.CRON_DAILY_0AM );
+                    Scheduler.CRON_DAILY_11PM );
 
                 schedulingManager.scheduleTasks( keyCronMap );
             }
