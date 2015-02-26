@@ -369,20 +369,20 @@ public class HibernateDataApprovalStore
                 readyBelowSubquery + " as ready_below, " +
                 approvedAboveSubquery + " as approved_above " +
                 "from ( " + // subquery to get combinations of organisation unit and category option combo
-                    "select distinct cocco.categoryoptioncomboid, ccoc.categorycomboid, o.organisationunitid " +
+                    "select distinct cocco.categoryoptioncomboid, ccoc.categorycomboid, coalesce(coo.organisationunitid, o.organisationunitid) as organisationunitid " +
                     "from categoryoptioncombos_categoryoptions cocco " +
                     "join categorycombos_optioncombos ccoc on ccoc.categoryoptioncomboid = cocco.categoryoptioncomboid and ccoc.categorycomboid in (" + categoryComboIds + ") " +
                     "join dataelementcategoryoption co on co.categoryoptionid = cocco.categoryoptionid " +
                         "and (co.startdate is null or co.startdate <= '" + maxDate + "') and (co.enddate is null or co.enddate >= '" + minDate + "') " +
                     "join _orgunitstructure o on " + orgUnitJoinOn + " " +
                     "left join categoryoption_organisationunits coo on coo.categoryoptionid = co.categoryoptionid " +
-                    "left join _orgunitstructure ous on ous.idlevel" + orgUnitLevel + "= o.organisationunitid and ous.organisationunitid = coo.organisationunitid " +
+                    "left join _orgunitstructure ous on ous.idlevel" + orgUnitLevel + " = o.organisationunitid and ous.organisationunitid = coo.organisationunitid " +
                     joinAncestors +
                     "left join dataelementcategoryoptionusergroupaccesses couga on couga.categoryoptionid = cocco.categoryoptionid " +
                     "left join usergroupaccess uga on uga.usergroupaccessid = couga.usergroupaccessid " +
                     "left join usergroupmembers ugm on ugm.usergroupid = uga.usergroupid " +
                     "where ( coo.categoryoptionid is null or ous.organisationunitid is not null " + testAncestors + ") " +
-                     ( isSuperUser || user == null ? "" : "and ( ugm.userid = " + user.getId() + " or co.userid = " + user.getId() +
+                     ( isSuperUser || user == null ? "" : "and ( ugm.userid = " + user.getId() + " or co.userid = " + user.getId() + " " +
                              "or co.publicaccess is null or left(co.publicaccess, 1) = 'r' ) " ) +
                      ( attributeOptionCombo == null ? "" : "and cocco.categoryoptioncomboid = " + attributeOptionCombo.getId() + " " ) +
                 ") as a";
