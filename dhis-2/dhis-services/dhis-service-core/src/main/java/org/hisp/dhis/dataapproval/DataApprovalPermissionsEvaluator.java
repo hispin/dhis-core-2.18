@@ -77,8 +77,8 @@ class DataApprovalPermissionsEvaluator
     }
 
     private static Cache<String, DataApprovalLevel> USER_APPROVAL_LEVEL_CACHE = CacheBuilder.newBuilder()
-            .expireAfterAccess( 10, TimeUnit.MINUTES ).initialCapacity( 10000 )
-            .maximumSize( 50000 ).build();
+        .expireAfterAccess( 10, TimeUnit.MINUTES ).initialCapacity( 10000 )
+        .maximumSize( 50000 ).build();
 
     /**
      * Allocates and populates the context for determining user permissions
@@ -109,9 +109,9 @@ class DataApprovalPermissionsEvaluator
         ev.maxApprovalLevel = dataApprovalLevelService.getAllDataApprovalLevels().size();
 
         log.debug( "makePermissionsEvaluator acceptanceRequiredForApproval " + ev.acceptanceRequiredForApproval
-                + " hideUnapprovedData " + ev.hideUnapprovedData + " authorizedToApprove " + ev.authorizedToApprove
-                + " authorizedToAcceptAtLowerLevels " + ev.authorizedToAcceptAtLowerLevels
-                + " authorizedToViewUnapprovedData " + ev.authorizedToViewUnapprovedData + " maxApprovalLevel " + ev.maxApprovalLevel );
+            + " hideUnapprovedData " + ev.hideUnapprovedData + " authorizedToApprove " + ev.authorizedToApprove
+            + " authorizedToAcceptAtLowerLevels " + ev.authorizedToAcceptAtLowerLevels
+            + " authorizedToViewUnapprovedData " + ev.authorizedToViewUnapprovedData + " maxApprovalLevel " + ev.maxApprovalLevel );
 
         return ev;
     }
@@ -175,10 +175,10 @@ class DataApprovalPermissionsEvaluator
         int nextApproveDataLevel = s.isApproved() ? dataLevel - 1 : dataLevel;
 
         boolean mayApproveOrUnapproveAtLevel = ( authorizedToApprove && userLevel == dataLevel && !da.isAccepted() ) ||
-                        ( authorizedToApproveAtLowerLevels && userLevel < dataLevel );
+            ( authorizedToApproveAtLowerLevels && userLevel < dataLevel );
 
-        boolean mayApproveAtNextLevel = ( s == DataApprovalState.ACCEPTED_HERE || ( s == DataApprovalState.APPROVED_HERE && ! acceptanceRequiredForApproval ) )
-                && ( ( authorizedToApprove && userLevel == nextApproveDataLevel ) || ( authorizedToApproveAtLowerLevels && userLevel < nextApproveDataLevel ) );
+        boolean mayApproveAtNextLevel = ( s == DataApprovalState.ACCEPTED_HERE || ( s == DataApprovalState.APPROVED_HERE && ! acceptanceRequiredForApproval ) ) && 
+            ( ( authorizedToApprove && userLevel == nextApproveDataLevel ) || ( authorizedToApproveAtLowerLevels && userLevel < nextApproveDataLevel ) );
 
         boolean mayAcceptOrUnacceptAtLevel = authorizedToAcceptAtLowerLevels &&
                 ( userLevel == dataLevel - 1 || ( userLevel < dataLevel && authorizedToApproveAtLowerLevels ) );
@@ -195,14 +195,14 @@ class DataApprovalPermissionsEvaluator
                 || userLevel >= dataLevel;
 
         log.debug( "getPermissions orgUnit " + ( da.getOrganisationUnit() == null ? "(null)" : da.getOrganisationUnit().getName() )
-                + " combo " + da.getAttributeOptionCombo().getName() + " state " + s.name()
-                + " isApproved " + s.isApproved() + " isApprovable " + s.isApprovable() + " isUnapprovable " + s.isUnapprovable()
-                + " isAccepted " + s.isAccepted() + " isAcceptable " + s.isAcceptable() + " isUnacceptable " + s.isUnacceptable()
-                + " userLevel " + userLevel + " dataLevel " + dataLevel
-                + " mayApproveOrUnapproveAtLevel " + mayApproveOrUnapproveAtLevel + " mayAcceptOrUnacceptAtLevel " + mayAcceptOrUnacceptAtLevel
-                + " mayApprove " + mayApprove + " mayUnapprove " + mayUnapprove
-                + " mayAccept " + mayAccept + " mayUnaccept " + mayUnaccept
-                + " mayReadData " + mayReadData );
+            + " combo " + da.getAttributeOptionCombo().getName() + " state " + s.name()
+            + " isApproved " + s.isApproved() + " isApprovable " + s.isApprovable() + " isUnapprovable " + s.isUnapprovable()
+            + " isAccepted " + s.isAccepted() + " isAcceptable " + s.isAcceptable() + " isUnacceptable " + s.isUnacceptable()
+            + " userLevel " + userLevel + " dataLevel " + dataLevel
+            + " mayApproveOrUnapproveAtLevel " + mayApproveOrUnapproveAtLevel + " mayAcceptOrUnacceptAtLevel " + mayAcceptOrUnacceptAtLevel
+            + " mayApprove " + mayApprove + " mayUnapprove " + mayUnapprove
+            + " mayAccept " + mayAccept + " mayUnaccept " + mayUnaccept
+            + " mayReadData " + mayReadData );
 
         permissions.setMayApprove( mayApprove );
         permissions.setMayUnapprove( mayUnapprove );
