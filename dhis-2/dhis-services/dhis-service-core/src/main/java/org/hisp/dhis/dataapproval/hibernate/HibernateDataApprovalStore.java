@@ -302,8 +302,6 @@ public class HibernateDataApprovalStore
             testAncestors += "or o" + i + ".organisationunitid is not null ";
         }
 
-        final String dsCategoryComboIdMatches = isDefaultCombo ? "" : "and ds.categorycomboid = a.categorycomboid "; // Default option combo matches any data set.
-
         String readyBelowSubquery = "true"; // Ready below if this is the lowest (highest number) approval orgUnit level.
 
         int orgUnitLevelAbove = 0;
@@ -327,10 +325,9 @@ public class HibernateDataApprovalStore
                 boolean acceptanceRequiredForApproval = (Boolean) systemSettingManager.getSystemSetting( KEY_ACCEPTANCE_REQUIRED_FOR_APPROVAL, false );
 
                 readyBelowSubquery = "not exists (select 1 from _orgunitstructure ous " +
-                    "join dataset ds on ds.datasetid in (" + dataSetIds + ") " + dsCategoryComboIdMatches +
                     "left join dataapproval da on da.organisationunitid = ous.organisationunitid " +
                     "and da.dataapprovallevelid = " + dal.getId() + " and da.periodid in (" + periodIds + ") " +
-                    "and da.datasetid = ds.datasetid " +
+                    "and da.datasetid in (" + dataSetIds + ") " +
                     "and da.attributeoptioncomboid = a.categoryoptioncomboid " +
                     "where ous.idlevel" + orgUnitLevel + " = a.organisationunitid " +
                     "and ous.level = " + dal.getOrgUnitLevel() + " " +
@@ -345,23 +342,20 @@ public class HibernateDataApprovalStore
         {
             approvedAboveSubquery = "exists(select 1 from dataapproval da " +
                 "join dataapprovallevel dal on dal.dataapprovallevelid = da.dataapprovallevelid " +
-                "join dataset ds on ds.datasetid = da.datasetid and ds.datasetid in (" + dataSetIds + ") " + dsCategoryComboIdMatches +
                 "join _orgunitstructure ou on ou.organisationunitid = a.organisationunitid and ou.idlevel" + orgUnitLevelAbove + " = da.organisationunitid " +
-                "where da.periodid in (" + periodIds + ") and da.attributeoptioncomboid = a.categoryoptioncomboid) ";
+                "where da.periodid in (" + periodIds + ") and da.datasetid in (" + dataSetIds + ") and da.attributeoptioncomboid = a.categoryoptioncomboid) ";
         }
 
         final String sql =
             "select a.categoryoptioncomboid, a.organisationunitid, " +
             "(select min(coalesce(dal.level, 0)) from period p " +
-                "join dataset ds on ds.datasetid in (" + dataSetIds + ") " + dsCategoryComboIdMatches +
-                "left join dataapproval da on da.datasetid = ds.datasetid and da.periodid = p.periodid " +
+            "left join dataapproval da on da.datasetid in (" + dataSetIds + ") and da.periodid = p.periodid " +
                     "and da.attributeoptioncomboid = a.categoryoptioncomboid and da.organisationunitid = a.organisationunitid " +
                 "left join dataapprovallevel dal on dal.dataapprovallevelid = da.dataapprovallevelid " +
                 "where p.periodid in (" + periodIds + ") " +
             ") as highest_approved_level, " +
             "(select substring(min(concat(100000 + coalesce(dal.level, 0), coalesce(da.accepted, FALSE))) from 7) from period p " +
-                "join dataset ds on ds.datasetid in (" + dataSetIds + ") " + dsCategoryComboIdMatches +
-                "left join dataapproval da on da.datasetid = ds.datasetid and da.periodid = p.periodid " +
+                "left join dataapproval da on da.datasetid in (" + dataSetIds + ") and da.periodid = p.periodid " +
                     "and da.attributeoptioncomboid = a.categoryoptioncomboid and da.organisationunitid = a.organisationunitid " +
                 "left join dataapprovallevel dal on dal.dataapprovallevelid = da.dataapprovallevelid " +
                 "where p.periodid in (" + periodIds + ") " +
