@@ -3,9 +3,8 @@ trackerCapture.controller('RelationshipController',
                 $rootScope,
                 $modal,                
                 $location,
-                $translate,
+                $translate,                
                 CurrentSelection,
-                TEIService,
                 RelationshipFactory) {
     $rootScope.showAddRelationshipDiv = false;
     $scope.relationshipTypes = []; 
@@ -97,13 +96,6 @@ trackerCapture.controller('RelationshipController',
             }
             var relative = {trackedEntityInstance: teiId, relName: relName, relId: rel.relationship};
             $scope.relatedTeis.push(relative);
-            
-            /*TEIService.get(teiId, $scope.optionSets).then(function(tei){               
-               var relative = tei.data;
-               relative.relName = relName;
-               relative.relId = rel.relationship;               
-               $scope.relatedTeis.push(relative);
-            });*/
         });
     };
 })
@@ -112,6 +104,7 @@ trackerCapture.controller('RelationshipController',
 .controller('AddRelationshipController', 
     function($scope, 
             $rootScope,
+            orderByFilter,
             CurrentSelection,
             OperatorFactory,
             AttributesFactory,
@@ -172,6 +165,7 @@ trackerCapture.controller('RelationshipController',
     }   
     else{
         AttributesFactory.getWithoutProgram().then(function(atts){
+            $scope.attributes = orderByFilter(atts, '-sortOrderInListNoProgram').reverse();
             $scope.attributes = atts;
             $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
             $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
@@ -190,6 +184,7 @@ trackerCapture.controller('RelationshipController',
         }
         else{
             AttributesFactory.getWithoutProgram().then(function(atts){
+                
                 $scope.attributes = atts;
                 $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
                 $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
