@@ -74,7 +74,7 @@ public enum DataApprovalState
      * Data is approved, and was approved here (so could be unapproved here.)
      */
     APPROVED_HERE ( /* approved */ true, /* approvable */ false, /* unapprovable */ true,
-                    /* accepted */ false, /* acceptable */ true, /* unacceptable */ false ),
+                    /* accepted */ false, /* acceptable */ false, /* unacceptable */ false ),
 
     /**
      * Data is approved and accepted here (so could be unapproved here.)
