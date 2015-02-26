@@ -371,7 +371,18 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
         else
         {
-            RootNode rootNode = new RootNode( collectionNode.getChildren().get( 0 ) );
+            List<Node> children = collectionNode.getChildren();
+            RootNode rootNode;
+
+            if ( !children.isEmpty() )
+            {
+                rootNode = new RootNode( children.get( 0 ) );
+            }
+            else
+            {
+                rootNode = new RootNode( new ComplexNode( getSchema().getSingular() ) );
+            }
+
             rootNode.setDefaultNamespace( DxfNamespaces.DXF_2_0 );
             rootNode.setNamespace( DxfNamespaces.DXF_2_0 );
 
