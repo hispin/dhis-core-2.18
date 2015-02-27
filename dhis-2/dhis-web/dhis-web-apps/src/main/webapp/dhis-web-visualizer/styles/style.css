@@ -328,6 +328,10 @@ body,
     background-image: url('../images/checkbox.gif');
 }
 
+.x-form-cb-wrap {
+    padding-top: 2px;
+}
+
 
 /*----------------------------------------------------------------------------
  * DV Checkbox

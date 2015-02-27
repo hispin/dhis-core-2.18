@@ -2729,6 +2729,7 @@ Ext.onReady( function() {
 					{id: 'LAST_BIMONTH', name: GIS.i18n.last_bimonth},
 					{id: 'LAST_QUARTER', name: GIS.i18n.last_quarter},
 					{id: 'LAST_SIX_MONTH', name: GIS.i18n.last_sixmonth},
+					{id: 'THIS_FINANCIAL_YEAR', name: GIS.i18n.this_financial_year},
 					{id: 'LAST_FINANCIAL_YEAR', name: GIS.i18n.last_financial_year},
 					{id: 'THIS_YEAR', name: GIS.i18n.this_year},
 					{id: 'LAST_YEAR', name: GIS.i18n.last_year}
