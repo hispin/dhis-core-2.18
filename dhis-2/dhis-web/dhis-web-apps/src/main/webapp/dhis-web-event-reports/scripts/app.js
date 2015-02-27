@@ -2318,6 +2318,11 @@ Ext.onReady( function() {
                 delete favorite.access;
                 delete favorite.lastUpdated;
                 delete favorite.created;
+
+                if (favorite.dataType === "individual_cases") {
+                    delete favorite.colSubTotals;
+                    delete favorite.rowSubTotals;
+                }
 			}
 
 			return favorite;

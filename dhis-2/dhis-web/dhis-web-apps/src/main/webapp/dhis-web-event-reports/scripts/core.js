@@ -1882,6 +1882,9 @@ Ext.onReady( function() {
                     nameMap = {},
                     ouIndex;
 
+                metaData.optionNames = {};
+                metaData.booleanNames = {};
+
                 nameMap['pe'] = 'eventdate';
                 nameMap['ou'] = 'ouname';
 
