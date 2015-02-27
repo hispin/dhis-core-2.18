@@ -198,7 +198,7 @@ public class JdbcCompletenessTableManager
             "select distinct(extract(year from pe.startdate)) " +
             "from completedatasetregistration cdr " +
             "inner join period pe on cdr.periodid=pe.periodid " +
-            "where pe.startdate is not null";
+            "where pe.startdate is not null ";
 
         if ( earliest != null )
         {
