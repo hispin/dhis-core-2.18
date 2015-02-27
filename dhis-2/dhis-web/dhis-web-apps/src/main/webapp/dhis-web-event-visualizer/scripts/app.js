@@ -3800,8 +3800,6 @@ Ext.onReady( function() {
         };
 
         weeks = Ext.create('Ext.container.Container', {
-            columnWidth: 0.34,
-            bodyStyle: 'border-style:none; padding:0 0 0 8px',
             defaults: {
                 labelSeparator: '',
                 style: 'margin-bottom:0',
@@ -3837,8 +3835,6 @@ Ext.onReady( function() {
         });
 
         months = Ext.create('Ext.container.Container', {
-            columnWidth: 0.33,
-            bodyStyle: 'border-style:none',
             defaults: {
                 labelSeparator: '',
                 style: 'margin-bottom:0',
@@ -3875,8 +3871,6 @@ Ext.onReady( function() {
         });
 
         biMonths = Ext.create('Ext.container.Container', {
-            columnWidth: 0.33,
-            bodyStyle: 'border-style:none',
             defaults: {
                 labelSeparator: '',
                 style: 'margin-bottom:0',
@@ -3902,8 +3896,6 @@ Ext.onReady( function() {
         });
 
         quarters = Ext.create('Ext.container.Container', {
-            columnWidth: 0.34,
-            bodyStyle: 'border-style:none; padding:5px 0 0 8px',
             defaults: {
                 labelSeparator: '',
                 style: 'margin-bottom:0',
@@ -3929,8 +3921,6 @@ Ext.onReady( function() {
         });
 
         sixMonths = Ext.create('Ext.container.Container', {
-            columnWidth: 0.33,
-            bodyStyle: 'border-style:none; padding:5px 0 0',
             defaults: {
                 labelSeparator: '',
                 style: 'margin-bottom:0',
@@ -3956,8 +3946,7 @@ Ext.onReady( function() {
         });
 
         financialYears = Ext.create('Ext.container.Container', {
-            columnWidth: 0.33,
-            bodyStyle: 'border-style:none; padding:5px 0 0',
+            style: 'margin-top: 36px',
             defaults: {
                 labelSeparator: '',
                 style: 'margin-bottom:0',
@@ -3968,6 +3957,11 @@ Ext.onReady( function() {
                     xtype: 'label',
                     text: NS.i18n.financial_years,
                     cls: 'ns-label-period-heading'
+                },
+                {
+                    xtype: 'checkbox',
+                    relativePeriodId: 'THIS_FINANCIAL_YEAR',
+                    boxLabel: NS.i18n.this_financial_year
                 },
                 {
                     xtype: 'checkbox',
@@ -3983,8 +3977,6 @@ Ext.onReady( function() {
         });
 
         years = Ext.create('Ext.container.Container', {
-            columnWidth: 0.35,
-            bodyStyle: 'border-style:none; padding:5px 0 0 8px',
             defaults: {
                 labelSeparator: '',
                 style: 'margin-bottom:0',
@@ -4015,35 +4007,44 @@ Ext.onReady( function() {
         });
 
         relativePeriod = Ext.create('Ext.container.Container', {
+            layout: 'column',
 			hideCollapseTool: true,
 			autoScroll: true,
-			style: 'border:0 none; padding:2px 0 0 7px',
+			style: 'border:0 none',
 			items: [
 				{
 					xtype: 'container',
-					layout: 'column',
+                    columnWidth: 0.34,
+                    style: 'margin-left: 8px',
+                    defaults: {
+                        style: 'margin-top: 4px'
+                    },
 					items: [
                         weeks,
-						months,
-                        biMonths
-					]
-				},
-				{
-					xtype: 'container',
-					layout: 'column',
-                    style: 'padding-top:4px',
-					items: [
 						quarters,
-						sixMonths,
-						financialYears
+                        years
 					]
 				},
 				{
 					xtype: 'container',
-					layout: 'column',
-                    style: 'padding-top:4px',
+                    columnWidth: 0.33,
+                    defaults: {
+                        style: 'margin-top: 4px'
+                    },
 					items: [
-                        years
+						months,
+						sixMonths
+					]
+				},
+				{
+					xtype: 'container',
+                    columnWidth: 0.33,
+                    defaults: {
+                        style: 'margin-top: 4px'
+                    },
+					items: [
+                        biMonths,
+						financialYears
 					]
 				}
 			],
