@@ -119,17 +119,21 @@ public class JdbcCompletenessTargetTableManager
             }
 
             final String tableName = table.getTempTableName();
-            
+
             String sql = "insert into " + table.getTempTableName() + " (";
-    
-            for ( String[] col : getDimensionColumns( table ) )
+
+            List<String[]> columns = getDimensionColumns( table );
+            
+            validateDimensionColumns( columns );
+
+            for ( String[] col : columns )
             {
                 sql += col[0] + ",";
             }
     
             sql += "value) select ";
     
-            for ( String[] col : getDimensionColumns( table ) )
+            for ( String[] col : columns )
             {
                 sql += col[2] + ",";
             }

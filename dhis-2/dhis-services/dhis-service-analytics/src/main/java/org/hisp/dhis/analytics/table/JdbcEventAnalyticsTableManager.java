@@ -181,14 +181,18 @@ public class JdbcEventAnalyticsTableManager
 
             String sql = "insert into " + table.getTempTableName() + " (";
 
-            for ( String[] col : getDimensionColumns( table ) )
+            List<String[]> columns = getDimensionColumns( table );
+            
+            validateDimensionColumns( columns );
+
+            for ( String[] col : columns )
             {
                 sql += col[0] + ",";
             }
 
             sql = removeLast( sql, 1 ) + ") select ";
 
-            for ( String[] col : getDimensionColumns( table ) )
+            for ( String[] col : columns )
             {
                 sql += col[2] + ",";
             }

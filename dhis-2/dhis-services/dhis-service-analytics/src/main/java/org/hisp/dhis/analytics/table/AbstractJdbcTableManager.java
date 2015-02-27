@@ -283,11 +283,13 @@ public abstract class AbstractJdbcTableManager
      * @throws IllegalStateException if not valid.
      */
     protected void validateDimensionColumns( List<String[]> dimensions )
-    {
+    {        
         if ( dimensions == null || dimensions.isEmpty() )
         {
             throw new IllegalStateException( "Analytics table dimensions are empty" );
         }
+        
+        dimensions = new ArrayList<>( dimensions );
         
         List<String> columns = new ArrayList<>();
         
