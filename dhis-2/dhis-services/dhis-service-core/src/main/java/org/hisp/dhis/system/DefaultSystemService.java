@@ -77,6 +77,8 @@ public class DefaultSystemService
     {
         if ( systemInfo != null )
         {
+            systemInfo.setServerDate( new Date() );
+            
             return systemInfo;
         }
 
