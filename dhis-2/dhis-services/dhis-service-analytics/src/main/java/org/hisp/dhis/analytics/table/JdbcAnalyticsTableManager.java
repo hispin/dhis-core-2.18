@@ -115,7 +115,7 @@ public class JdbcAnalyticsTableManager
         final String sqlDrop = "drop table " + tableName;
         
         executeSilently( sqlDrop );
-
+        
         String sqlCreate = "create table " + tableName + " (";
 
         List<String[]> columns = getDimensionColumns( table );
@@ -131,7 +131,7 @@ public class JdbcAnalyticsTableManager
         
         sqlCreate += statementBuilder.getTableOptions( false );
         
-        log.info( "Creating table: " + tableName );
+        log.info( "Creating table: " + tableName + ", columns: " + columns.size() );
         
         log.debug( "Create SQL: " + sqlCreate );
         
