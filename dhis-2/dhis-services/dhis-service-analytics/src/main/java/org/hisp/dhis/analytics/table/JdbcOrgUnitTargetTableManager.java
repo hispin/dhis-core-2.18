@@ -97,7 +97,7 @@ public class JdbcOrgUnitTargetTableManager
         
         sqlCreate += statementBuilder.getTableOptions( false );
 
-        log.info( "Creating table: " + tableName );
+        log.info( "Creating table: " + tableName + ", columns: " + columns.size() );
         
         log.debug( "Create SQL: " + sqlCreate );
         
