@@ -471,10 +471,15 @@ function Selection()
                     selection.busy( false );
                 });
             }
-            
+
           selection.busy( true );
 
-          doSync();
+          if( selection.getSelected() && selection.getSelected().length === 0 ) {
+        	  setTimeout(doSync, 1000); // Workaround for indexeddb slowness
+          } 
+          else {
+        	  doSync();
+          }
         }
     };
 
@@ -598,7 +603,7 @@ function Selection()
                 ids.push( item );
                 names.push( name );
             } );
-
+            
             $( document ).trigger( dhis2.ou.event.orgUnitSelected, [ids, names, children] );
             
             if( typeof listenerFunction === 'function') {
@@ -618,10 +623,10 @@ function Selection()
                 names.push( name );
 
                 $( document ).trigger( dhis2.ou.event.orgUnitSelected, [ids, names, children] );
-                
+
                 if( typeof listenerFunction === 'function') {
                 	listenerFunction( ids, names, children );
-                }                
+                }
             }
         }
     };
