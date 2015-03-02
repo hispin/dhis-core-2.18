@@ -142,9 +142,9 @@ public class JdbcCompletenessTableManager
                 "from completedatasetregistration cdr " +
                 "left join _organisationunitgroupsetstructure ougs on cdr.sourceid=ougs.organisationunitid " +
                 "left join _orgunitstructure ous on cdr.sourceid=ous.organisationunitid " +
+                "inner join period pe on cdr.periodid=pe.periodid " +
                 "left join _periodstructure ps on cdr.periodid=ps.periodid " +
-                "left join period pe on cdr.periodid=pe.periodid " +
-                "left join dataset ds on cdr.datasetid=ds.datasetid " +
+                "inner join dataset ds on cdr.datasetid=ds.datasetid " +
                 "where pe.startdate >= '" + start + "' " +
                 "and pe.startdate <= '" + end + "'" +
                 "and cdr.date is not null";

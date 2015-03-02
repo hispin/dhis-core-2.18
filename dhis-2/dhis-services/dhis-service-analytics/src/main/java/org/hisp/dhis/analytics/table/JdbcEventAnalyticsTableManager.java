@@ -200,13 +200,13 @@ public class JdbcEventAnalyticsTableManager
             sql = removeLast( sql, 1 ) + " ";
 
             sql += "from programstageinstance psi " +
-                "left join _organisationunitgroupsetstructure ougs on psi.organisationunitid=ougs.organisationunitid " +
-                "left join programinstance pi on psi.programinstanceid=pi.programinstanceid " +
-                "left join programstage ps on psi.programstageid=ps.programstageid " +
-                "left join program pr on pi.programid=pr.programid " +
+                "inner join programinstance pi on psi.programinstanceid=pi.programinstanceid " +
+                "inner join programstage ps on psi.programstageid=ps.programstageid " +
+                "inner join program pr on pi.programid=pr.programid " +
                 "left join trackedentityinstance tei on pi.trackedentityinstanceid=tei.trackedentityinstanceid " +
-                "left join organisationunit ou on psi.organisationunitid=ou.organisationunitid " +
+                "inner join organisationunit ou on psi.organisationunitid=ou.organisationunitid " +
                 "left join _orgunitstructure ous on psi.organisationunitid=ous.organisationunitid " +
+                "left join _organisationunitgroupsetstructure ougs on psi.organisationunitid=ougs.organisationunitid " +
                 "left join _dateperiodstructure dps on psi.executiondate=dps.dateperiod " +
                 "where psi.executiondate >= '" + start + "' " + 
                 "and psi.executiondate <= '" + end + "' " +
