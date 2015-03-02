@@ -169,7 +169,7 @@ public class JdbcSqlViewStore
             
             jdbcTemplate.update( sql );
         }
-        catch ( BadSqlGrammarException ex )
+        catch ( Exception ex )
         {
             log.warn( "Could not drop view: " + viewName, ex );
         }
