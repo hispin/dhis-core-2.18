@@ -224,11 +224,15 @@ Ext.onReady( function() {
         layer.registerMouseDownEvent = function() {
 
             // clear mousedown listeners
-            if (layer.events && layer.events.listeners && Ext.isArray(layer.events.listeners.mousedown)) {
-                layer.events.listeners.mousedown = [];
-            }
+            //if (layer.events && layer.events.listeners && Ext.isArray(layer.events.listeners.mousedown)) {
+                //layer.events.listeners.mousedown = [];
+            //}
 
             layer.events.register('mousedown', null, layer.onMouseDown);
+        };
+
+        layer.unregisterMouseDownEvent = function() {
+            layer.events.unregister('mousedown', null, layer.onMouseDown);
         };
 
 		defaultHoverSelect = function fn(feature) {
@@ -274,6 +278,12 @@ Ext.onReady( function() {
 
 		defaultHoverUnselect = function fn(feature) {
 			defaultHoverWindow.destroy();
+
+            // remove mouse click event
+            if (layer.events && layer.events.listeners && Ext.isArray(layer.events.listeners.mousedown)) {
+                layer.events.listeners.mousedown = [];
+            }
+            //layer.unregisterMouseDownEvent();
 		};
 
         defaultLeftClickSelect = function fn(feature, e) {
