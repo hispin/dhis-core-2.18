@@ -138,7 +138,7 @@ public class MaintenanceController
         partitionManager.clearCaches();
     }
 
-    @RequestMapping( value = "/validateMetadata", method = { RequestMethod.PUT, RequestMethod.POST } )
+    @RequestMapping( value = "/metadataValidation", method = { RequestMethod.PUT, RequestMethod.POST } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
     public void runValidateMetadata( HttpServletResponse response ) throws InvocationTargetException, IllegalAccessException, IOException
     {
