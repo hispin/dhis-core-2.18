@@ -209,7 +209,7 @@ public class DefaultDataApprovalService
             {
                 log.warn( "unapproveData: approval not found at " + da );
 
-                throw new DataMayNotBeAcceptedException();
+                throw new DataMayNotBeUnapprovedException();
             }
 
             dataApprovalStore.deleteDataApproval( d );
@@ -325,7 +325,7 @@ public class DefaultDataApprovalService
             {
                 log.warn( "unacceptData: approval not found at " + da );
 
-                throw new DataMayNotBeAcceptedException();
+                throw new DataMayNotBeUnacceptedException();
             }
 
             d.setAccepted( false );
