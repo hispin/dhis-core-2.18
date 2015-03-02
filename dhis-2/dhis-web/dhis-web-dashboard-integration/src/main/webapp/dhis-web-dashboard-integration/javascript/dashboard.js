@@ -584,11 +584,12 @@ dhis2.db.renderItems = function( $d, dashboardItem, width, prepend )
 	width = width || dhis2.db.widthNormal;
 	prepend = prepend || false;
 
-	var style = "width:" + width + "px";
+	var graphStyle = "width:" + width + "px; overflow:hidden;";
+	var tableStyle = "width:" + width + "px;";
 
 	if ( "chart" == dashboardItem.type )
 	{
-	    var content = $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": dashboardItem.id, "id": dashboardItem.chart.id, "name": dashboardItem.chart.name, "style": style,
+	    var content = $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": dashboardItem.id, "id": dashboardItem.chart.id, "name": dashboardItem.chart.name, "style": graphStyle,
 	    	"i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image, "i18n_share": i18n_share_interpretation,
 	    	"i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } );
 	    dhis2.db.preOrAppend( $d, content, prepend );
@@ -627,7 +628,7 @@ dhis2.db.renderItems = function( $d, dashboardItem, width, prepend )
 	else if ( "eventChart" == dashboardItem.type )
 	{
 		var content = $.tmpl( dhis2.db.tmpl.eventChartItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventChart.id,
-	    	"name": dashboardItem.eventChart.name, "style": style, "i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image,
+	    	"name": dashboardItem.eventChart.name, "style": graphStyle, "i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image,
 	    	"i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position, "i18n_explore": i18n_explore } );
 		dhis2.db.preOrAppend( $d, content, prepend );
 
@@ -665,7 +666,7 @@ dhis2.db.renderItems = function( $d, dashboardItem, width, prepend )
 	else if ( "map" == dashboardItem.type )
 	{
 		var content = $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": dashboardItem.id, "id": dashboardItem.map.id, "name": dashboardItem.map.name,
-			"style": style, "height": dhis2.db.itemContentHeight, "i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image,
+			"style": graphStyle, "height": dhis2.db.itemContentHeight, "i18n_remove": i18n_remove, "i18n_get_as_image": i18n_get_as_image,
 			"i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } );
 		dhis2.db.preOrAppend( $d, content, prepend );
 
@@ -681,7 +682,7 @@ dhis2.db.renderItems = function( $d, dashboardItem, width, prepend )
 	}
 	else if ( "reportTable" == dashboardItem.type )
 	{
-		var content = $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": dashboardItem.id, "id": dashboardItem.reportTable.id, "name": dashboardItem.reportTable.name, "style": style,
+		var content = $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": dashboardItem.id, "id": dashboardItem.reportTable.id, "name": dashboardItem.reportTable.name, "style": tableStyle,
 			"i18n_remove": i18n_remove, "i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } );
 		dhis2.db.preOrAppend( $d, content, prepend );
 
@@ -698,7 +699,7 @@ dhis2.db.renderItems = function( $d, dashboardItem, width, prepend )
 	}
 	else if ( "eventReport" == dashboardItem.type )
 	{
-		var content = $.tmpl( dhis2.db.tmpl.eventReportItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventReport.id, "name": dashboardItem.eventReport.name, "style": style,
+		var content = $.tmpl( dhis2.db.tmpl.eventReportItem, { "itemId": dashboardItem.id, "id": dashboardItem.eventReport.id, "name": dashboardItem.eventReport.name, "style": tableStyle,
 			"i18n_remove": i18n_remove, "i18n_share": i18n_share_interpretation, "i18n_click_and_drag_to_new_position": i18n_click_and_drag_to_new_position } );
 		dhis2.db.preOrAppend( $d, content, prepend );
 
