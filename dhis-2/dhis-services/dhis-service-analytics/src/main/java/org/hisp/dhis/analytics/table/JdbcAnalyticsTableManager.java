@@ -217,12 +217,12 @@ public class JdbcAnalyticsTableManager
             "left join _categoryoptiongroupsetstructure cogs on dv.attributeoptioncomboid=cogs.categoryoptioncomboid " +
             "left join _categorystructure dcs on dv.categoryoptioncomboid=dcs.categoryoptioncomboid " +
             "left join _categorystructure acs on dv.attributeoptioncomboid=acs.categoryoptioncomboid " +
-            "left join _periodstructure ps on dv.periodid=ps.periodid " +
             "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
             "left join _dataelementstructure des on dv.dataelementid = des.dataelementid " +
             "inner join dataelement de on dv.dataelementid=de.dataelementid " +
             "inner join categoryoptioncombo co on dv.categoryoptioncomboid=co.categoryoptioncomboid " +
             "inner join period pe on dv.periodid=pe.periodid " +
+            "inner join _periodstructure ps on dv.periodid=ps.periodid " +
             "inner join organisationunit ou on dv.sourceid=ou.organisationunitid " +
             "where de.valuetype = '" + valueType + "' " +
             "and de.domaintype = 'AGGREGATE' " +

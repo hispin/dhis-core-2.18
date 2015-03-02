@@ -140,7 +140,7 @@ public class JdbcOrgUnitTargetTableManager
             sql +=
                 "1 as value " +
                 "from orgunitgroupmembers ougm " +
-                "left join orgunitgroup oug on ougm.orgunitgroupid=oug.orgunitgroupid " +
+                "inner join orgunitgroup oug on ougm.orgunitgroupid=oug.orgunitgroupid " +
                 "left join _orgunitstructure ous on ougm.organisationunitid=ous.organisationunitid " +
                 "left join _organisationunitgroupsetstructure ougs on ougm.organisationunitid=ougs.organisationunitid";            
 
