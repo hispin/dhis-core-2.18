@@ -38,7 +38,7 @@ import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datamart.DataMartManager;
 import org.hisp.dhis.maintenance.MaintenanceService;
-import org.hisp.dhis.sqlview.SqlViewService;
+import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -113,11 +113,11 @@ public class PerformMaintenanceAction
         this.categoryService = categoryService;
     }
 
-    private SqlViewService sqlViewService;
+    private ResourceTableService resourceTableService;
 
-    public void setSqlViewService( SqlViewService sqlViewService )
+    public void setResourceTableService( ResourceTableService resourceTableService )
     {
-        this.sqlViewService = sqlViewService;
+        this.resourceTableService = resourceTableService;
     }
 
     // -------------------------------------------------------------------------
@@ -206,7 +206,7 @@ public class PerformMaintenanceAction
         
         if ( clearAnalytics )
         {
-            sqlViewService.dropAllSqlViews();
+            resourceTableService.dropAllSqlViews();
             analyticsTableService.dropTables();
             completenessTableService.dropTables();
             completenessTargetTableService.dropTables();
@@ -272,14 +272,14 @@ public class PerformMaintenanceAction
 
         if ( dropSqlViews )
         {
-            sqlViewService.dropAllSqlViews();
+            resourceTableService.dropAllSqlViews();
             
             log.info( "'" + username + "': Dropped SQL views" );
         }
         
         if ( createSqlViews )
         {
-            sqlViewService.createAllSqlViews();
+            resourceTableService.createAllSqlViews();
             
             log.info( "'" + username + "': Created SQL views" );
         }

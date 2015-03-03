@@ -48,7 +48,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.setting.SystemSettingManager;
-import org.hisp.dhis.sqlview.SqlViewService;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.ConcurrentUtils;
@@ -78,9 +77,6 @@ public class DefaultAnalyticsTableService
     
     @Autowired
     private ResourceTableService resourceTableService;
-    
-    @Autowired
-    private SqlViewService sqlViewService;
     
     @Autowired
     private PartitionManager partitionManager;
@@ -169,7 +165,7 @@ public class DefaultAnalyticsTableService
     @Override
     public void generateResourceTables()
     {
-        sqlViewService.dropAllSqlViews();
+        resourceTableService.dropAllSqlViews();
         resourceTableService.generateOrganisationUnitStructures();        
         resourceTableService.generateCategoryOptionComboNames();
         resourceTableService.generateCategoryOptionGroupSetTable();
@@ -181,7 +177,7 @@ public class DefaultAnalyticsTableService
         resourceTableService.generatePeriodTable();
         resourceTableService.generateDatePeriodTable();
         resourceTableService.generateDataElementCategoryOptionComboTable();
-        sqlViewService.createAllSqlViews();
+        resourceTableService.createAllSqlViews();
     }
     
     // -------------------------------------------------------------------------
@@ -285,14 +281,14 @@ public class DefaultAnalyticsTableService
     
     private void swapTables( List<AnalyticsTable> tables )
     {
-        sqlViewService.dropAllSqlViews();
+        resourceTableService.dropAllSqlViews();
         
         for ( AnalyticsTable table : tables )
         {
             tableManager.swapTable( table );
         }
         
-        sqlViewService.createAllSqlViews();
+        resourceTableService.createAllSqlViews();
     }
     
     /**

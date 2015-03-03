@@ -36,7 +36,6 @@ import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.setting.SystemSettingManager;
-import org.hisp.dhis.sqlview.SqlViewService;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.Clock;
@@ -51,9 +50,6 @@ public class ResourceTableTask
 {
     @Autowired
     private ResourceTableService resourceTableService;
-    
-    @Autowired
-    private SqlViewService sqlViewService;
     
     @Autowired
     private Notifier notifier;
@@ -111,7 +107,7 @@ public class ResourceTableTask
 
     private void generateAll()
     {
-        sqlViewService.dropAllSqlViews();
+        resourceTableService.dropAllSqlViews();
         resourceTableService.generateOrganisationUnitStructures();   
         resourceTableService.generateCategoryOptionComboNames();
         resourceTableService.generateCategoryOptionGroupSetTable();
@@ -123,6 +119,6 @@ public class ResourceTableTask
         resourceTableService.generatePeriodTable();
         resourceTableService.generateDatePeriodTable();
         resourceTableService.generateDataElementCategoryOptionComboTable();
-        sqlViewService.createAllSqlViews();
+        resourceTableService.createAllSqlViews();
     }
 }

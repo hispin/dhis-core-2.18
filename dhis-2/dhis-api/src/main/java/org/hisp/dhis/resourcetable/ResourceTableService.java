@@ -94,4 +94,14 @@ public interface ResourceTableService
      * option combinations.
      */
     void generateDataElementCategoryOptionComboTable();
+    
+    /**
+     * Create all SQL views.
+     */
+    void createAllSqlViews();
+    
+    /**
+     * Drop all SQL views.
+     */
+    void dropAllSqlViews();
 }
