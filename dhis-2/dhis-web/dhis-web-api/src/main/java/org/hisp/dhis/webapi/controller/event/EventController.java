@@ -64,6 +64,7 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.hisp.dhis.webapi.webdomain.WebOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -92,6 +93,7 @@ import java.util.zip.GZIPOutputStream;
  */
 @Controller
 @RequestMapping( value = EventController.RESOURCE_PATH )
+@Scope( value = "prototype" )
 public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
@@ -290,7 +292,7 @@ public class EventController
         }
 
         Events events = eventService.getEvents( pr, prs, programStatus, followUp, organisationUnits, tei, startDate, endDate, status );
-       
+
         if ( options.hasLinks() )
         {
             for ( Event event : events.getEvents() )

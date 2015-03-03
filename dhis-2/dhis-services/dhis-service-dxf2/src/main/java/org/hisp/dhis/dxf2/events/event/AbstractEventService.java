@@ -69,6 +69,7 @@ import org.hisp.dhis.trackedentitycomment.TrackedEntityCommentService;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -157,6 +158,8 @@ public abstract class AbstractEventService
 
     private Map<String, DataElement> dataElementCache = new HashMap<>();
 
+    private List<Program> accessiblePrograms = new ArrayList<>();
+
     // -------------------------------------------------------------------------
     // CREATE
     // -------------------------------------------------------------------------
@@ -167,9 +170,11 @@ public abstract class AbstractEventService
         ImportSummaries importSummaries = new ImportSummaries();
         int counter = 0;
 
+        User user = currentUserService.getCurrentUser();
+
         for ( Event event : events )
         {
-            importSummaries.addImportSummary( addEvent( event, importOptions ) );
+            importSummaries.addImportSummary( addEvent( event, user, importOptions ) );
 
             if ( counter % FLUSH_FREQUENCY == 0 )
             {
@@ -217,6 +222,11 @@ public abstract class AbstractEventService
     @Override
     public ImportSummary addEvent( Event event, ImportOptions importOptions )
     {
+        return addEvent( event, currentUserService.getCurrentUser(), importOptions );
+    }
+
+    protected ImportSummary addEvent( Event event, User user, ImportOptions importOptions )
+    {
         Program program = getProgram( event.getProgram() );
         ProgramStage programStage = getProgramStage( event.getProgramStage() );
 
@@ -246,7 +256,7 @@ public abstract class AbstractEventService
         Assert.notNull( program );
         Assert.notNull( programStage );
 
-        if ( verifyProgramAccess( program ) )
+        if ( verifyProgramAccess( program, user ) )
         {
             return new ImportSummary( ImportStatus.ERROR,
                 "Current user does not have permission to access this program" );
@@ -371,7 +381,8 @@ public abstract class AbstractEventService
             return new ImportSummary( ImportStatus.ERROR, "Program is not assigned to this organisation unit" );
         }
 
-        return saveEvent( program, programInstance, programStage, programStageInstance, organisationUnit, event, importOptions );
+        return saveEvent( program, programInstance, programStage, programStageInstance, organisationUnit, event,
+            user, importOptions );
     }
 
     // -------------------------------------------------------------------------
@@ -467,7 +478,7 @@ public abstract class AbstractEventService
             dueDate = DateUtils.parseDate( event.getDueDate() );
         }
 
-        String storedBy = getStoredBy( event, null );
+        String storedBy = getStoredBy( event, null, currentUserService.getCurrentUsername() );
 
         if ( event.getStatus() == EventStatus.ACTIVE )
         {
@@ -564,7 +575,7 @@ public abstract class AbstractEventService
             return;
         }
 
-        saveTrackedEntityComment( programStageInstance, event, getStoredBy( event, null ) );
+        saveTrackedEntityComment( programStageInstance, event, getStoredBy( event, null, currentUserService.getCurrentUsername() ) );
     }
 
     @Override
@@ -727,10 +738,14 @@ public abstract class AbstractEventService
         return !assignedToOrganisationUnit;
     }
 
-    private boolean verifyProgramAccess( Program program )
+    private boolean verifyProgramAccess( Program program, User user )
     {
-        Collection<Program> programsByCurrentUser = programService.getProgramsByCurrentUser();
-        return !programsByCurrentUser.contains( program );
+        if ( accessiblePrograms.isEmpty() )
+        {
+            accessiblePrograms = new ArrayList<>( programService.getProgramsByUser( user ) );
+        }
+
+        return !accessiblePrograms.contains( program );
     }
 
     private boolean validateDataValue( DataElement dataElement, String value, ImportSummary importSummary )
@@ -747,13 +762,13 @@ public abstract class AbstractEventService
         return true;
     }
 
-    private String getStoredBy( Event event, ImportSummary importSummary )
+    private String getStoredBy( Event event, ImportSummary importSummary, String defaultUsername )
     {
         String storedBy = event.getStoredBy();
 
         if ( storedBy == null )
         {
-            storedBy = currentUserService.getCurrentUsername();
+            storedBy = defaultUsername;
         }
         else if ( storedBy.length() >= 31 )
         {
@@ -764,7 +779,7 @@ public abstract class AbstractEventService
                         + " is more than 31 characters, using current username instead" ) );
             }
 
-            storedBy = currentUserService.getCurrentUsername();
+            storedBy = defaultUsername;
         }
         return storedBy;
     }
@@ -854,7 +869,8 @@ public abstract class AbstractEventService
 
         if ( programStageInstance.getId() == 0 )
         {
-            programStageInstanceService.addProgramStageInstance( programStageInstance );
+            programStageInstance.setAutoFields();
+            sessionFactory.getCurrentSession().save( programStageInstance );
         }
 
         if ( programStageInstance.isCompleted() )
@@ -867,7 +883,7 @@ public abstract class AbstractEventService
     }
 
     private ImportSummary saveEvent( Program program, ProgramInstance programInstance, ProgramStage programStage,
-        ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit, Event event,
+        ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit, Event event, User user,
         ImportOptions importOptions )
     {
         Assert.notNull( program );
@@ -882,7 +898,7 @@ public abstract class AbstractEventService
 
         Date dueDate = DateUtils.parseDate( event.getDueDate() );
 
-        String storedBy = getStoredBy( event, importSummary );
+        String storedBy = getStoredBy( event, importSummary, user.getUsername() );
 
         if ( !dryRun )
         {

@@ -102,32 +102,6 @@ public class HibernateProgramStore
     }
 
     @Override
-    public Collection<Program> getByCurrentUser()
-    {
-        Collection<Program> programs = new HashSet<>();
-
-        if ( currentUserService.getCurrentUser() != null && !currentUserService.currentUserIsSuper() )
-        {
-            Set<UserAuthorityGroup> userRoles = userService.getUserCredentials( currentUserService.getCurrentUser() )
-                .getUserAuthorityGroups();
-
-            for ( Program program : getAll() )
-            {
-                if ( CollectionUtils.intersection( program.getUserRoles(), userRoles ).size() > 0 )
-                {
-                    programs.add( program );
-                }
-            }
-        }
-        else
-        {
-            programs = getAll();
-        }
-
-        return programs;
-    }
-
-    @Override
     public Collection<Program> getByCurrentUser( int type )
     {
         Collection<Program> programs = new HashSet<>();
