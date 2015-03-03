@@ -70,6 +70,8 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.resourcetable.statement.CreateCategoryOptionGroupSetTableStatement;
+import org.hisp.dhis.sqlview.SqlView;
+import org.hisp.dhis.sqlview.SqlViewService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -131,6 +133,13 @@ public class DefaultResourceTableService
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+
+    private SqlViewService sqlViewService;
+
+    public void setSqlViewService( SqlViewService sqlViewService )
+    {
+        this.sqlViewService = sqlViewService;
     }
 
     // -------------------------------------------------------------------------
@@ -506,5 +515,41 @@ public class DefaultResourceTableService
         resourceTableStore.createAndGenerateDataElementCategoryOptionCombo();
 
         log.info( "Data element category option combo table generated" );
+    }
+    
+    // -------------------------------------------------------------------------
+    // SQL Views. Each view is created/dropped in separate transactions so that
+    // process continues even if individual operations fail.
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void createAllSqlViews()
+    {
+        List<SqlView> views = new ArrayList<>( sqlViewService.getAllSqlViewsNoAcl() );
+        Collections.sort( views, IdentifiableObjectNameComparator.INSTANCE );
+        
+        for ( SqlView view : views )
+        {
+            if ( !view.isQuery() )
+            {
+                sqlViewService.createViewTable( view );
+            }
+        }
+    }
+
+    @Override
+    public void dropAllSqlViews()
+    {
+        List<SqlView> views = new ArrayList<>( sqlViewService.getAllSqlViewsNoAcl() );
+        Collections.sort( views, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.reverse( views );
+
+        for ( SqlView view : views )
+        {
+            if ( !view.isQuery() )
+            {
+                sqlViewService.dropViewTable( view.getViewName() );
+            }
+        }
     }
 }

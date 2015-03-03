@@ -28,36 +28,36 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.analytics.partition.PartitionManager;
-import org.hisp.dhis.cache.HibernateCacheManager;
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dxf2.metadata.ExportService;
-import org.hisp.dhis.dxf2.metadata.MetaData;
-import org.hisp.dhis.dxf2.metadata.Options;
-import org.hisp.dhis.dxf2.render.RenderService;
-import org.hisp.dhis.dxf2.schema.SchemaValidator;
-import org.hisp.dhis.dxf2.schema.ValidationViolation;
-import org.hisp.dhis.maintenance.MaintenanceService;
-import org.hisp.dhis.schema.Property;
-import org.hisp.dhis.schema.Schema;
-import org.hisp.dhis.schema.SchemaService;
-import org.hisp.dhis.sqlview.SqlViewService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.hisp.dhis.analytics.partition.PartitionManager;
+import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dxf2.metadata.Options;
+import org.hisp.dhis.dxf2.metadata.ExportService;
+import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.dxf2.render.RenderService;
+import org.hisp.dhis.dxf2.schema.SchemaValidator;
+import org.hisp.dhis.dxf2.schema.ValidationViolation;
+import org.hisp.dhis.maintenance.MaintenanceService;
+import org.hisp.dhis.resourcetable.ResourceTableService;
+import org.hisp.dhis.schema.Property;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author Lars Helge Overland
@@ -93,7 +93,7 @@ public class MaintenanceController
     private RenderService renderService;
     
     @Autowired
-    private SqlViewService sqlViewService;
+    private ResourceTableService resourceTableService;
 
     @RequestMapping( value = "/periodPruning", method = { RequestMethod.PUT, RequestMethod.POST } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
@@ -113,14 +113,14 @@ public class MaintenanceController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
     public void dropSqlViews()
     {
-        sqlViewService.dropAllSqlViews();
+        resourceTableService.dropAllSqlViews();
     }
     
     @RequestMapping( value = "/createSqlViews", method = { RequestMethod.PUT, RequestMethod.POST } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
     public void createSqlViews()
     {
-        sqlViewService.createAllSqlViews();
+        resourceTableService.createAllSqlViews();
     }
     
     @RequestMapping( value = "/categoryOptionComboUpdate", method = { RequestMethod.PUT, RequestMethod.POST } )

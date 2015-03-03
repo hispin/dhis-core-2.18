@@ -28,11 +28,8 @@ package org.hisp.dhis.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -42,7 +39,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IllegalQueryException;
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -158,38 +154,6 @@ public class DefaultSqlViewService
     public String createViewTable( SqlView sqlView )
     {
         return sqlViewStore.createViewTable( sqlView );
-    }
-    
-    @Override
-    public void createAllSqlViews()
-    {
-        List<SqlView> views = new ArrayList<>( getAllSqlViewsNoAcl() );
-        Collections.sort( views, IdentifiableObjectNameComparator.INSTANCE );
-        
-        for ( SqlView view : views )
-        {
-            if ( !view.isQuery() )
-            {
-                createViewTable( view );
-            }
-        }
-    }
-
-
-    @Override
-    public void dropAllSqlViews()
-    {
-        List<SqlView> views = new ArrayList<>( getAllSqlViewsNoAcl() );
-        Collections.sort( views, IdentifiableObjectNameComparator.INSTANCE );
-        Collections.reverse( views );
-
-        for ( SqlView view : views )
-        {
-            if ( !view.isQuery() )
-            {
-                dropViewTable( view.getViewName() );
-            }
-        }
     }
     
     @Override
