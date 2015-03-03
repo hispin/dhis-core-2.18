@@ -993,46 +993,7 @@ public abstract class AbstractEventService
 
     private OrganisationUnit getOrganisationUnit( IdentifiableProperty scheme, String value )
     {
-        OrganisationUnit organisationUnit = null;
-
-        if ( StringUtils.isEmpty( value ) )
-        {
-            return null;
-        }
-
-        if ( organisationUnitCache.containsKey( value ) )
-        {
-            return organisationUnitCache.get( value );
-        }
-
-        if ( IdentifiableProperty.UUID.equals( scheme ) )
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnitByUuid( value );
-        }
-        else if ( IdentifiableProperty.CODE.equals( scheme ) )
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnitByCode( value );
-        }
-        else if ( IdentifiableProperty.NAME.equals( scheme ) )
-        {
-            List<OrganisationUnit> organisationUnitByName = organisationUnitService.getOrganisationUnitByName( value );
-
-            if ( organisationUnitByName.size() == 1 )
-            {
-                organisationUnit = organisationUnitByName.get( 0 );
-            }
-        }
-        else
-        {
-            organisationUnit = organisationUnitService.getOrganisationUnit( value );
-        }
-
-        if ( organisationUnit != null )
-        {
-            organisationUnitCache.put( value, organisationUnit );
-        }
-
-        return organisationUnit;
+        return organisationUnitCache.get( value, new IdentifiableObjectCallable<>( manager, OrganisationUnit.class, scheme, value ) );
     }
 
     private Program getProgram( String programId )
