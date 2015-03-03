@@ -93,7 +93,6 @@ import java.util.zip.GZIPOutputStream;
  */
 @Controller
 @RequestMapping( value = EventController.RESOURCE_PATH )
-@Scope( value = "prototype" )
 public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
