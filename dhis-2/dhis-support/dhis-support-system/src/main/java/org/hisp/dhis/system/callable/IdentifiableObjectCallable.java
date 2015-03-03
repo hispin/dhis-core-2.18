@@ -33,6 +33,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.common.IdentifiableProperty;
 
 /**
  * @author Lars Helge Overland
@@ -42,6 +43,7 @@ public class IdentifiableObjectCallable<T extends IdentifiableObject>
 {
     private IdentifiableObjectManager manager;
     private Class<T> clazz;
+    private IdentifiableProperty property;
     private String uid;
     
     public IdentifiableObjectCallable( IdentifiableObjectManager manager, Class<T> clazz, String uid )
@@ -50,12 +52,27 @@ public class IdentifiableObjectCallable<T extends IdentifiableObject>
         this.clazz = clazz;
         this.uid = uid;
     }
+
+    public IdentifiableObjectCallable( IdentifiableObjectManager manager, Class<T> clazz, IdentifiableProperty property, String uid )
+    {
+        this.manager = manager;
+        this.clazz = clazz;
+        this.property = property;
+        this.uid = uid;
+    }
     
     @Override
     public T call()
         throws ExecutionException
     {
-        return manager.get( clazz, uid );
+        if ( property == null )
+        {
+            return manager.get( clazz, uid );
+        }
+        else
+        {
+            return manager.getObject( clazz, property, uid );
+        }
     }
     
     public IdentifiableObjectCallable<T> setUid( String uid )

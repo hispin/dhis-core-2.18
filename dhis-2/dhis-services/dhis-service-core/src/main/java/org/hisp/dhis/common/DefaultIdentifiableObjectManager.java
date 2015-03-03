@@ -33,6 +33,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.common.NameableObject.NameableProperty;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +66,9 @@ public class DefaultIdentifiableObjectManager
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
 
     private Map<Class<? extends IdentifiableObject>, GenericIdentifiableObjectStore<? extends IdentifiableObject>> identifiableObjectStoreMap;
 
@@ -765,6 +770,10 @@ public class DefaultIdentifiableObjectManager
             else if ( IdentifiableProperty.UID.equals( property ) )
             {
                 return store.getByUid( id );
+            }
+            else if ( IdentifiableProperty.UUID.equals( property ) && OrganisationUnit.class.isAssignableFrom( clazz ) )
+            {
+                return (T) organisationUnitService.getOrganisationUnitByUuid( id );
             }
             else if ( IdentifiableProperty.CODE.equals( property ) )
             {
