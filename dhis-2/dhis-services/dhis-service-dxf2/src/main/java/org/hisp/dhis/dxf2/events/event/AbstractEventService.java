@@ -34,6 +34,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -71,6 +72,7 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -140,9 +142,20 @@ public abstract class AbstractEventService
     @Autowired
     protected SessionFactory sessionFactory;
 
+    @Autowired
+    protected IdentifiableObjectManager manager;
+
     protected final int FLUSH_FREQUENCY = 20;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    private Map<String, OrganisationUnit> organisationUnitCache = new HashMap<>();
+
+    private Map<String, Program> programCache = new HashMap<>();
+
+    private Map<String, ProgramStage> programStageCache = new HashMap<>();
+
+    private Map<String, DataElement> dataElementCache = new HashMap<>();
 
     // -------------------------------------------------------------------------
     // CREATE
@@ -152,7 +165,6 @@ public abstract class AbstractEventService
     public ImportSummaries addEvents( List<Event> events, ImportOptions importOptions )
     {
         ImportSummaries importSummaries = new ImportSummaries();
-
         int counter = 0;
 
         for ( Event event : events )
@@ -205,9 +217,10 @@ public abstract class AbstractEventService
     @Override
     public ImportSummary addEvent( Event event, ImportOptions importOptions )
     {
-        Program program = programService.getProgram( event.getProgram() );
+        Program program = getProgram( event.getProgram() );
+        ProgramStage programStage = getProgramStage( event.getProgramStage() );
+
         ProgramInstance programInstance;
-        ProgramStage programStage = programStageService.getProgramStage( event.getProgramStage() );
         ProgramStageInstance programStageInstance = null;
 
         if ( importOptions == null )
@@ -358,8 +371,7 @@ public abstract class AbstractEventService
             return new ImportSummary( ImportStatus.ERROR, "Program is not assigned to this organisation unit" );
         }
 
-        return saveEvent( program, programInstance, programStage, programStageInstance, organisationUnit, event,
-            importOptions );
+        return saveEvent( program, programInstance, programStage, programStageInstance, organisationUnit, event, importOptions );
     }
 
     // -------------------------------------------------------------------------
@@ -511,7 +523,7 @@ public abstract class AbstractEventService
 
         for ( DataValue value : event.getDataValues() )
         {
-            DataElement dataElement = dataElementService.getDataElement( value.getDataElement() );
+            DataElement dataElement = getDataElement( value.getDataElement() );
 
             TrackedEntityDataValue dataValue = dataValueService.getTrackedEntityDataValue( programStageInstance, dataElement );
 
@@ -539,7 +551,6 @@ public abstract class AbstractEventService
                 dataValueService.deleteTrackedEntityDataValue( value );
             }
         }
-
     }
 
     @Override
@@ -904,7 +915,7 @@ public abstract class AbstractEventService
             }
             else
             {
-                dataElement = dataElementService.getDataElement( dataValue.getDataElement() );
+                dataElement = getDataElement( dataValue.getDataElement() );
             }
 
             if ( dataElement != null )
@@ -966,6 +977,16 @@ public abstract class AbstractEventService
     {
         OrganisationUnit organisationUnit = null;
 
+        if ( StringUtils.isEmpty( value ) )
+        {
+            return null;
+        }
+
+        if ( organisationUnitCache.containsKey( value ) )
+        {
+            return organisationUnitCache.get( value );
+        }
+
         if ( IdentifiableProperty.UUID.equals( scheme ) )
         {
             organisationUnit = organisationUnitService.getOrganisationUnitByUuid( value );
@@ -988,6 +1009,77 @@ public abstract class AbstractEventService
             organisationUnit = organisationUnitService.getOrganisationUnit( value );
         }
 
+        if ( organisationUnit != null )
+        {
+            organisationUnitCache.put( value, organisationUnit );
+        }
+
         return organisationUnit;
+    }
+
+    private Program getProgram( String programId )
+    {
+        if ( StringUtils.isEmpty( programId ) )
+        {
+            return null;
+        }
+
+        if ( !programCache.containsKey( programId ) )
+        {
+            Program program = manager.get( Program.class, programId );
+
+            if ( program == null )
+            {
+                return null;
+            }
+
+            programCache.put( programId, program );
+        }
+
+        return programCache.get( programId );
+    }
+
+    private ProgramStage getProgramStage( String programStageId )
+    {
+        if ( StringUtils.isEmpty( programStageId ) )
+        {
+            return null;
+        }
+
+        if ( !programStageCache.containsKey( programStageId ) )
+        {
+            ProgramStage programStage = manager.get( ProgramStage.class, programStageId );
+
+            if ( programStage == null )
+            {
+                return null;
+            }
+
+            programStageCache.put( programStageId, programStage );
+        }
+
+        return programStageCache.get( programStageId );
+    }
+
+    private DataElement getDataElement( String dataElementId )
+    {
+        if ( StringUtils.isEmpty( dataElementId ) )
+        {
+            return null;
+        }
+
+        if ( !dataElementCache.containsKey( dataElementId ) )
+        {
+            DataElement dataElement = manager.get( DataElement.class, dataElementId );
+
+            if ( dataElement == null )
+            {
+                return null;
+            }
+
+            dataElementCache.put( dataElementId, dataElement );
+        }
+
+        return dataElementCache.get( dataElementId );
     }
 }
