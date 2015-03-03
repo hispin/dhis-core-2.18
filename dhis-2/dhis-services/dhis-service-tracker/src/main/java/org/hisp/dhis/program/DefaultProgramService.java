@@ -37,8 +37,14 @@ import java.util.Set;
 
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.trackedentity.TrackedEntity;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.validation.ValidationCriteria;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -52,6 +58,12 @@ public class DefaultProgramService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    @Autowired
+    private CurrentUserService currentUserService;
+
+    @Autowired
+    private UserService userService;
 
     private ProgramStore programStore;
 
@@ -144,7 +156,38 @@ public class DefaultProgramService
     @Override
     public Collection<Program> getProgramsByCurrentUser()
     {
-        return i18n( i18nService, programStore.getByCurrentUser() );
+        return i18n( i18nService, getByUser( currentUserService.getCurrentUser() ) );
+    }
+
+    @Override
+    public Collection<Program> getProgramsByUser( User user )
+    {
+        return i18n( i18nService, getByUser( user ) );
+    }
+
+    public Collection<Program> getByUser( User user )
+    {
+        Collection<Program> programs = new HashSet<>();
+
+        if ( user != null && !user.isSuper() )
+        {
+            Set<UserAuthorityGroup> userRoles = userService.getUserCredentials( currentUserService.getCurrentUser() )
+                .getUserAuthorityGroups();
+
+            for ( Program program : programStore.getAll() )
+            {
+                if ( CollectionUtils.intersection( program.getUserRoles(), userRoles ).size() > 0 )
+                {
+                    programs.add( program );
+                }
+            }
+        }
+        else
+        {
+            programs = programStore.getAll();
+        }
+
+        return programs;
     }
 
     @Override
@@ -177,13 +220,13 @@ public class DefaultProgramService
     @Override
     public Integer getProgramCountByName( String name )
     {
-        return i18n( i18nService, programStore.getCountLikeName( name ));
+        return i18n( i18nService, programStore.getCountLikeName( name ) );
     }
 
     @Override
     public Collection<Program> getProgramBetweenByName( String name, int min, int max )
     {
-        return i18n( i18nService, programStore.getAllLikeName( name, min, max ));
+        return i18n( i18nService, programStore.getAllLikeName( name, min, max ) );
     }
 
     @Override

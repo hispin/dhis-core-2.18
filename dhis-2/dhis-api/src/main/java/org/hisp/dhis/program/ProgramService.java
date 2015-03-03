@@ -30,6 +30,7 @@ package org.hisp.dhis.program;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.trackedentity.TrackedEntity;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.validation.ValidationCriteria;
 
 import java.util.Collection;
@@ -104,6 +105,13 @@ public interface ProgramService
      * @return The program list the current user
      */
     Collection<Program> getProgramsByCurrentUser();
+
+    /**
+     * Get {@link Program} by user.
+     *
+     * @return The program list the current user
+     */
+    Collection<Program> getProgramsByUser( User user );
 
     /**
      * Get {@link Program} by the current user and a certain type
