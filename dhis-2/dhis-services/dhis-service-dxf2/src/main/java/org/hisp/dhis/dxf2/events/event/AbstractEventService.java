@@ -58,8 +58,10 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.ProgramStatus;
 import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.system.callable.IdentifiableObjectCallable;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
+import org.hisp.dhis.system.util.CachingMap;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.DebugUtils;
 import org.hisp.dhis.system.util.ValidationUtils;
@@ -150,13 +152,13 @@ public abstract class AbstractEventService
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private Map<String, OrganisationUnit> organisationUnitCache = new HashMap<>();
+    private CachingMap<String, OrganisationUnit> organisationUnitCache = new CachingMap<>();
 
-    private Map<String, Program> programCache = new HashMap<>();
+    private CachingMap<String, Program> programCache = new CachingMap<>();
 
-    private Map<String, ProgramStage> programStageCache = new HashMap<>();
+    private CachingMap<String, ProgramStage> programStageCache = new CachingMap<>();
 
-    private Map<String, DataElement> dataElementCache = new HashMap<>();
+    private CachingMap<String, DataElement> dataElementCache = new CachingMap<>();
 
     private List<Program> accessiblePrograms = new ArrayList<>();
 
@@ -1035,67 +1037,16 @@ public abstract class AbstractEventService
 
     private Program getProgram( String programId )
     {
-        if ( StringUtils.isEmpty( programId ) )
-        {
-            return null;
-        }
-
-        if ( !programCache.containsKey( programId ) )
-        {
-            Program program = manager.get( Program.class, programId );
-
-            if ( program == null )
-            {
-                return null;
-            }
-
-            programCache.put( programId, program );
-        }
-
-        return programCache.get( programId );
+        return programCache.get( programId, new IdentifiableObjectCallable<>( manager, Program.class, programId ) );
     }
 
     private ProgramStage getProgramStage( String programStageId )
     {
-        if ( StringUtils.isEmpty( programStageId ) )
-        {
-            return null;
-        }
-
-        if ( !programStageCache.containsKey( programStageId ) )
-        {
-            ProgramStage programStage = manager.get( ProgramStage.class, programStageId );
-
-            if ( programStage == null )
-            {
-                return null;
-            }
-
-            programStageCache.put( programStageId, programStage );
-        }
-
-        return programStageCache.get( programStageId );
+        return programStageCache.get( programStageId, new IdentifiableObjectCallable<>( manager, ProgramStage.class, programStageId ) );
     }
 
     private DataElement getDataElement( String dataElementId )
     {
-        if ( StringUtils.isEmpty( dataElementId ) )
-        {
-            return null;
-        }
-
-        if ( !dataElementCache.containsKey( dataElementId ) )
-        {
-            DataElement dataElement = manager.get( DataElement.class, dataElementId );
-
-            if ( dataElement == null )
-            {
-                return null;
-            }
-
-            dataElementCache.put( dataElementId, dataElement );
-        }
-
-        return dataElementCache.get( dataElementId );
+        return dataElementCache.get( dataElementId, new IdentifiableObjectCallable<>( manager, DataElement.class, dataElementId ) );
     }
 }
