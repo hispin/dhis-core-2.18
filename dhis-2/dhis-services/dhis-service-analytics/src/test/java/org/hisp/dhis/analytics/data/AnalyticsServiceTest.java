@@ -186,7 +186,26 @@ public class AnalyticsServiceTest
         assertEquals( 4, params.getDataElements().size() );
         assertEquals( 1, params.getFilterOrganisationUnits().size() );
     }
-    
+
+    @Test
+    public void testGetFromUrlOrgUnitGroupSetAllItems()
+    {
+        Set<String> dimensionParams = new HashSet<>();
+        dimensionParams.add( "dx:" + deA.getUid() + ";" + deB.getUid() + ";" + deC.getUid() );
+        dimensionParams.add( "pe:2012;2012S1" );
+        dimensionParams.add( ouGroupSetA.getUid() );
+        
+        Set<String> filterParams = new HashSet<>();
+        filterParams.add( "ou:" + ouA.getUid() + ";" + ouB.getUid() + ";" + ouC.getUid() );
+        
+        DataQueryParams params = analyticsService.getFromUrl( dimensionParams, filterParams, null, null, false, false, false, false, false, false, null, null );
+        
+        assertEquals( 3, params.getDataElements().size() );
+        assertEquals( 2, params.getPeriods().size() );
+        assertEquals( 3, params.getFilterOrganisationUnits().size() );
+        assertEquals( 3, params.getDimensionOptions( ouGroupSetA.getUid() ).size() );
+    }
+
     @Test
     public void testGetFromUrlRelativePeriods()
     {
