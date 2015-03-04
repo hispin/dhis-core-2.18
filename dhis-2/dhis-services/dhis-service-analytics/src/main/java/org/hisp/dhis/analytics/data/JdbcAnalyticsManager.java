@@ -66,6 +66,7 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.MeasureFilter;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DimensionalObjectUtils;
+import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.jdbc.StatementBuilder;
@@ -112,7 +113,7 @@ public class JdbcAnalyticsManager
 
     @Override
     @Async
-    public Future<Map<String, Object>> getAggregatedDataValues( DataQueryParams params )
+    public Future<Map<String, Object>> getAggregatedDataValues( DataQueryParams params, int maxLimit )
     {
         try
         {
@@ -139,7 +140,7 @@ public class JdbcAnalyticsManager
 
             try
             {
-                map = getKeyValueMap( params, sql );
+                map = getKeyValueMap( params, sql, maxLimit );
             }
             catch ( BadSqlGrammarException ex )
             {
@@ -389,8 +390,7 @@ public class JdbcAnalyticsManager
      * Retrieves data from the database based on the given query and SQL and puts
      * into a value key and value mapping.
      */
-    private Map<String, Object> getKeyValueMap( DataQueryParams params, String sql )
-        throws BadSqlGrammarException
+    private Map<String, Object> getKeyValueMap( DataQueryParams params, String sql, int maxLimit )
     {
         Map<String, Object> map = new HashMap<>();
 
@@ -398,8 +398,15 @@ public class JdbcAnalyticsManager
 
         log.debug( "Analytics SQL: " + sql );
 
+        int counter = 0;
+        
         while ( rowSet.next() )
         {
+            if ( maxLimit > 0 && ++counter > maxLimit )
+            {
+                throw new IllegalQueryException( "Query result set exceeds max limit: " + maxLimit );
+            }
+            
             StringBuilder key = new StringBuilder();
 
             for ( DimensionalObject dim : params.getQueryDimensions() )

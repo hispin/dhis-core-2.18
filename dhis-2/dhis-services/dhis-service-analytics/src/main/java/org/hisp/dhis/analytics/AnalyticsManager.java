@@ -31,6 +31,7 @@ package org.hisp.dhis.analytics;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
 
@@ -46,9 +47,11 @@ public interface AnalyticsManager
      * asynchronously. The value class can be Double or String.
      * 
      * @param params the query to retrieve aggregated data for.
+     * @param maxLimit the max number of records to retrieve.
      * @return a map.
+     * @throws IllegalQueryException if query result set exceeds the max limit.
      */
-    Future<Map<String, Object>> getAggregatedDataValues( DataQueryParams params );
+    Future<Map<String, Object>> getAggregatedDataValues( DataQueryParams params, int maxLimit );
     
     /**
      * Inserts entries for the aggregation periods mapped to each data period
