@@ -29,7 +29,7 @@ package org.hisp.dhis.dxf2.datavalueset;
  */
 
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdentifiers;
-import static org.hisp.dhis.system.util.DateUtils.getLongDateString;
+import static org.hisp.dhis.system.util.DateUtils.getLongGmtDateString;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.io.OutputStream;
@@ -135,7 +135,7 @@ public class SpringDataValueSetStore
         OrganisationUnit orgUnit, final DataValueSet dataValueSet )
     {
         dataValueSet.setDataSet( ( dataSets != null && dataSets.size() == 1 ) ? dataSets.iterator().next().getUid() : null );
-        dataValueSet.setCompleteDate( getLongDateString( completeDate ) );
+        dataValueSet.setCompleteDate( getLongGmtDateString( completeDate ) );
         dataValueSet.setPeriod( period != null ? period.getIsoDate() : null );
         dataValueSet.setOrgUnit( orgUnit != null ? orgUnit.getUid() : null );
 
@@ -156,8 +156,8 @@ public class SpringDataValueSetStore
                 dataValue.setAttributeOptionCombo( rs.getString( "aocid" ) );
                 dataValue.setValue( rs.getString( "value" ) );
                 dataValue.setStoredBy( rs.getString( "storedby" ) );
-                dataValue.setCreated( getLongDateString( rs.getDate( "created" ) ) );
-                dataValue.setLastUpdated( getLongDateString( rs.getDate( "lastupdated" ) ) );
+                dataValue.setCreated( getLongGmtDateString( rs.getTimestamp( "created" ) ) );
+                dataValue.setLastUpdated( getLongGmtDateString( rs.getTimestamp( "lastupdated" ) ) );
                 dataValue.setComment( rs.getString( "comment" ) );
                 dataValue.setFollowup( rs.getBoolean( "followup" ) );
                 dataValue.close();

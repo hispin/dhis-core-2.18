@@ -41,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
 
@@ -67,6 +68,7 @@ public class DateUtils
     public static final SimpleDateFormat ACCESS_DATE_FORMAT = new SimpleDateFormat( "yyyy/MM/dd HH:mm:ss" );
     public static final SimpleDateFormat HTTP_DATE_FORMAT = new SimpleDateFormat( "EEE, dd MMM yyyy HH:mm:ss" );
 
+
     public static final double DAYS_IN_YEAR = 365.0;
 
     private static final long MS_PER_DAY = 86400000;
@@ -82,6 +84,25 @@ public class DateUtils
     {
         return date != null ? ACCESS_DATE_FORMAT.format( date ) : null;
     }
+
+    /**
+     * Converts a Date to the GMT timezone and formats it to the format yyyy-MM-dd HH:mm:ssZ.
+     *
+     * @param date the Date to parse.
+     * @return A formatted date string.
+     */
+    public static String getLongGmtDateString( Date date )
+    {
+        if ( date == null )
+        {
+            return null;
+        }
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" );
+        simpleDateFormat.setTimeZone( TimeZone.getTimeZone( "UTC" ) );
+        return simpleDateFormat.format( date );
+    }
+
 
     /**
      * Formats a Date to the format yyyy-MM-dd HH:mm:ss.
