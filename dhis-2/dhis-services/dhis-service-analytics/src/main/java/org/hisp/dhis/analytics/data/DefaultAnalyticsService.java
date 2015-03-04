@@ -28,6 +28,55 @@ package org.hisp.dhis.analytics.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
+import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TABLE_NAME;
+import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TARGET_TABLE_NAME;
+import static org.hisp.dhis.analytics.AnalyticsTableManager.ORGUNIT_TARGET_TABLE_NAME;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_CATEGORYOPTIONCOMBO;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_DATA_X;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LATITUDE;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_LONGITUDE;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_ORGUNIT;
+import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_PERIOD;
+import static org.hisp.dhis.analytics.DataQueryParams.KEY_DE_GROUP;
+import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DATASET_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DATA_X_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
+import static org.hisp.dhis.common.DimensionalObject.INDICATOR_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.LATITUDE_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.LONGITUDE_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriodIdentifier;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriodIdentifiers;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+import static org.hisp.dhis.common.NameableObjectUtils.asList;
+import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_LEVEL;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_ORGUNIT_GROUP;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_GRANDCHILDREN;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentNameGraphMap;
+import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
+import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
+import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Future;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,7 +94,6 @@ import org.hisp.dhis.common.AnalyticalObject;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.CombinationGenerator;
-import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DimensionalObjectUtils;
@@ -97,31 +145,6 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Future;
-
-import static org.hisp.dhis.analytics.AnalyticsTableManager.*;
-import static org.hisp.dhis.analytics.DataQueryParams.*;
-import static org.hisp.dhis.common.DimensionalObject.*;
-import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriodIdentifier;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getLocalPeriodIdentifiers;
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
-import static org.hisp.dhis.common.NameableObjectUtils.asList;
-import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.*;
-import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
-import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
-import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
 
 /**
  * @author Lars Helge Overland
@@ -176,9 +199,6 @@ public class DefaultAnalyticsService
 
     @Autowired
     private DataElementOperandService operandService;
-
-    @Autowired
-    private DimensionService dimensionService;
 
     @Autowired
     private SystemSettingManager systemSettingManager;
@@ -864,6 +884,8 @@ public class DefaultAnalyticsService
     @Override
     public List<DimensionalObject> getDimension( String dimension, List<String> items, Date relativePeriodDate, I18nFormat format, boolean allowNull )
     {
+        final boolean allItems = items.isEmpty();
+        
         if ( DATA_X_DIM_ID.equals( dimension ) )
         {
             List<DimensionalObject> dataDimensions = new ArrayList<>();
@@ -1117,7 +1139,7 @@ public class DefaultAnalyticsService
 
         if ( ougs != null && ougs.isDataDimension() )
         {
-            List<NameableObject> ous = asList( organisationUnitGroupService.getOrganisationUnitGroupsByUid( items ) );
+            List<NameableObject> ous = !allItems ? asList( organisationUnitGroupService.getOrganisationUnitGroupsByUid( items ) ) : ougs.getItems();
 
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.ORGANISATIONUNIT_GROUPSET, null, ougs.getDisplayName(), ous );
 
@@ -1128,7 +1150,7 @@ public class DefaultAnalyticsService
 
         if ( degs != null && degs.isDataDimension() )
         {
-            List<NameableObject> des = asList( dataElementService.getDataElementGroupsByUid( items ) );
+            List<NameableObject> des = !allItems ? asList( dataElementService.getDataElementGroupsByUid( items ) ) : degs.getItems();
 
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.DATAELEMENT_GROUPSET, null, degs.getDisplayName(), des );
 
@@ -1139,7 +1161,7 @@ public class DefaultAnalyticsService
 
         if ( cogs != null && cogs.isDataDimension() )
         {
-            List<NameableObject> cogz = asList( categoryService.getCategoryOptionGroupsByUid( items ) );
+            List<NameableObject> cogz = !allItems ? asList( categoryService.getCategoryOptionGroupsByUid( items ) ) : cogs.getItems();
 
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.CATEGORYOPTION_GROUPSET, null, cogs.getDisplayName(), cogz );
 
@@ -1150,7 +1172,7 @@ public class DefaultAnalyticsService
 
         if ( dec != null && dec.isDataDimension() )
         {
-            List<NameableObject> decos = asList( categoryService.getDataElementCategoryOptionsByUid( items ) );
+            List<NameableObject> decos = !allItems ? asList( categoryService.getDataElementCategoryOptionsByUid( items ) ) : dec.getItems();
 
             DimensionalObject object = new BaseDimensionalObject( dimension, DimensionType.CATEGORY, null, dec.getDisplayName(), decos );
 
@@ -1220,17 +1242,6 @@ public class DefaultAnalyticsService
             List<NameableObject> items = new ArrayList<>( dimension.getItems() );
 
             boolean orgUnitHierarchy = hierarchyMeta && DimensionType.ORGANISATIONUNIT.equals( dimension.getDimensionType() );
-
-            // -----------------------------------------------------------------
-            // If dimension is not fixed and has no options, insert all items
-            // -----------------------------------------------------------------
-
-            if ( !FIXED_DIMS.contains( dimension.getDimension() ) && items.isEmpty() )
-            {
-                DimensionalObject dynamicDim = dimensionService.getDimension( dimension.getDimension(), dimension.getDimensionType() );
-
-                items = dynamicDim != null ? dynamicDim.getItems() : items;
-            }
 
             // -----------------------------------------------------------------
             // Insert UID and name into map
