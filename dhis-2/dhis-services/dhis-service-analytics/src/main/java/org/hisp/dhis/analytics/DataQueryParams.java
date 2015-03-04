@@ -28,8 +28,8 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
+import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT_DISAGGREGATION;
 import static org.hisp.dhis.common.DimensionType.DATASET;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT_GROUPSET;
@@ -44,7 +44,6 @@ import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.NameableObjectUtils.asList;
 import static org.hisp.dhis.common.NameableObjectUtils.getList;
-import static org.hisp.dhis.system.util.CollectionUtils.emptyIfNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,6 +64,7 @@ import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.DisplayProperty;
 import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.common.MapMap;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -78,7 +78,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ListUtils;
-import org.hisp.dhis.common.MapMap;
 import org.hisp.dhis.system.util.MathUtils;
 
 /**
@@ -544,35 +543,7 @@ public class DataQueryParams
         
         return null;
     }
-    
-    /**
-     * Returns the number of dimension option permutations. Merges the three data
-     * dimensions into one prior to the calculation.
-     */
-    public int getNumberOfDimensionOptionPermutations()
-    {
-        int total = 1;
         
-        DataQueryParams query = this.instance();
-        
-        query.getDimensions().add( new BaseDimensionalObject( DATA_X_DIM_ID ) );
-        
-        query.getDimension( DATA_X_DIM_ID ).getItems().addAll( emptyIfNull( query.getDimensionOptions( INDICATOR_DIM_ID ) ) );
-        query.getDimension( DATA_X_DIM_ID ).getItems().addAll( emptyIfNull( query.getDimensionOptions( DATAELEMENT_DIM_ID ) ) );
-        query.getDimension( DATA_X_DIM_ID ).getItems().addAll( emptyIfNull( query.getDimensionOptions( DATASET_DIM_ID ) ) );
-        
-        query.removeDimension( INDICATOR_DIM_ID );
-        query.removeDimension( DATAELEMENT_DIM_ID );
-        query.removeDimension( DATASET_DIM_ID );
-        
-        for ( DimensionalObject dim : query.getDimensions() )
-        {
-            total *= Math.max( dim.getItems().size(), 1 );
-        }
-        
-        return total;
-    }
-    
     /**
      * Returns a list of dimensions which occur more than once.
      */

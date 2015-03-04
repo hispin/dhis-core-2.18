@@ -140,11 +140,6 @@ public class DefaultQueryPlanner
             violation = "Category option combos cannot be specified as filter";
         }
         
-        if ( !params.isIgnoreLimit() && getMaxLimit() > 0 && params.getNumberOfDimensionOptionPermutations() > getMaxLimit() )
-        {
-            violation = "Table exceeds max number of cells: " + getMaxLimit() + " (" + params.getNumberOfDimensionOptionPermutations() + ")";
-        }
-        
         if ( !params.getDuplicateDimensions().isEmpty() )
         {
             violation = "Dimensions cannot be specified more than once: " + params.getDuplicateDimensions();
@@ -792,13 +787,5 @@ public class DefaultQueryPlanner
         }
         
         return map;
-    }
-    
-    /**
-     * Returns the max records limit. 0 indicates no limit.
-     */
-    private int getMaxLimit()
-    {
-        return (Integer) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_ANALYTICS_MAX_LIMIT, SystemSettingManager.DEFAULT_ANALYTICS_MAX_LIMIT );
     }
 }

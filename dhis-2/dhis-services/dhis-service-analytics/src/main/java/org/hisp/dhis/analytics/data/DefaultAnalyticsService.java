@@ -744,6 +744,8 @@ public class DefaultAnalyticsService
 
         int optimalQueries = MathUtils.getWithin( getProcessNo(), 1, MAX_QUERIES );
 
+        int maxLimit = getMaxLimit();
+        
         Timer t = new Timer().start().disablePrint();
 
         DataQueryGroups queryGroups = queryPlanner.planQuery( params, optimalQueries, tableName );
@@ -758,7 +760,7 @@ public class DefaultAnalyticsService
 
             for ( DataQueryParams query : queries )
             {
-                futures.add( analyticsManager.getAggregatedDataValues( query ) );
+                futures.add( analyticsManager.getAggregatedDataValues( query, maxLimit ) );
             }
 
             for ( Future<Map<String, Object>> future : futures )
@@ -1377,5 +1379,13 @@ public class DefaultAnalyticsService
     private Object getRounded( Object value )
     {
         return value != null && Double.class.equals( value.getClass() ) ? MathUtils.getRounded( (Double) value ) : value;
+    }
+
+    /**
+     * Returns the max records limit. 0 indicates no limit.
+     */
+    private int getMaxLimit()
+    {
+        return (Integer) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_ANALYTICS_MAX_LIMIT, SystemSettingManager.DEFAULT_ANALYTICS_MAX_LIMIT );
     }
 }
