@@ -58,7 +58,7 @@ import java.util.Map;
 public class DefaultGmlImportService
     implements GmlImportService
 {
-    private static final String GML_TO_DXF_TRANSFORM = "gml/gml2dxf2.xsl";
+    private static final String GML_TO_DXF_STYLESHEET = "gml/gml2dxf2.xsl";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -145,7 +145,7 @@ public class DefaultGmlImportService
         throws IOException, TransformerException
     {
         StreamSource gml = new StreamSource( input );
-        StreamSource xsl = new StreamSource( new ClassPathResource( GML_TO_DXF_TRANSFORM ).getInputStream() );
+        StreamSource xsl = new StreamSource( new ClassPathResource( GML_TO_DXF_STYLESHEET ).getInputStream() );
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
 

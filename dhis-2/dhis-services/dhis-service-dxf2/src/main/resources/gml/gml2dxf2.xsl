@@ -10,16 +10,25 @@
 <xsl:template match="gml:coordinates">
   <xsl:value-of select="java:gmlCoordinatesToString(normalize-space(.),$precision)"
     disable-output-escaping="yes"/>
+  <xsl:if test="position() != last()">
+    <xsl:text>,</xsl:text>
+  </xsl:if>
 </xsl:template>
 
 <xsl:template match="gml:pos">
   <xsl:value-of select="java:gmlPosToString(normalize-space(.),$precision)"
     disable-output-escaping="yes"/>
+  <xsl:if test="position() != last()">
+    <xsl:text>,</xsl:text>
+  </xsl:if>
 </xsl:template>
 
 <xsl:template match="gml:posList">
   <xsl:value-of select="java:gmlPosListToString(normalize-space(.),$precision)"
     disable-output-escaping="yes"/>
+  <xsl:if test="position() != last()">
+    <xsl:text>,</xsl:text>
+  </xsl:if>
 </xsl:template>
 
 <xsl:template match="gml:Polygon">
