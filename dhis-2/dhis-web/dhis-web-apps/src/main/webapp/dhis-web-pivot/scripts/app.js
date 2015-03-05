@@ -4644,8 +4644,8 @@ Ext.onReady( function() {
 		});
 
 		userOrganisationUnit = Ext.create('Ext.form.field.Checkbox', {
-			columnWidth: 0.28,
-			style: 'padding-top:2px; padding-left:3px; margin-bottom:0',
+			columnWidth: 0.25,
+			style: 'padding-top: 3px; padding-left: 5px; margin-bottom: 0',
 			boxLabel: NS.i18n.user_organisation_unit,
 			labelWidth: ns.core.conf.layout.form_label_width,
 			handler: function(chb, checked) {
@@ -4654,9 +4654,9 @@ Ext.onReady( function() {
 		});
 
 		userOrganisationUnitChildren = Ext.create('Ext.form.field.Checkbox', {
-			columnWidth: 0.31,
-			style: 'padding-top:2px; margin-bottom:0',
-			boxLabel: NS.i18n.user_organisation_unit_children,
+			columnWidth: 0.26,
+			style: 'padding-top: 3px; margin-bottom: 0',
+			boxLabel: NS.i18n.user_sub_units,
 			labelWidth: ns.core.conf.layout.form_label_width,
 			handler: function(chb, checked) {
 				treePanel.xable([checked, userOrganisationUnit.getValue(), userOrganisationUnitGrandChildren.getValue()]);
@@ -4664,9 +4664,9 @@ Ext.onReady( function() {
 		});
 
 		userOrganisationUnitGrandChildren = Ext.create('Ext.form.field.Checkbox', {
-			columnWidth: 0.41,
-			style: 'padding-top:2px; margin-bottom:0',
-			boxLabel: NS.i18n.user_organisation_unit_grandchildren,
+			columnWidth: 0.4,
+			style: 'padding-top: 3px; margin-bottom: 0',
+			boxLabel: NS.i18n.user_sub_x2_units,
 			labelWidth: ns.core.conf.layout.form_label_width,
 			handler: function(chb, checked) {
 				treePanel.xable([checked, userOrganisationUnit.getValue(), userOrganisationUnitChildren.getValue()]);
