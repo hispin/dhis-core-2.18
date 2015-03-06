@@ -199,7 +199,7 @@
 
   <!-- Scheduled tasks -->
 
-  <bean id="dataMartLastYearTask" class="org.hisp.dhis.scheduling.DataMartTask" />
+  <bean id="dataMartLastYearTask" class="org.hisp.dhis.scheduling.DataMartTask" scope="prototype" />
 
   <bean id="org.hisp.dhis.common.ReportingIdentityPopulator" class="org.hisp.dhis.common.IdentityPopulator">
     <property name="name" value="ReportingIdentityPopulator" />

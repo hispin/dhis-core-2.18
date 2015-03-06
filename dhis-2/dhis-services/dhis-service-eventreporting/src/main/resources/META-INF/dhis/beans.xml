@@ -57,7 +57,7 @@
 
 	<bean id="aggregateQueryBuilder"
 		class="org.hisp.dhis.scheduling.CaseAggregateConditionTask"
-		parent="abstractRunCaseAggregateConditionTask">
+		parent="abstractRunCaseAggregateConditionTask" scope="prototype">
 	</bean>
 	
 	<bean id="org.hisp.dhis.scheduling.ProgramSchedulingManager"
@@ -87,13 +87,13 @@
 
 	<bean id="sendMessageScheduled"
 		class="org.hisp.dhis.scheduling.SendScheduledMessageTask"
-		parent="abstractScheduledMessageTask">
+		parent="abstractScheduledMessageTask" scope="prototype">
 		<property name="sendingMessage" value="true" />
 	</bean>
 
 	<bean id="scheduleMessage"
 		class="org.hisp.dhis.scheduling.SendScheduledMessageTask"
-		parent="abstractScheduledMessageTask">
+		parent="abstractScheduledMessageTask" scope="prototype">
 		<property name="sendingMessage" value="false" />
 	</bean>
 	
