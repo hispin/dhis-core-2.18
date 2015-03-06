@@ -98,9 +98,9 @@
   <bean id="org.hisp.dhis.sqlview.SqlViewService" class="org.hisp.dhis.sqlview.DefaultSqlViewService">
     <property name="sqlViewStore" ref="org.hisp.dhis.sqlview.SqlViewStore" />
   </bean>
-  
+    
   <!-- Scheduled tasks -->
   
-  <bean id="resourceTableTask" class="org.hisp.dhis.resourcetable.scheduling.ResourceTableTask" />
-  
+  <bean id="resourceTableTask" class="org.hisp.dhis.resourcetable.scheduling.ResourceTableTask" scope="prototype" />
+
 </beans>
