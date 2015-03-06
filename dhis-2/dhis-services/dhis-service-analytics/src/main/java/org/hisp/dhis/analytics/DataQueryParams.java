@@ -183,14 +183,9 @@ public class DataQueryParams
     private transient boolean skipPartitioning;
     
     /**
-     * Organisation units which were explicitly part of the original request.
-     */
-    private List<OrganisationUnit> organisationUnits = new ArrayList<>();
-
-    /**
      * Mapping of organisation unit sub-hierarchy roots and lowest available data approval levels.
      */
-    private Map<OrganisationUnit, Integer> dataApprovalLevels = new HashMap<>();
+    private transient Map<OrganisationUnit, Integer> dataApprovalLevels = new HashMap<>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -218,7 +213,6 @@ public class DataQueryParams
         params.periodType = this.periodType;
         params.dataPeriodType = this.dataPeriodType;
         params.skipPartitioning = this.skipPartitioning;
-        params.organisationUnits = new ArrayList<>( this.organisationUnits );
         params.dataApprovalLevels = new HashMap<>( this.dataApprovalLevels );
         params.displayProperty = this.displayProperty;
         
