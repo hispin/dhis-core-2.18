@@ -158,7 +158,7 @@ var validationRules = {
         "name" : {
             "required" : true,
             "alphanumericwithbasicpuncspaces" : true,
-            "rangelength" : [ 2, 150 ]
+            "rangelength" : [ 2, 160 ]
         },
         "shortName" : {
             "required" : true,
@@ -216,7 +216,7 @@ var validationRules = {
     "dataElement" : {
         "name" : {
             "required" : true,
-            "rangelength" : [ 2, 150 ],
+            "rangelength" : [ 2, 160 ],
             "alphanumericwithbasicpuncspaces" : true,
             "notOnlyDigits" : true
         },
@@ -226,18 +226,13 @@ var validationRules = {
             "alphanumericwithbasicpuncspaces" : true,
             "notOnlyDigits" : true
         },
-        "alternativeName" : {
-            "rangelength" : [ 2, 150 ],
-            "alphanumericwithbasicpuncspaces" : true,
-            "notOnlyDigits" : true
-        },
         "code" : {
             "rangelength" : [ 0, 50 ],
             "alphanumericwithbasicpuncspaces" : true,
             "notOnlyDigits" : false
         },
         "formName" : {
-            "rangelength" : [ 2, 150 ],
+            "rangelength" : [ 2, 160 ],
             "alphanumericwithbasicpuncspaces" : false,
             "notOnlyDigits" : false
         },
@@ -292,17 +287,13 @@ var validationRules = {
     "indicator" : {
         "name" : {
             "required" : true,
-            "rangelength" : [ 2, 150 ],
+            "rangelength" : [ 2, 160 ],
             "alphanumericwithbasicpuncspaces" : true,
             "nostartwhitespace" : true
         },
         "shortName" : {
             "required" : true,
             "rangelength" : [ 2, 50 ],
-            "alphanumericwithbasicpuncspaces" : true
-        },
-        "alternativeName" : {
-            "rangelength" : [ 2, 150 ],
             "alphanumericwithbasicpuncspaces" : true
         },
         "code" : {
@@ -337,7 +328,7 @@ var validationRules = {
     "indicatorType" : {
         "name" : {
             "required" : true,
-            "rangelength" : [ 2, 150 ],
+            "rangelength" : [ 2, 160 ],
             "alphanumericwithbasicpuncspaces" : true
         },
         "factor" : {
