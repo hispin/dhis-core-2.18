@@ -204,9 +204,12 @@ public class DataQueryParams
         params.aggregationType = this.aggregationType;
         params.measureCriteria = this.measureCriteria;
         params.skipMeta = this.skipMeta;
+        params.skipRounding = this.skipRounding;
         params.hierarchyMeta = this.hierarchyMeta;
         params.ignoreLimit = this.ignoreLimit;
         params.hideEmptyRows = this.hideEmptyRows;
+        params.showHierarchy = this.showHierarchy;
+        params.displayProperty = this.displayProperty;
         
         params.partitions = new Partitions( this.partitions );
         params.dataType = this.dataType;
@@ -214,7 +217,6 @@ public class DataQueryParams
         params.dataPeriodType = this.dataPeriodType;
         params.skipPartitioning = this.skipPartitioning;
         params.dataApprovalLevels = new HashMap<>( this.dataApprovalLevels );
-        params.displayProperty = this.displayProperty;
         
         return params;
     }
