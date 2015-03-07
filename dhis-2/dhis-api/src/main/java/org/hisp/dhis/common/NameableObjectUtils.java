@@ -167,10 +167,10 @@ public class NameableObjectUtils
     }
 
     /**
-     * Returns a mapping between the uid and the nameable objects.
+     * Returns a mapping between the UID and the nameable objects.
      *
      * @param objects the nameable objects.
-     * @return mapping between the uid and the nameable objects.
+     * @return mapping between the UID and the nameable objects.
      */
     public static Map<String, NameableObject> getUidObjectMap( List<? extends NameableObject> objects )
     {
@@ -188,7 +188,7 @@ public class NameableObjectUtils
     }
 
     /**
-     * Returns a mapping between the uid and the short name of the given nameable
+     * Returns a mapping between the UID and the short name of the given nameable
      * objects.
      *
      * @param objects the v objects.
@@ -203,6 +203,38 @@ public class NameableObjectUtils
             for ( NameableObject object : objects )
             {
                 map.put( object.getUid(), object.getDisplayShortName() );
+            }
+        }
+
+        return map;
+    }
+
+    /**
+     * Returns a mapping between the UID and the property of the object
+     * indicated by the given property.
+     * 
+     * @param objects the collection of objects.
+     * @param property the property.
+     * @return a mapping.
+     */
+    public static Map<String, String> getUidPropertyMap( Collection<NameableObject> objects,
+        IdentifiableProperty property )
+    {
+        Map<String, String> map = new HashMap<>();
+
+        for ( NameableObject object : objects )
+        {
+            if ( IdentifiableProperty.UID.equals( property ) )
+            {
+                map.put( object.getUid(), object.getUid() );
+            }
+            else if ( IdentifiableProperty.CODE.equals( property ) )
+            {
+                map.put( object.getUid(), object.getCode() );
+            }
+            else if ( IdentifiableProperty.NAME.equals( property ) )
+            {
+                map.put( object.getUid(), object.getName() );
             }
         }
 

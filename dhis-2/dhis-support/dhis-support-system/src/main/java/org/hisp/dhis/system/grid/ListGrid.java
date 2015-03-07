@@ -649,7 +649,7 @@ public class ListGrid
     }
 
     @Override
-    public Grid substituteMetaData( Map<Object, Object> metaDataMap )
+    public Grid substituteMetaData( Map<? extends Object, ? extends Object> metaDataMap )
     {
         if ( metaDataMap == null || headers == null || headers.isEmpty() )
         {
@@ -681,7 +681,7 @@ public class ListGrid
     }
     
     @Override
-    public Grid substituteMetaData( int columnIndex, Map<Object, Object> metaDataMap )
+    public Grid substituteMetaData( int columnIndex, Map<? extends Object, ? extends Object> metaDataMap )
     {
         if ( metaDataMap == null )
         {

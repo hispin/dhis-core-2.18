@@ -28,10 +28,8 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.AnalyticsService.NAMES_META_KEY;
 import static org.hisp.dhis.common.DimensionalObjectUtils.getDimensionsFromParam;
 
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +39,7 @@ import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.common.DisplayProperty;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.system.grid.GridUtils;
@@ -89,13 +88,14 @@ public class AnalyticsController
         @RequestParam( required = false ) boolean hideEmptyRows,
         @RequestParam( required = false ) boolean showHierarchy,
         @RequestParam( required = false ) DisplayProperty displayProperty,
+        @RequestParam( required = false ) IdentifiableProperty outputIdScheme,
         @RequestParam( required = false ) String columns,
         @RequestParam( required = false ) String rows,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria,
-            skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, displayProperty, i18nManager.getI18nFormat() );
+            skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, displayProperty, outputIdScheme, i18nManager.getI18nFormat() );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getAggregatedDataValues( params, tableLayout, getDimensionsFromParam( columns ), getDimensionsFromParam( rows ) );
@@ -118,13 +118,14 @@ public class AnalyticsController
         @RequestParam( required = false ) boolean hideEmptyRows,
         @RequestParam( required = false ) boolean showHierarchy,
         @RequestParam( required = false ) DisplayProperty displayProperty,
+        @RequestParam( required = false ) IdentifiableProperty outputIdScheme,
         @RequestParam( required = false ) String columns,
         @RequestParam( required = false ) String rows,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria,
-            skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, displayProperty, i18nManager.getI18nFormat() );
+            skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, displayProperty, outputIdScheme, i18nManager.getI18nFormat() );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getAggregatedDataValues( params, tableLayout, getDimensionsFromParam( columns ), getDimensionsFromParam( rows ) );
@@ -145,17 +146,18 @@ public class AnalyticsController
         @RequestParam( required = false ) boolean hideEmptyRows,
         @RequestParam( required = false ) boolean showHierarchy,
         @RequestParam( required = false ) DisplayProperty displayProperty,
+        @RequestParam( required = false ) IdentifiableProperty outputIdScheme,
         @RequestParam( required = false ) String columns,
         @RequestParam( required = false ) String rows,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria,
-            skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, displayProperty, i18nManager.getI18nFormat() );
+            skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, displayProperty, outputIdScheme, i18nManager.getI18nFormat() );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getAggregatedDataValues( params, tableLayout, getDimensionsFromParam( columns ), getDimensionsFromParam( rows ) );
-        GridUtils.toHtml( substituteMetaData( grid ), response.getWriter() );
+        GridUtils.toHtml( grid, response.getWriter() );
     }
 
     @RequestMapping( value = RESOURCE_PATH + ".html+css", method = RequestMethod.GET )
@@ -172,17 +174,18 @@ public class AnalyticsController
         @RequestParam( required = false ) boolean hideEmptyRows,
         @RequestParam( required = false ) boolean showHierarchy,
         @RequestParam( required = false ) DisplayProperty displayProperty,
+        @RequestParam( required = false ) IdentifiableProperty outputIdScheme,
         @RequestParam( required = false ) String columns,
         @RequestParam( required = false ) String rows,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria,
-            skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, displayProperty, i18nManager.getI18nFormat() );
+            skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, displayProperty, outputIdScheme, i18nManager.getI18nFormat() );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getAggregatedDataValues( params, tableLayout, getDimensionsFromParam( columns ), getDimensionsFromParam( rows ) );
-        GridUtils.toHtmlCss( substituteMetaData( grid ), response.getWriter() );
+        GridUtils.toHtmlCss( grid, response.getWriter() );
     }
 
     @RequestMapping( value = RESOURCE_PATH + ".csv", method = RequestMethod.GET )
@@ -199,17 +202,18 @@ public class AnalyticsController
         @RequestParam( required = false ) boolean hideEmptyRows,
         @RequestParam( required = false ) boolean showHierarchy,
         @RequestParam( required = false ) DisplayProperty displayProperty,
+        @RequestParam( required = false ) IdentifiableProperty outputIdScheme,
         @RequestParam( required = false ) String columns,
         @RequestParam( required = false ) String rows,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria,
-            skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, displayProperty, i18nManager.getI18nFormat() );
+            skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, displayProperty, outputIdScheme, i18nManager.getI18nFormat() );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, "data.csv", true );
         Grid grid = analyticsService.getAggregatedDataValues( params, tableLayout, getDimensionsFromParam( columns ), getDimensionsFromParam( rows ) );
-        GridUtils.toCsv( tableLayout ? grid : substituteMetaData( grid ), response.getOutputStream() );
+        GridUtils.toCsv( grid, response.getOutputStream() );
     }
 
     @RequestMapping( value = RESOURCE_PATH + ".xls", method = RequestMethod.GET )
@@ -226,17 +230,18 @@ public class AnalyticsController
         @RequestParam( required = false ) boolean hideEmptyRows,
         @RequestParam( required = false ) boolean showHierarchy,
         @RequestParam( required = false ) DisplayProperty displayProperty,
+        @RequestParam( required = false ) IdentifiableProperty outputIdScheme,
         @RequestParam( required = false ) String columns,
         @RequestParam( required = false ) String rows,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria,
-            skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, displayProperty, i18nManager.getI18nFormat() );
+            skipMeta, skipRounding, hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, displayProperty, outputIdScheme, i18nManager.getI18nFormat() );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "data.xls", true );
         Grid grid = analyticsService.getAggregatedDataValues( params, tableLayout, getDimensionsFromParam( columns ), getDimensionsFromParam( rows ) );
-        GridUtils.toXls( substituteMetaData( grid ), response.getOutputStream() );
+        GridUtils.toXls( grid, response.getOutputStream() );
     }
 
     @RequestMapping( value = RESOURCE_PATH + ".jrxml", method = RequestMethod.GET )
@@ -253,33 +258,19 @@ public class AnalyticsController
         @RequestParam( required = false ) boolean hideEmptyRows,
         @RequestParam( required = false ) boolean showHierarchy,
         @RequestParam( required = false ) DisplayProperty displayProperty,
+        @RequestParam( required = false ) IdentifiableProperty outputIdScheme,
         @RequestParam( required = false ) String columns,
         @RequestParam( required = false ) String rows,
         Model model,
         HttpServletResponse response ) throws Exception
     {
         DataQueryParams params = analyticsService.getFromUrl( dimension, filter, null, null,
-            true, false, false, false, false, false, null, i18nManager.getI18nFormat() );
+            true, false, false, false, false, false, null, null, i18nManager.getI18nFormat() );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING, "data.jrxml", false );
         Grid grid = analyticsService.getAggregatedDataValues( params );
 
-        GridUtils.toJrxml( substituteMetaData( grid ), null, response.getWriter() );
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    @SuppressWarnings( "unchecked" )
-    private Grid substituteMetaData( Grid grid )
-    {
-        if ( grid.getMetaData() != null && grid.getMetaData().containsKey( NAMES_META_KEY ) )
-        {
-            grid.substituteMetaData( (Map<Object, Object>) grid.getMetaData().get( NAMES_META_KEY ) );
-        }
-
-        return grid;
+        GridUtils.toJrxml( grid, null, response.getWriter() );
     }
 
     // -------------------------------------------------------------------------
