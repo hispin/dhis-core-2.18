@@ -101,6 +101,7 @@ import org.hisp.dhis.common.DisplayProperty;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
+import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.NameableObjectUtils;
@@ -257,6 +258,8 @@ public class DefaultAnalyticsService
         // ---------------------------------------------------------------------
 
         addMetaData( params, grid );
+        
+        applyIdScheme( params, grid  );
 
         return grid;
     }
@@ -457,7 +460,7 @@ public class DefaultAnalyticsService
      * data query parameters.
      *
      * @param params the data query parameters.
-     * @param grid   the grid.
+     * @param grid the grid.
      */
     private void addDynamicDimensionValues( DataQueryParams params, Grid grid )
     {
@@ -479,7 +482,7 @@ public class DefaultAnalyticsService
      * parameters.
      *
      * @param params the data query parameters.
-     * @param grid   the grid.
+     * @param grid the grid.
      */
     private void addMetaData( DataQueryParams params, Grid grid )
     {
@@ -529,14 +532,38 @@ public class DefaultAnalyticsService
         }
     }
 
+    /**
+     * Substitutes the meta data of the grid with the identifier scheme meta data
+     * property indicated in the query.
+     * 
+     * @param params the data query parameters.
+     * @param grid the grid.
+     */
+    private void applyIdScheme( DataQueryParams params, Grid grid )
+    {
+        if ( params.hasNonUidOutputIdScheme() )
+        {
+            List<NameableObject> items = params.getAllDimensionItems();
+            
+            Map<String, String> map = NameableObjectUtils.getUidPropertyMap( items, params.getOutputIdScheme() );
+            
+            grid.substituteMetaData( map );
+        }
+    }
+    
     @Override
     public Grid getAggregatedDataValues( DataQueryParams params, boolean tableLayout, List<String> columns, List<String> rows )
     {
-        Grid grid = getAggregatedDataValues( params );
+        Grid grid = null;
 
         if ( !tableLayout )
         {
-            return grid;
+            return getAggregatedDataValues( params );
+        }
+        else
+        {
+            params.setOutputIdScheme( null );
+            grid = getAggregatedDataValues( params );
         }
 
         ListUtils.removeEmptys( columns );
@@ -796,7 +823,7 @@ public class DefaultAnalyticsService
     @Override
     public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, AggregationType aggregationType,
         String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit,
-        boolean hideEmptyRows, boolean showHierarchy, DisplayProperty displayProperty, I18nFormat format )
+        boolean hideEmptyRows, boolean showHierarchy, DisplayProperty displayProperty, IdentifiableProperty outputIdScheme, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
 
@@ -824,6 +851,7 @@ public class DefaultAnalyticsService
         params.setHideEmptyRows( hideEmptyRows );
         params.setShowHierarchy( showHierarchy );
         params.setDisplayProperty( displayProperty );
+        params.setOutputIdScheme( outputIdScheme );
 
         return params;
     }

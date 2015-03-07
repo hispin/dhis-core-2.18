@@ -295,7 +295,7 @@ public interface Grid
      * 
      * @param metaDataMap meta-data map of keys and substitutions.
      */
-    Grid substituteMetaData( Map<Object, Object> metaDataMap );
+    Grid substituteMetaData( Map<? extends Object, ? extends Object> metaDataMap );
     
     /**
      * Substitutes the values in the meta columns with the mapped value in the
@@ -304,7 +304,7 @@ public interface Grid
      * @param columnIndex the index of the column to substitute.
      * @param metaDataMap meta-data map of keys and substitutions.
      */
-    Grid substituteMetaData( int columnIndex, Map<Object, Object> metaDataMap );
+    Grid substituteMetaData( int columnIndex, Map<? extends Object, ? extends Object> metaDataMap );
     
     /**
      * Returns indexes of the meta grid headers.
