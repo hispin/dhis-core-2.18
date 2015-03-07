@@ -171,15 +171,15 @@ public class EmailMessageSender
         return email;
     }
 
-    private String customizeTitle( String s )
+    private String customizeTitle( String title )
     {
-        String applicationTitle = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_APPLICATION_TITLE );
+        String appTitle = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_APPLICATION_TITLE );
 
-        if ( applicationTitle != null && !applicationTitle.isEmpty() )
+        if ( appTitle != null && !appTitle.isEmpty() )
         {
-            s = s.replace( DEFAULT_APPLICATION_TITLE, applicationTitle );
+            title = title.replace( DEFAULT_APPLICATION_TITLE, appTitle );
         }
 
-        return s;
+        return title;
     }
 }
