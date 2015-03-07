@@ -34,7 +34,9 @@ import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notifier;
+import org.hisp.dhis.system.util.DebugUtils;
 import org.hisp.dhis.validation.ValidationRuleService;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -79,7 +81,11 @@ public class MonitoringTask
         {
             notifier.notify( taskId, ERROR, "Process failed: " + ex.getMessage(), true );
             
-            messageService.sendFeedback( "Monitoring process failed", "Monitoring process failed, please check the logs.", null );
+            messageService.sendSystemNotification( 
+                "Monitoring process failed - " + new DateTime().toString(),
+                "Monitoring process failed, please check the logs. " +
+                "Message: " + ex.getMessage() + " " +
+                "Cause: " + DebugUtils.getStackTrace( ex.getCause() ) );
             
             throw ex;
         }

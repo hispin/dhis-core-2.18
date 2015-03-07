@@ -43,6 +43,7 @@ import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.DebugUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -158,7 +159,7 @@ public class AnalyticsTableTask
             notifier.notify( taskId, ERROR, "Process failed: " + ex.getMessage(), true );
             
             messageService.sendSystemNotification( 
-                "Analytics table process failed", 
+                "Analytics table process failed - " + new DateTime().toString(),
                 "Analytics table process failed, please check the logs. " +
                 "Message: " + ex.getMessage() + " " +
                 "Cause: " + DebugUtils.getStackTrace( ex.getCause() ) );
