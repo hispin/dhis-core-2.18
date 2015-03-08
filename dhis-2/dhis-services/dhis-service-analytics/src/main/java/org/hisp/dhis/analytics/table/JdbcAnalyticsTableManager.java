@@ -268,16 +268,18 @@ public class JdbcAnalyticsTableManager
             dataElementService.getDataDimensionDataElementGroupSets();
         
         Collection<OrganisationUnitGroupSet> orgUnitGroupSets = 
-            organisationUnitGroupService.getDataDimensionOrganisationUnitGroupSets();
-
+            idObjectManager.getByDataDimensionNoAcl( OrganisationUnitGroupSet.class, true );
+        
+        System.out.println("org unit group sets " + orgUnitGroupSets);
+        
         Collection<CategoryOptionGroupSet> categoryOptionGroupSets =
-            categoryService.getDataDimensionCategoryOptionGroupSets();
+            idObjectManager.getByDataDimensionNoAcl( CategoryOptionGroupSet.class, true );
         
         Collection<DataElementCategory> disaggregationCategories =
-            categoryService.getDisaggregationDataDimensionCategories();
+            categoryService.getDisaggregationDataDimensionCategoriesNoAcl();
         
         Collection<DataElementCategory> attributeCategories =
-            categoryService.getAttributeDataDimensionCategories();
+            categoryService.getAttributeDataDimensionCategoriesNoAcl();
 
         Collection<OrganisationUnitLevel> levels =
             organisationUnitService.getOrganisationUnitLevels();

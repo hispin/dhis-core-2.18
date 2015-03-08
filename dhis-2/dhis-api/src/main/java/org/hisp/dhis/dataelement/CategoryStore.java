@@ -29,6 +29,7 @@ package org.hisp.dhis.dataelement;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.common.GenericDimensionalObjectStore;
 
@@ -41,4 +42,6 @@ public interface CategoryStore
     Collection<DataElementCategory> getCategoriesByDimensionType( String dimensionType );
     
     Collection<DataElementCategory> getCategories( String dimensionType, boolean dataDimension );
+    
+    List<DataElementCategory> getCategoriesNoAcl( String dimensionType, boolean dataDimension );
 }

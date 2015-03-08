@@ -67,7 +67,10 @@ public class DefaultIdentifiableObjectManager
 
     @Autowired
     private Set<GenericNameableObjectStore<? extends NameableObject>> nameableObjectStores;
-    
+
+    @Autowired
+    private Set<GenericDimensionalObjectStore<? extends DimensionalObject>> dimensionalObjectStores;
+
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -77,6 +80,8 @@ public class DefaultIdentifiableObjectManager
     private Map<Class<? extends IdentifiableObject>, GenericIdentifiableObjectStore<? extends IdentifiableObject>> identifiableObjectStoreMap;
 
     private Map<Class<? extends NameableObject>, GenericNameableObjectStore<? extends NameableObject>> nameableObjectStoreMap;
+
+    private Map<Class<? extends DimensionalObject>, GenericDimensionalObjectStore<? extends DimensionalObject>> dimensionalObjectStoreMap;
 
     //--------------------------------------------------------------------------
     // IdentifiableObjectManager implementation
@@ -892,6 +897,20 @@ public class DefaultIdentifiableObjectManager
         return (Collection<T>) store.getAllNoAcl( first, max );
     }
 
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends DimensionalObject> List<T> getByDataDimensionNoAcl( Class<T> clazz, boolean dataDimension )
+    {
+        GenericDimensionalObjectStore<DimensionalObject> store = getDimensionalObjectStore( clazz );
+
+        if ( store == null )
+        {
+            return new ArrayList<>();
+        }
+
+        return (List<T>) store.getByDataDimensionNoAcl( dataDimension );
+    }
+    
     //--------------------------------------------------------------------------
     // Supportive methods
     //--------------------------------------------------------------------------
@@ -936,6 +955,26 @@ public class DefaultIdentifiableObjectManager
         return (GenericNameableObjectStore<NameableObject>) store;
     }
 
+    @SuppressWarnings( "unchecked" )
+    private <T extends DimensionalObject> GenericDimensionalObjectStore<DimensionalObject> getDimensionalObjectStore( Class<T> clazz )
+    {
+        initMaps();
+
+        GenericDimensionalObjectStore<? extends DimensionalObject> store = dimensionalObjectStoreMap.get( clazz );
+
+        if ( store == null )
+        {
+            store = dimensionalObjectStoreMap.get( clazz.getSuperclass() );
+
+            if ( store == null )
+            {
+                log.warn( "No DimensionalObjectStore found for class: " + clazz );
+            }
+        }
+
+        return (GenericDimensionalObjectStore<DimensionalObject>) store;
+    }
+
     private void initMaps()
     {
         if ( identifiableObjectStoreMap != null )
@@ -955,6 +994,13 @@ public class DefaultIdentifiableObjectManager
         for ( GenericNameableObjectStore<? extends NameableObject> store : nameableObjectStores )
         {
             nameableObjectStoreMap.put( store.getClazz(), store );
+        }
+        
+        dimensionalObjectStoreMap = new HashMap<>();
+        
+        for ( GenericDimensionalObjectStore<? extends DimensionalObject> store : dimensionalObjectStores )
+        {
+            dimensionalObjectStoreMap.put( store.getClazz(), store );
         }
     }
 }

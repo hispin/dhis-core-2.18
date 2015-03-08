@@ -215,9 +215,9 @@ public class DefaultDataElementCategoryService
     }
 
     @Override
-    public Collection<DataElementCategory> getDisaggregationDataDimensionCategories()
+    public Collection<DataElementCategory> getDisaggregationDataDimensionCategoriesNoAcl()
     {
-        return categoryStore.getCategories( DataElementCategoryCombo.DIMENSION_TYPE_DISAGGREGATION, true );
+        return categoryStore.getCategoriesNoAcl( DataElementCategoryCombo.DIMENSION_TYPE_DISAGGREGATION, true );
     }
 
     @Override
@@ -227,9 +227,9 @@ public class DefaultDataElementCategoryService
     }
 
     @Override
-    public Collection<DataElementCategory> getAttributeDataDimensionCategories()
+    public Collection<DataElementCategory> getAttributeDataDimensionCategoriesNoAcl()
     {
-        return categoryStore.getCategories( DataElementCategoryCombo.DIMENSION_TYPE_ATTTRIBUTE, true );
+        return categoryStore.getCategoriesNoAcl( DataElementCategoryCombo.DIMENSION_TYPE_ATTTRIBUTE, true );
     }
 
     @Override
