@@ -28,14 +28,14 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 
 /**
  * @author Chau Thu Tran
  * @version $ ProgramStageSectionStore.java Apr 8, 2013 3:48:37 PM $
  */
 public interface ProgramStageSectionStore
-    extends GenericNameableObjectStore<ProgramStageSection>
+    extends GenericIdentifiableObjectStore<ProgramStageSection>
 {
     /**
      * Retrieve a program stage section by name and a program stage

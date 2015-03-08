@@ -28,15 +28,15 @@ package org.hisp.dhis.attribute;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.GenericNameableObjectStore;
-
 import java.util.Set;
+
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 
 /**
  * @author mortenoh
  */
 public interface AttributeStore
-    extends GenericNameableObjectStore<Attribute>
+    extends GenericIdentifiableObjectStore<Attribute>
 {
     String ID = AttributeStore.class.getName();
 
