@@ -124,7 +124,7 @@
 	</bean>
 
 	<bean id="org.hisp.dhis.trackedentity.TrackedEntityStore"
-		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityStore">
 		<property name="clazz" value="org.hisp.dhis.trackedentity.TrackedEntity" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
