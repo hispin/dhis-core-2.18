@@ -91,8 +91,8 @@ public class ResourceTableTask
             notifier.notify( taskId, NotificationLevel.ERROR, "Process failed: " + ex.getMessage(), true );
             
             messageService.sendSystemNotification( 
-                "Resource table process failed - " + new DateTime().toString(),
-                "Resource table process failed, please check the logs. " +
+                "Resource table process failed",
+                "Resource table process failed, please check the logs. Time: " + new DateTime().toString() + ". " +
                 "Message: " + ex.getMessage() + " " +
                 "Cause: " + DebugUtils.getStackTrace( ex.getCause() ) );
             

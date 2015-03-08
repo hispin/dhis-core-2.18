@@ -82,8 +82,8 @@ public class MonitoringTask
             notifier.notify( taskId, ERROR, "Process failed: " + ex.getMessage(), true );
             
             messageService.sendSystemNotification( 
-                "Monitoring process failed - " + new DateTime().toString(),
-                "Monitoring process failed, please check the logs. " +
+                "Monitoring process failed",
+                "Monitoring process failed, please check the logs. Time: " + new DateTime().toString() + ". " +
                 "Message: " + ex.getMessage() + " " +
                 "Cause: " + DebugUtils.getStackTrace( ex.getCause() ) );
             

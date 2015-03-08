@@ -159,8 +159,8 @@ public class AnalyticsTableTask
             notifier.notify( taskId, ERROR, "Process failed: " + ex.getMessage(), true );
             
             messageService.sendSystemNotification( 
-                "Analytics table process failed - " + new DateTime().toString(),
-                "Analytics table process failed, please check the logs. " +
+                "Analytics table process failed",
+                "Analytics table process failed, please check the logs. Time: " + new DateTime().toString() + ". " +
                 "Message: " + ex.getMessage() + " " +
                 "Cause: " + DebugUtils.getStackTrace( ex.getCause() ) );
             
