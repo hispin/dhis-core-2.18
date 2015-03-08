@@ -43,11 +43,11 @@ import org.hisp.dhis.analytics.AnalyticsIndex;
 import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.analytics.AnalyticsTableManager;
 import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.jdbc.StatementBuilder;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -71,15 +71,15 @@ public abstract class AbstractJdbcTableManager
     public static final String PREFIX_ORGUNITGROUPSET = "ougs_";
     public static final String PREFIX_ORGUNITLEVEL = "uidlevel";
     public static final String PREFIX_INDEX = "in_";
-    
+
+    @Autowired
+    protected IdentifiableObjectManager idObjectManager;
+   
     @Autowired
     protected OrganisationUnitService organisationUnitService;
     
     @Autowired
     protected DataElementService dataElementService;
-    
-    @Autowired
-    protected OrganisationUnitGroupService organisationUnitGroupService;
     
     @Autowired
     protected DataElementCategoryService categoryService;

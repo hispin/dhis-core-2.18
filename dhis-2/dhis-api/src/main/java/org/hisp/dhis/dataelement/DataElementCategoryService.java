@@ -136,11 +136,11 @@ public interface DataElementCategoryService
 
     /**
      * Retrieves all DataElementCategories of dimension type disaggregation and
-     * data dimensional.
+     * data dimensional. Ignores ACL / sharing.
      * 
      * @return a collection of DataElementCategoryCombos.
      */
-    Collection<DataElementCategory> getDisaggregationDataDimensionCategories();
+    Collection<DataElementCategory> getDisaggregationDataDimensionCategoriesNoAcl();
 
     /**
      * Retrieves all DataElementCategories of dimension type attribute.
@@ -151,11 +151,11 @@ public interface DataElementCategoryService
 
     /**
      * Retrieves all DataElementCategories of dimension type attribute and data
-     * dimensional.
+     * dimensional. Ignores ACL / sharing.
      * 
      * @return a collection of DataElementCategoryCombos.
      */
-    Collection<DataElementCategory> getAttributeDataDimensionCategories();
+    Collection<DataElementCategory> getAttributeDataDimensionCategoriesNoAcl();
 
     // -------------------------------------------------------------------------
     // CategoryOption

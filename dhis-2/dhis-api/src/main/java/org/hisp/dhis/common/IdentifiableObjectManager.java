@@ -132,6 +132,8 @@ public interface IdentifiableObjectManager
     <T extends IdentifiableObject> int getCountLikeName( Class<T> clazz, String name );
 
     <T extends NameableObject> int getCountLikeShortName( Class<T> clazz, String shortName );
+    
+    <T extends DimensionalObject> List<T> getByDataDimensionNoAcl( Class<T> clazz, boolean dataDimension );
 
     void refresh( Object object );
 
