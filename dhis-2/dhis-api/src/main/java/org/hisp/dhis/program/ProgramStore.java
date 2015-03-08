@@ -28,18 +28,18 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.GenericNameableObjectStore;
+import java.util.Collection;
+
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.trackedentity.TrackedEntity;
-
-import java.util.Collection;
 
 /**
  * @author Chau Thu Tran
  * @version $Id: ProgramStore.java Dec 14, 2011 9:22:17 AM $
  */
 public interface ProgramStore
-    extends GenericNameableObjectStore<Program>
+    extends GenericIdentifiableObjectStore<Program>
 {
     String ID = ProgramStore.class.getName();
 

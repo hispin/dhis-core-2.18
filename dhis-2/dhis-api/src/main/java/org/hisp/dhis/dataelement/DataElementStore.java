@@ -31,7 +31,7 @@ package org.hisp.dhis.dataelement;
 import java.util.Collection;
 import java.util.Set;
 
-import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.hisp.dhis.common.GenericDimensionalObjectStore;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.dataset.DataSet;
 
@@ -41,7 +41,7 @@ import org.hisp.dhis.dataset.DataSet;
  * @author Torgeir Lorange Ostby
  */
 public interface DataElementStore
-    extends GenericNameableObjectStore<DataElement>
+    extends GenericDimensionalObjectStore<DataElement>
 {
     String ID = DataElementStore.class.getName();
 
