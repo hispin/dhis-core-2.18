@@ -1,4 +1,4 @@
-package org.hisp.dhis.organisationunit;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2015, University of Oslo
@@ -28,12 +28,27 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.GenericDimensionalObjectStore;
+import java.util.List;
 
 /**
- * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @author Lars Helge Overland
  */
-public interface OrganisationUnitGroupSetStore
-    extends GenericDimensionalObjectStore<OrganisationUnitGroupSet>
+public interface GenericDimensionalObjectStore<T>
+    extends GenericNameableObjectStore<T>
 {
+    /**
+     * Retrieves a List of dimensional objects.
+     * 
+     * @param dataDimension indicates whether to fetch objects defined as dimensional.
+     * @return a List of objects.
+     */
+    List<T> getByDataDimension( boolean dataDimension );
+    
+    /**
+     * Retrieves a List of dimensional objects. Ignore ACL / sharing.
+     * 
+     * @param dataDimension indicates whether to fetch objects defined as dimensional.
+     * @return a List of objects.
+     */
+    List<T> getByDataDimensionNoAcl( boolean dataDimension );
 }

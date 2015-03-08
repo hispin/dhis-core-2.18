@@ -41,7 +41,7 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.hisp.dhis.common.GenericDimensionalObjectStore;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -95,10 +95,9 @@ public class DefaultDataElementCategoryService
         this.categoryOptionGroupStore = categoryOptionGroupStore;
     }
 
-    private GenericNameableObjectStore<CategoryOptionGroupSet> categoryOptionGroupSetStore;
+    private GenericDimensionalObjectStore<CategoryOptionGroupSet> categoryOptionGroupSetStore;
 
-    public void setCategoryOptionGroupSetStore(
-        GenericNameableObjectStore<CategoryOptionGroupSet> categoryOptionGroupSetStore )
+    public void setCategoryOptionGroupSetStore( GenericDimensionalObjectStore<CategoryOptionGroupSet> categoryOptionGroupSetStore )
     {
         this.categoryOptionGroupSetStore = categoryOptionGroupSetStore;
     }

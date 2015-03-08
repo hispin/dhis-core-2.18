@@ -30,13 +30,13 @@ package org.hisp.dhis.dataelement;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.hisp.dhis.common.GenericDimensionalObjectStore;
 
 /**
  * @author Lars Helge Overland
  */
 public interface CategoryStore
-    extends GenericNameableObjectStore<DataElementCategory>
+    extends GenericDimensionalObjectStore<DataElementCategory>
 {
     Collection<DataElementCategory> getCategoriesByDimensionType( String dimensionType );
     
