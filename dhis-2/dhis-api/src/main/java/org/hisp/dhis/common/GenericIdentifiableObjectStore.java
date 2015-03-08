@@ -152,14 +152,6 @@ public interface GenericIdentifiableObjectStore<T>
     List<T> getAllLikeName( Set<String> words, int first, int max );
     
     /**
-     * Retrieves a List of objects where the shortName is like the given shortName.
-     *
-     * @param shortName the shortName.
-     * @return a List of objects.
-     */
-    List<T> getAllLikeShortName( String shortName );
-
-    /**
      * The returned list is ordered by the last updated property descending.
      *
      * @return List of objects.
@@ -185,28 +177,12 @@ public interface GenericIdentifiableObjectStore<T>
     int getCountEqName( String name );
 
     /**
-     * Gets the count of objects which shortName is equal the given shortName.
-     *
-     * @param shortName the shortName which result object shortNames must be like.
-     * @return the count of objects.
-     */
-    int getCountEqShortName( String shortName );
-
-    /**
      * Gets the count of objects which name is like the given name.
      *
      * @param name the name which result object names must be like.
      * @return the count of objects.
      */
     int getCountLikeName( String name );
-
-    /**
-     * Gets the count of objects which shortName is like the given shortName.
-     *
-     * @param shortName the shortName which result object shortNames must be like.
-     * @return the count of objects.
-     */
-    int getCountLikeShortName( String shortName );
 
     /**
      * Retrieves a list of objects referenced by the given List of uids.

@@ -28,6 +28,16 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
@@ -39,17 +49,11 @@ import org.hisp.dhis.user.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /**
+ * Note that it is required for nameable object stores to have concrete implementation
+ * classes, not rely on the HibernateIdentifiableObjectStore class, in order to 
+ * be injected as nameable object stores.
+ * 
  * @author Lars Helge Overland
  */
 @Transactional
@@ -63,7 +67,7 @@ public class DefaultIdentifiableObjectManager
 
     @Autowired
     private Set<GenericNameableObjectStore<? extends NameableObject>> nameableObjectStores;
-
+    
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -367,9 +371,9 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    public <T extends IdentifiableObject> int getCountByShortName( Class<T> clazz, String shortName )
+    public <T extends NameableObject> int getCountByShortName( Class<T> clazz, String shortName )
     {
-        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+        GenericNameableObjectStore<NameableObject> store = getNameableObjectStore( clazz );
 
         if ( store != null )
         {
@@ -419,9 +423,9 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
-    public <T extends IdentifiableObject> int getCountLikeShortName( Class<T> clazz, String shortName )
+    public <T extends NameableObject> int getCountLikeShortName( Class<T> clazz, String shortName )
     {
-        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+        GenericNameableObjectStore<NameableObject> store = getNameableObjectStore( clazz );
 
         if ( store != null )
         {
@@ -447,9 +451,9 @@ public class DefaultIdentifiableObjectManager
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public <T extends IdentifiableObject> Collection<T> getLikeShortName( Class<T> clazz, String shortName )
+    public <T extends NameableObject> Collection<T> getLikeShortName( Class<T> clazz, String shortName )
     {
-        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+        GenericNameableObjectStore<NameableObject> store = getNameableObjectStore( clazz );
 
         if ( store == null )
         {

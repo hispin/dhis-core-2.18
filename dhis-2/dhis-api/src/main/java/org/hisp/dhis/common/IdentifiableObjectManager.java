@@ -81,7 +81,7 @@ public interface IdentifiableObjectManager
 
     <T extends IdentifiableObject> Collection<T> getLikeName( Class<T> clazz, String name );
 
-    <T extends IdentifiableObject> Collection<T> getLikeShortName( Class<T> clazz, String shortName );
+    <T extends NameableObject> Collection<T> getLikeShortName( Class<T> clazz, String shortName );
 
     <T extends IdentifiableObject> List<T> getBetween( Class<T> clazz, int first, int max );
 
@@ -123,7 +123,7 @@ public interface IdentifiableObjectManager
 
     <T extends IdentifiableObject> int getCountByName( Class<T> clazz, String name );
 
-    <T extends IdentifiableObject> int getCountByShortName( Class<T> clazz, String shortName );
+    <T extends NameableObject> int getCountByShortName( Class<T> clazz, String shortName );
 
     <T extends IdentifiableObject> int getCountByCreated( Class<T> clazz, Date created );
 
@@ -131,7 +131,7 @@ public interface IdentifiableObjectManager
 
     <T extends IdentifiableObject> int getCountLikeName( Class<T> clazz, String name );
 
-    <T extends IdentifiableObject> int getCountLikeShortName( Class<T> clazz, String shortName );
+    <T extends NameableObject> int getCountLikeShortName( Class<T> clazz, String shortName );
 
     void refresh( Object object );
 
