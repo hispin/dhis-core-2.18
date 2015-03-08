@@ -270,8 +270,6 @@ public class JdbcAnalyticsTableManager
         Collection<OrganisationUnitGroupSet> orgUnitGroupSets = 
             idObjectManager.getByDataDimensionNoAcl( OrganisationUnitGroupSet.class, true );
         
-        System.out.println("org unit group sets " + orgUnitGroupSets);
-        
         Collection<CategoryOptionGroupSet> categoryOptionGroupSets =
             idObjectManager.getByDataDimensionNoAcl( CategoryOptionGroupSet.class, true );
         
