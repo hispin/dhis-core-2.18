@@ -2705,6 +2705,7 @@ Ext.onReady( function() {
             favoriteButton,
             getParamString,
             openTableLayoutTab,
+            openPlainDataSource,
             downloadButton,
             interpretationItem,
             pluginItem,
@@ -5451,8 +5452,16 @@ Ext.onReady( function() {
 			}
 		};
 
+        openPlainDataSource = function(url, isNewTab) {
+            if (url) {
+                if (ns.core.init.contextPath && ns.app.paramString) {
+                    window.open(url, isNewTab ? '_blank' : '_top');
+                }
+            }
+        };            
+
 		downloadButton = Ext.create('Ext.button.Button', {
-			text: 'Download',
+            text: NS.i18n.download,
 			disabled: true,
 			menu: {},
             handler: function(b) {
@@ -5498,45 +5507,147 @@ Ext.onReady( function() {
                                 text: 'JSON',
                                 iconCls: 'ns-menu-item-datasource',
                                 handler: function() {
-                                    if (ns.core.init.contextPath && ns.app.paramString) {
-                                        window.open(ns.core.init.contextPath + '/api/analytics.json' + getParamString(), '_blank');
+                                    openPlainDataSource(ns.core.init.contextPath + '/api/analytics.json' + getParamString(), true);
+                                },
+                                menu: [
+                                    {
+                                        xtype: 'label',
+                                        text: NS.i18n.metadata_id_scheme,
+                                        style: 'padding:7px 18px 5px 7px; font-weight:bold; color:#333'
+                                    },
+                                    {
+                                        text: 'ID',
+                                        iconCls: 'ns-menu-item-scheme',
+                                        handler: function() {
+                                            openPlainDataSource(ns.core.init.contextPath + '/api/analytics.json' + getParamString() + '&outputIdScheme=ID', true);
+                                        }
+                                    },
+                                    {
+                                        text: 'Code',
+                                        iconCls: 'ns-menu-item-scheme',
+                                        handler: function() {
+                                            openPlainDataSource(ns.core.init.contextPath + '/api/analytics.json' + getParamString() + '&outputIdScheme=CODE', true);
+                                        }
+                                    },
+                                    {
+                                        text: 'Name',
+                                        iconCls: 'ns-menu-item-scheme',
+                                        handler: function() {
+                                            openPlainDataSource(ns.core.init.contextPath + '/api/analytics.json' + getParamString() + '&outputIdScheme=NAME', true);
+                                        }
                                     }
-                                }
+                                ]
                             },
                             {
                                 text: 'XML',
                                 iconCls: 'ns-menu-item-datasource',
                                 handler: function() {
-                                    if (ns.core.init.contextPath && ns.app.paramString) {
-                                        window.open(ns.core.init.contextPath + '/api/analytics.xml' + getParamString(), '_blank');
+                                    openPlainDataSource(ns.core.init.contextPath + '/api/analytics.xml' + getParamString(), true);
+                                },
+                                menu: [
+                                    {
+                                        xtype: 'label',
+                                        text: NS.i18n.metadata_id_scheme,
+                                        style: 'padding:7px 18px 5px 7px; font-weight:bold; color:#333'
+                                    },
+                                    {
+                                        text: 'ID',
+                                        iconCls: 'ns-menu-item-scheme',
+                                        handler: function() {
+                                            openPlainDataSource(ns.core.init.contextPath + '/api/analytics.xml' + getParamString() + '&outputIdScheme=ID', true);
+                                        }
+                                    },
+                                    {
+                                        text: 'Code',
+                                        iconCls: 'ns-menu-item-scheme',
+                                        handler: function() {
+                                            openPlainDataSource(ns.core.init.contextPath + '/api/analytics.xml' + getParamString() + '&outputIdScheme=CODE', true);
+                                        }
+                                    },
+                                    {
+                                        text: 'Name',
+                                        iconCls: 'ns-menu-item-scheme',
+                                        handler: function() {
+                                            openPlainDataSource(ns.core.init.contextPath + '/api/analytics.xml' + getParamString() + '&outputIdScheme=NAME', true);
+                                        }
                                     }
-                                }
+                                ]
                             },
                             {
                                 text: 'Microsoft Excel',
                                 iconCls: 'ns-menu-item-datasource',
                                 handler: function() {
-                                    if (ns.core.init.contextPath && ns.app.paramString) {
-                                        window.location.href = ns.core.init.contextPath + '/api/analytics.xls' + getParamString();
+                                    openPlainDataSource(ns.core.init.contextPath + '/api/analytics.xls' + getParamString());
+                                },
+                                menu: [
+                                    {
+                                        xtype: 'label',
+                                        text: NS.i18n.metadata_id_scheme,
+                                        style: 'padding:7px 18px 5px 7px; font-weight:bold; color:#333'
+                                    },
+                                    {
+                                        text: 'ID',
+                                        iconCls: 'ns-menu-item-scheme',
+                                        handler: function() {
+                                            openPlainDataSource(ns.core.init.contextPath + '/api/analytics.xls' + getParamString() + '&outputIdScheme=ID');
+                                        }
+                                    },
+                                    {
+                                        text: 'Code',
+                                        iconCls: 'ns-menu-item-scheme',
+                                        handler: function() {
+                                            openPlainDataSource(ns.core.init.contextPath + '/api/analytics.xls' + getParamString() + '&outputIdScheme=CODE');
+                                        }
+                                    },
+                                    {
+                                        text: 'Name',
+                                        iconCls: 'ns-menu-item-scheme',
+                                        handler: function() {
+                                            openPlainDataSource(ns.core.init.contextPath + '/api/analytics.xls' + getParamString() + '&outputIdScheme=NAME');
+                                        }
                                     }
-                                }
+                                ]
                             },
                             {
                                 text: 'CSV',
                                 iconCls: 'ns-menu-item-datasource',
                                 handler: function() {
-                                    if (ns.core.init.contextPath && ns.app.paramString) {
-                                        window.location.href = ns.core.init.contextPath + '/api/analytics.csv' + getParamString();
+                                    openPlainDataSource(ns.core.init.contextPath + '/api/analytics.csv' + getParamString());
+                                },
+                                menu: [
+                                    {
+                                        xtype: 'label',
+                                        text: NS.i18n.metadata_id_scheme,
+                                        style: 'padding:7px 18px 5px 7px; font-weight:bold; color:#333'
+                                    },
+                                    {
+                                        text: 'ID',
+                                        iconCls: 'ns-menu-item-scheme',
+                                        handler: function() {
+                                            openPlainDataSource(ns.core.init.contextPath + '/api/analytics.csv' + getParamString() + '&outputIdScheme=ID');
+                                        }
+                                    },
+                                    {
+                                        text: 'Code',
+                                        iconCls: 'ns-menu-item-scheme',
+                                        handler: function() {
+                                            openPlainDataSource(ns.core.init.contextPath + '/api/analytics.csv' + getParamString() + '&outputIdScheme=CODE');
+                                        }
+                                    },
+                                    {
+                                        text: 'Name',
+                                        iconCls: 'ns-menu-item-scheme',
+                                        handler: function() {
+                                            openPlainDataSource(ns.core.init.contextPath + '/api/analytics.csv' + getParamString() + '&outputIdScheme=NAME');
+                                        }
                                     }
-                                }
+                                ]
                             },
                             {
                                 text: 'JRXML',
                                 iconCls: 'ns-menu-item-datasource',
                                 handler: function() {
-                                    if (ns.core.init.contextPath && ns.app.paramString) {
-                                        window.open(ns.core.init.contextPath + '/api/analytics.jrxml' + getParamString(), '_blank');
-                                    }
+                                    openPlainDataSource(ns.core.init.contextPath + '/api/analytics.jrxml' + getParamString(), true);
                                 }
                             }
                         ];
