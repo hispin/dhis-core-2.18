@@ -52,6 +52,7 @@ import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
 public class DateUtils
 {
     public static final SimpleDateFormat[] SUPPORTED_DATE_FORMATS = new SimpleDateFormat[]{
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" ),
         new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" ),
         new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" ),
         new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm" ),
