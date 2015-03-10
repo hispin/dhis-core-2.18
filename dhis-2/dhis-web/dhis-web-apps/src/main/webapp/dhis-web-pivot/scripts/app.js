@@ -1573,7 +1573,7 @@ Ext.onReady( function() {
 				];
 
 				if (isPublicAccess) {
-					data.unshift({id: '-------', name: NS.i18n.none});
+					data.unshift({id: '--------', name: NS.i18n.none});
 				}
 
 				return data;
@@ -5458,7 +5458,7 @@ Ext.onReady( function() {
                     window.open(url, isNewTab ? '_blank' : '_top');
                 }
             }
-        };            
+        };
 
 		downloadButton = Ext.create('Ext.button.Button', {
             text: NS.i18n.download,

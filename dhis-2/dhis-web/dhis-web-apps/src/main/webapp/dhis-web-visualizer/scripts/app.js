@@ -1690,7 +1690,7 @@ Ext.onReady( function() {
 				];
 
 				if (isPublicAccess) {
-					data.unshift({id: '-------', name: NS.i18n.none});
+					data.unshift({id: '--------', name: NS.i18n.none});
 				}
 
 				return data;
