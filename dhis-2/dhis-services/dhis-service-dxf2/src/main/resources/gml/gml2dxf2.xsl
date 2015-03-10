@@ -8,8 +8,10 @@
 <xsl:param name="precision">4</xsl:param>
 
 <xsl:template match="gml:coordinates">
+  <xsl:text>[</xsl:text>
   <xsl:value-of select="java:gmlCoordinatesToString(normalize-space(.),$precision)"
     disable-output-escaping="yes"/>
+  <xsl:text>]</xsl:text>
   <xsl:if test="position() != last()">
     <xsl:text>,</xsl:text>
   </xsl:if>
@@ -17,15 +19,14 @@
 
 <xsl:template match="gml:pos">
   <xsl:value-of select="java:gmlPosToString(normalize-space(.),$precision)"
-    disable-output-escaping="yes"/>
-  <xsl:if test="position() != last()">
-    <xsl:text>,</xsl:text>
-  </xsl:if>
+    disable-output-escaping="yes" />
 </xsl:template>
 
 <xsl:template match="gml:posList">
+  <xsl:text>[</xsl:text>
   <xsl:value-of select="java:gmlPosListToString(normalize-space(.),$precision)"
     disable-output-escaping="yes"/>
+  <xsl:text>]</xsl:text>
   <xsl:if test="position() != last()">
     <xsl:text>,</xsl:text>
   </xsl:if>
@@ -34,10 +35,10 @@
 <xsl:template match="gml:Polygon">
   <featureType>Polygon</featureType>
   <coordinates>
-    <xsl:text>[[[</xsl:text>
+    <xsl:text>[[</xsl:text>
     <xsl:apply-templates select=".//gml:coordinates"/>
     <xsl:apply-templates select=".//gml:posList"/>
-    <xsl:text>]]]</xsl:text>
+    <xsl:text>]]</xsl:text>
     <xsl:if test="position() != last()">
       <xsl:text>,</xsl:text>
     </xsl:if>
