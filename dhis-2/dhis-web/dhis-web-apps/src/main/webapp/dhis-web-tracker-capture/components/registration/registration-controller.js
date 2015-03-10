@@ -115,6 +115,7 @@ trackerCapture.controller('RegistrationController',
                                 dateOfEnrollment: DateUtils.formatFromUserToApi($scope.enrollment.dateOfEnrollment),
                                 dateOfIncident: $scope.enrollment.dateOfIncident === '' ? DateUtils.formatFromUserToApi($scope.enrollment.dateOfEnrollment) : DateUtils.formatFromUserToApi($scope.enrollment.dateOfIncident)
                             };                           
+                    var en = angular.copy($scope.enrollment);
                     EnrollmentService.enroll(enrollment).then(function(data){
                         if(data.status !== 'SUCCESS'){
                             //enrollment has failed
@@ -127,7 +128,7 @@ trackerCapture.controller('RegistrationController',
                         }
                         else{
                             enrollment.enrollment = data.reference;
-                            $scope.autoGenerateEvents(teiId,$scope.selectedProgram, $scope.selectedOrgUnit, $scope.enrollment);                          
+                            $scope.autoGenerateEvents(teiId,$scope.selectedProgram, $scope.selectedOrgUnit, en);                          
                         }
                     });
                 }

@@ -166,7 +166,6 @@ trackerCapture.controller('RelationshipController',
     else{
         AttributesFactory.getWithoutProgram().then(function(atts){
             $scope.attributes = orderByFilter(atts, '-sortOrderInListNoProgram').reverse();
-            $scope.attributes = atts;
             $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
             $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
         });
@@ -183,9 +182,8 @@ trackerCapture.controller('RelationshipController',
             });
         }
         else{
-            AttributesFactory.getWithoutProgram().then(function(atts){
-                
-                $scope.attributes = atts;
+            AttributesFactory.getWithoutProgram().then(function(atts){                
+                $scope.attributes = orderByFilter(atts, '-sortOrderInListNoProgram').reverse();
                 $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
                 $scope.gridColumns = $scope.generateGridColumns($scope.attributes);
             });
