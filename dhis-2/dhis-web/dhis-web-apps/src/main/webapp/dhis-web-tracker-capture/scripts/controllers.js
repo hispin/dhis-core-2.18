@@ -8,6 +8,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         function($scope,
                 $modal,
                 $location,
+                $translate,
+                $filter,
                 orderByFilter,
                 Paginator,
                 storage,
@@ -18,7 +20,8 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                 EntityQueryFactory,
                 CurrentSelection,
                 TEIGridService,
-                TEIService) {  
+                TEIService,
+                DateUtils) {  
                     
     //Selection
     $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];         
@@ -152,15 +155,17 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }       
     };
     
-    $scope.processAttributes = function(){
-
+    $scope.processAttributes = function(){        
+        $scope.sortColumn = {};
+        $scope.reverse = false;
         if($scope.selectedProgram){
             AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){
                 $scope.attributes = atts;
                 setTimeout(function () {
                     $scope.$apply(function () {                        
                         $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
-                        $scope.gridColumns = TEIGridService.generateGridColumns($scope.attributes, $scope.selectedOuMode.name);
+                        var grid = TEIGridService.generateGridColumns($scope.attributes, $scope.selectedOuMode.name);
+                        $scope.gridColumns = grid.columns;                       
                     });
                 }, 100);
             });           
@@ -172,11 +177,35 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
                     $scope.$apply(function () {
                         $scope.attributes = orderByFilter(atts, '-sortOrderInListNoProgram').reverse();
                         $scope.attributes = $scope.generateAttributeFilters($scope.attributes);
-                        $scope.gridColumns = TEIGridService.generateGridColumns($scope.attributes, $scope.selectedOuMode.name);
+                        var grid = TEIGridService.generateGridColumns($scope.attributes, $scope.selectedOuMode.name);
+                        $scope.gridColumns = grid.columns;
                     });
                 }, 100);
             });
         }
+    };
+    
+    //sortGrid
+    $scope.sortGrid = function(gridHeader){
+        if ($scope.sortColumn && $scope.sortColumn.id === gridHeader.id){
+            $scope.reverse = !$scope.reverse;
+            return;
+        }        
+        $scope.sortColumn = gridHeader;
+        if($scope.sortColumn.valueType === 'date'){
+            $scope.reverse = true;
+        }
+        else{
+            $scope.reverse = false;    
+        }
+    };
+    
+    $scope.d2Sort = function(tei){        
+        if($scope.sortColumn && $scope.sortColumn.valueType === 'date'){            
+            var d = tei[$scope.sortColumn.id];         
+            return DateUtils.getDate(d);
+        }
+        return tei[$scope.sortColumn.id];
     };
    
     //$scope.searchParam = {bools: []};
@@ -185,7 +214,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         $scope.selectedSearchMode = mode;
         $scope.emptySearchText = false;
         $scope.emptySearchAttribute = false;
-        //$scope.showSearchDiv = false;
         $scope.showRegistrationDiv = false;  
         $scope.showReportDiv = false;
         $scope.showTrackedEntityDiv = false;
@@ -267,24 +295,12 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
             $scope.showTrackedEntityDiv = true;
             $scope.teiFetched = true;  
             $scope.doSearch = true;
+            
+            if(!$scope.sortColumn.id){                                      
+                $scope.sortGrid({id: 'created', name: $translate('registration_date'), valueType: 'date', displayInListNoProgram: false, showFilter: false, show: true});
+            }
+            
         });
-    };
-    
-    $scope.jumpToPage = function(){
-        if($scope.pager && $scope.pager.page && $scope.pager.pageCount && $scope.pager.page > $scope.pager.pageCount){
-            $scope.pager.page = $scope.pager.pageCount;
-        }
-        $scope.search();
-    };
-    
-    $scope.resetPageSize = function(){
-        $scope.pager.page = 1;        
-        $scope.search();
-    };
-    
-    $scope.getPage = function(page){    
-        $scope.pager.page = page;
-        $scope.search();
     };
     
     $scope.generateAttributeFilters = function(attributes){
@@ -318,19 +334,6 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         }
     };  
     
-    $scope.showReport = function(){
-        $scope.showReportDiv = !$scope.showReportDiv;
-        $scope.showTrackedEntityDiv = false;
-        $scope.showSearchDiv = false;
-        $scope.searchState = false;
-        
-        if(!$scope.showReportDiv){
-            $scope.searchState = true;
-            $scope.doSearch = true;
-            $scope.getProgramAttributes($scope.selectedProgram);
-        }
-    };
-    
     $scope.showHideColumns = function(){
         $scope.hiddenGridColumns = 0;
         
@@ -359,11 +362,40 @@ var trackerCaptureControllers = angular.module('trackerCaptureControllers', [])
         });
     };
 
-    $scope.showDashboard = function(currentEntity){   
+    $scope.showDashboard = function(currentEntity){        
+        var sortedTei = $filter('orderBy')($scope.trackedEntityList.rows, function(tei) {
+            return $scope.d2Sort(tei);
+        }, $scope.reverse);
+        
+        var sortedTeiIds = [];
+        angular.forEach(sortedTei, function(tei){
+            sortedTeiIds.push(tei.id);
+        });
+        
+        CurrentSelection.setSortedTeiIds(sortedTeiIds);        
         $location.path('/dashboard').search({tei: currentEntity.id,                                            
                                             program: $scope.selectedProgram ? $scope.selectedProgram.id: null});                                    
+    };    
+    
+    //paging        
+    $scope.jumpToPage = function(){
+        if($scope.pager && $scope.pager.page && $scope.pager.pageCount && $scope.pager.page > $scope.pager.pageCount){
+            $scope.pager.page = $scope.pager.pageCount;
+        }
+        $scope.search();
     };
-       
+    
+    $scope.resetPageSize = function(){
+        $scope.pager.page = 1;        
+        $scope.search();
+    };
+    
+    $scope.getPage = function(page){    
+        $scope.pager.page = page;
+        $scope.search();
+    };
+    
+    //help
     $scope.getHelpContent = function(){
         console.log('I will get help content');
     };    

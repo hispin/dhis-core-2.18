@@ -135,8 +135,8 @@
                                     <!-- sort icon begins -->
                                     <span ng-click="sortGrid(gridColumn)">
                                         {{gridColumn.name}}
-                                        <i ng-if="sortHeader == gridColumn.id && reverse" class="fa fa-sort-desc not-printable"></i>
-                                        <i ng-if="sortHeader == gridColumn.id && !reverse" class="fa fa-sort-asc not-printable"></i>
+                                        <i ng-if="sortColumn == gridColumn.id && reverse" class="fa fa-sort-desc not-printable"></i>
+                                        <i ng-if="sortColumn == gridColumn.id && !reverse" class="fa fa-sort-asc not-printable"></i>
                                     </span>
                                     <!-- sort icon ends -->
 
@@ -179,7 +179,7 @@
                             </tr>                        
                         </thead>
                         <tbody id="list">
-                            <tr ng-repeat="overdueEvent in overdueEvents | orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes"
+                            <tr ng-repeat="overdueEvent in overdueEvents | orderBy:sortColumn:reverse | gridFilter:filterText:filterTypes"
                                 ng-click="showDashboard(overdueEvent.trackedEntityInstance)"
                                 title="{{'go_to_dashboard'| translate}}">
                                 <td ng-show="gridColumn.show"                                            

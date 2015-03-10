@@ -188,14 +188,14 @@ trackerCapture.controller('OverdueEventsController',
     };
     
     $scope.sortGrid = function(gridHeader){
-        if ($scope.sortHeader === gridHeader.id){
+        if ($scope.sortColumn === gridHeader.id){
             $scope.reverse = !$scope.reverse;
             return;
         }        
-        $scope.sortHeader = gridHeader.id;
+        $scope.sortColumn = gridHeader.id;
         $scope.reverse = false;
         
-        $scope.overdueEvents = orderByFilter($scope.overdueEvents, $scope.sortHeader);
+        $scope.overdueEvents = orderByFilter($scope.overdueEvents, $scope.sortColumn);
         
         if($scope.reverse){
             $scope.overdueEvents.reverse();
