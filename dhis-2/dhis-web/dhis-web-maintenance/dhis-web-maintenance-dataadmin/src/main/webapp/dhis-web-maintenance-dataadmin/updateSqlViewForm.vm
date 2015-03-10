@@ -2,6 +2,14 @@
 
 <h3>$encoder.htmlEncode( $i18n.getString( "update_sql_view" ) )</h3>
 
+#if( "VIEW" == $sqlViewObject.type )
+#set( $type = $i18n.getString( "sql_view_type" ) )
+#elseif( "MATERIALIZED_VIEW" == $sqlViewObject.type )
+#set( $type = $i18n.getString( "materialized_sql_view_type" ) )
+#elseif( "QUERY" == $sqlViewObject.type )
+#set( $type = $i18n.getString( "sql_query_type" ) )
+#end
+
 <form id="updateSqlViewForm" action="updateSqlViewInstance.action" method="post" class="inputForm">
 
 	<div>
@@ -28,10 +36,10 @@
 		</tr>
 		<tr>
 			<td><label>$encoder.htmlEncode( $i18n.getString( "sql_type" ) )</label></td>
-			<td><input type="text" disabled="disabled" value="#if( $sqlViewObject.query == true )$i18n.getString( "sql_query_type" )#else$i18n.getString( "sql_view_type" )#end"/></td>
+			<td><input type="text" disabled="disabled" value="${type}"/></td>
 		</tr>
 		<tr>
-			<td><label for="sql_statement">$encoder.htmlEncode( $i18n.getString( "sql_statement" ) ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label for="sqlquery">$encoder.htmlEncode( $i18n.getString( "sql_statement" ) ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
 				<textarea type="text" id="sqlquery" name="sqlquery" style="width:80em;height:20em">$!encoder.htmlEncode( $!sqlViewObject.sqlQuery )</textarea>
 			</td>

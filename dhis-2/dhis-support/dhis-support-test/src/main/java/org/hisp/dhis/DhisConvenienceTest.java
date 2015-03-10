@@ -89,6 +89,7 @@ import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.sqlview.SqlView;
+import org.hisp.dhis.sqlview.SqlViewType;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
@@ -1309,7 +1310,7 @@ public abstract class DhisConvenienceTest
         sqlView.setName( "SqlView" + uniqueCharacter );
         sqlView.setDescription( "Description" + uniqueCharacter );
         sqlView.setSqlQuery( sql );
-        sqlView.setQuery( false );
+        sqlView.setType( SqlViewType.VIEW );
 
         return sqlView;
     }

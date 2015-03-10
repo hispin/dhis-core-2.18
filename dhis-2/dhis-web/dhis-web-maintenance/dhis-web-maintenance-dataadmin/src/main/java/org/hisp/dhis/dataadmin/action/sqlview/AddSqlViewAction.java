@@ -30,6 +30,7 @@ package org.hisp.dhis.dataadmin.action.sqlview;
 
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
+import org.hisp.dhis.sqlview.SqlViewType;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,11 +76,11 @@ public class AddSqlViewAction
         this.sqlquery = sqlquery;
     }
     
-    private boolean query;
+    private String type;
 
-    public void setQuery( boolean query )
+    public void setType( String type )
     {
-        this.query = query;
+        this.type = type;
     }
 
     // -------------------------------------------------------------------------
@@ -94,7 +95,7 @@ public class AddSqlViewAction
         sqlView.setName( name );
         sqlView.setDescription( description );
         sqlView.setSqlQuery( sqlquery );
-        sqlView.setQuery( query );
+        sqlView.setType( SqlViewType.valueOf( type ) );
 
         sqlViewService.saveSqlView( sqlView.cleanSqlQuery() );
 

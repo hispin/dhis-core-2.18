@@ -19,7 +19,12 @@
 
     <property name="sqlQuery" not-null="true" type="text" />
     
-    <property name="query" />
+    <property name="type" length="40">
+		<type name="org.hibernate.type.EnumType">
+			<param name="enumClass">org.hisp.dhis.sqlview.SqlViewType</param>
+			<param name="type">12</param>
+		</type> 
+	</property>
 
     <!-- Access properties -->
     <property name="externalAccess" />

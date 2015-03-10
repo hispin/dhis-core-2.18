@@ -548,7 +548,7 @@ public class DefaultResourceTableService
         {
             if ( !view.isQuery() )
             {
-                sqlViewService.dropViewTable( view.getViewName() );
+                sqlViewService.dropViewTable( view );
             }
         }
     }

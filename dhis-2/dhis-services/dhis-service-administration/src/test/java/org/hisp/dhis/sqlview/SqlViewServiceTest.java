@@ -225,7 +225,7 @@ public class SqlViewServiceTest
     @Test( expected = IllegalQueryException.class )
     public void testValidateIllegalKeywords()
     {
-        SqlView sqlView = new SqlView( "Name", "delete * from dataelement", true );
+        SqlView sqlView = new SqlView( "Name", "delete * from dataelement", SqlViewType.QUERY );
         
         sqlViewService.validateSqlView( sqlView, null, null );
     }
@@ -233,7 +233,7 @@ public class SqlViewServiceTest
     @Test( expected = IllegalQueryException.class )
     public void testValidateProtectedTables()
     {
-        SqlView sqlView = new SqlView( "Name", "select * from userinfo where userinfoid=1", true );
+        SqlView sqlView = new SqlView( "Name", "select * from userinfo where userinfoid=1", SqlViewType.QUERY );
         
         sqlViewService.validateSqlView( sqlView, null, null );
     }
@@ -241,7 +241,7 @@ public class SqlViewServiceTest
     @Test( expected = IllegalQueryException.class )
     public void testValidateMissingVariables()
     {
-        SqlView sqlView = new SqlView( "Name", "select * from dataelement where valueType = '${valueType}' and aggregationtype = '${aggregationType}'", true );
+        SqlView sqlView = new SqlView( "Name", "select * from dataelement where valueType = '${valueType}' and aggregationtype = '${aggregationType}'", SqlViewType.QUERY );
         
         Map<String, String> variables = new HashMap<>();
         variables.put( "valueType", "int" );
@@ -252,7 +252,7 @@ public class SqlViewServiceTest
     @Test( expected = IllegalQueryException.class )
     public void testValidateIllegalSemiColon()
     {
-        SqlView sqlView = new SqlView( "Name", "select * from dataelement; delete from dataelement", true );
+        SqlView sqlView = new SqlView( "Name", "select * from dataelement; delete from dataelement", SqlViewType.QUERY );
         
         sqlViewService.validateSqlView( sqlView, null, null );
     }
@@ -260,7 +260,7 @@ public class SqlViewServiceTest
     @Test( expected = IllegalQueryException.class )
     public void testValidateNotSelectQuery()
     {
-        SqlView sqlView = new SqlView( "Name", "* from dataelement", true );
+        SqlView sqlView = new SqlView( "Name", "* from dataelement", SqlViewType.QUERY );
         
         sqlViewService.validateSqlView( sqlView, null, null );
     }
@@ -268,7 +268,7 @@ public class SqlViewServiceTest
     @Test
     public void testValidateSuccessA()
     {
-        SqlView sqlView = new SqlView( "Name", "select * from dataelement where valueType = '${valueType}'", true );
+        SqlView sqlView = new SqlView( "Name", "select * from dataelement where valueType = '${valueType}'", SqlViewType.QUERY );
         
         Map<String, String> variables = new HashMap<>();
         variables.put( "valueType", "int" );
@@ -279,7 +279,7 @@ public class SqlViewServiceTest
     @Test
     public void testValidateSuccessB()
     {
-        SqlView sqlView = new SqlView( "Name", "select ug.name from usergroup ug where ug.name ~* '^OU\\s(\\w.*)\\sAgency\\s(\\w.*)\\susers$'", false );
+        SqlView sqlView = new SqlView( "Name", "select ug.name from usergroup ug where ug.name ~* '^OU\\s(\\w.*)\\sAgency\\s(\\w.*)\\susers$'", SqlViewType.QUERY );
         
         sqlViewService.validateSqlView( sqlView, null, null );
     }
@@ -287,7 +287,7 @@ public class SqlViewServiceTest
     @Test
     public void testValidateSuccessC()
     {
-        SqlView sqlView = new SqlView( "Name", "SELECT a.dataelementid as dsd_id,a.name as dsd_name,b.dataelementid as ta_id,b.ta_name FROM dataelement a", false );
+        SqlView sqlView = new SqlView( "Name", "SELECT a.dataelementid as dsd_id,a.name as dsd_name,b.dataelementid as ta_id,b.ta_name FROM dataelement a", SqlViewType.QUERY );
         
         sqlViewService.validateSqlView( sqlView, null, null );
     }

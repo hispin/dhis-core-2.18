@@ -32,6 +32,7 @@ import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
+import org.hisp.dhis.sqlview.SqlViewType;
 
 import com.opensymphony.xwork2.Action;
 
@@ -140,7 +141,7 @@ public class ValidateAddUpdateSqlViewAction
 
         try
         {
-            SqlView sqlView = new SqlView( name, sqlquery, false ); // Avoid variable check
+            SqlView sqlView = new SqlView( name, sqlquery, SqlViewType.VIEW ); // Avoid variable check
             
             sqlViewService.validateSqlView( sqlView, null, null );
         }

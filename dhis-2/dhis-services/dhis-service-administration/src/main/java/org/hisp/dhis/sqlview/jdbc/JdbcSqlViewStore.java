@@ -37,9 +37,12 @@ import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewStore;
+import org.hisp.dhis.sqlview.SqlViewType;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+
+import com.google.common.collect.ImmutableMap;
 
 /**
  * @author Dang Duy Hieu
@@ -50,8 +53,13 @@ public class JdbcSqlViewStore
 {
     private static final Log log = LogFactory.getLog( JdbcSqlViewStore.class );
 
-    private static final String PREFIX_CREATEVIEW_QUERY = "CREATE VIEW ";
     private static final String PREFIX_SELECT_QUERY = "SELECT * FROM ";
+    
+    private static final Map<SqlViewType, String> TYPE_CREATE_PREFIX_MAP = 
+        ImmutableMap.of( SqlViewType.VIEW, "CREATE VIEW ", SqlViewType.MATERIALIZED_VIEW, "CREATE MATERIALIZED VIEW " );
+
+    private static final Map<SqlViewType, String> TYPE_DROP_PREFIX_MAP = 
+        ImmutableMap.of( SqlViewType.VIEW, "DROP VIEW ", SqlViewType.MATERIALIZED_VIEW, "DROP MATERIALIZED VIEW " );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -86,11 +94,9 @@ public class JdbcSqlViewStore
     @Override
     public String createViewTable( SqlView sqlView )
     {
-        String viewName = sqlView.getViewName();
+        dropViewTable( sqlView );
 
-        dropViewTable( viewName );
-
-        final String sql = PREFIX_CREATEVIEW_QUERY + statementBuilder.columnQuote( viewName ) + " AS " + sqlView.getSqlQuery();
+        final String sql = TYPE_CREATE_PREFIX_MAP.get( sqlView.getType() ) + statementBuilder.columnQuote( sqlView.getViewName() ) + " AS " + sqlView.getSqlQuery();
 
         log.debug( "Create view SQL: " + sql );
 
@@ -138,9 +144,9 @@ public class JdbcSqlViewStore
     @Override
     public String testSqlGrammar( String sql )
     {
-        String viewNameCheck = SqlView.PREFIX_VIEWNAME + System.currentTimeMillis();
+        String viewName = SqlView.PREFIX_VIEWNAME + System.currentTimeMillis();
 
-        sql = PREFIX_CREATEVIEW_QUERY + viewNameCheck + " AS " + sql;
+        sql = "CREATE VIEW " + viewName + " AS " + sql;
 
         log.debug( "Test view SQL: " + sql );
 
@@ -148,7 +154,7 @@ public class JdbcSqlViewStore
         {
             jdbcTemplate.execute( sql );
 
-            dropViewTable( viewNameCheck );
+            jdbcTemplate.execute( "DROP VIEW IF EXISTS " + viewName );
         }
         catch ( BadSqlGrammarException ex )
         {
@@ -159,11 +165,13 @@ public class JdbcSqlViewStore
     }
 
     @Override
-    public void dropViewTable( String viewName )
+    public void dropViewTable( SqlView sqlView )
     {
+        String viewName = sqlView.getViewName();
+        
         try
         {
-            final String sql = "DROP VIEW IF EXISTS " + statementBuilder.columnQuote( viewName );
+            final String sql = TYPE_DROP_PREFIX_MAP.get( sqlView.getType() ) + " IF EXISTS " + statementBuilder.columnQuote( viewName );
             
             log.debug( "Drop view SQL: " + sql );
             

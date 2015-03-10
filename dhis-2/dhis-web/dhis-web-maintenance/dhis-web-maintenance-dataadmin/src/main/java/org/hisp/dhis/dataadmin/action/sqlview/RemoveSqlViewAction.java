@@ -29,6 +29,8 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  */
 
 import com.opensymphony.xwork2.Action;
+
+import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 
 /**
@@ -69,7 +71,9 @@ public class RemoveSqlViewAction
     public String execute()
         throws Exception
     {
-        sqlViewService.deleteSqlView( sqlViewService.getSqlView( id ) );
+        SqlView sqlView = sqlViewService.getSqlView( id );
+        
+        sqlViewService.deleteSqlView( sqlView );
 
         return SUCCESS;
     }
