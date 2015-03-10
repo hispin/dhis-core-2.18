@@ -697,6 +697,7 @@ public class TableAlteror
         executeSql( "alter table sqlview drop column viewid" );
         executeSql( "update sqlview set type = 'QUERY' where query is true" );
         executeSql( "update sqlview set type = 'VIEW' where type is null" );
+        executeSql( "alter table sqlview drop column query" );
         
         executeSql( "UPDATE dashboard SET publicaccess='--------' WHERE publicaccess is null" );
 
