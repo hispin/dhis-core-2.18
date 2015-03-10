@@ -26,15 +26,46 @@ function loadAvailableDataElements()
 
         if ( text.toLowerCase().indexOf( filter_1.toLowerCase() ) != -1 )
         {
-            list_1.append( '<option value="' + id + '">' + text + '</option>' );
-            list_2.append( '<option value="' + id + '">' + text + '</option>' );
-        }
+			if( !checkSelectedDataElement( id ) )
+			{
+				list_1.append( '<option value="' + id + '">' + text + '</option>' );
+			}
+		}
+		
+		if ( text.toLowerCase().indexOf( filter_2.toLowerCase() ) != -1 )
+        {
+			list_2.append( '<option value="' + id + '">' + text + '</option>' );
+		}
     }
 
 	sortList( 'availableDataElements', 'ASC' );
 	sortList( 'availableDataElements2', 'ASC' );
     list_1.find( ":first" ).attr( "selected", "selected" );
     list_2.find( ":first" ).attr( "selected", "selected" );
+}
+
+function checkSelectedDataElement( deId )
+{
+	var list_selected = jQuery( "#selectedDataElements_storage" ).children();	
+	var selectedDataElements = jQuery( "#view_1 #selectedDataElements" ).children();
+
+	$.each( selectedDataElements, function( i_de, item_de )
+	{
+		list_selected.push( item_de );
+	});
+
+	var returnStatus = false;
+	
+	jQuery.each( list_selected, function( i, item )
+	{
+		if ( item.value == deId )
+		{
+			returnStatus = true;
+			return false;  // same as break;
+		}
+	} );
+	
+	return returnStatus;
 }
 
 function loadAvailableGroups()
