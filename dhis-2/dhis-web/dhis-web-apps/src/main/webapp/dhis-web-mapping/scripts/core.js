@@ -1138,6 +1138,7 @@ Ext.onReady( function() {
 			views = Ext.Array.clean(views);
 
 			if (!views.length) {
+                gis.olmap.mask.hide();
 				return;
 			}
 
