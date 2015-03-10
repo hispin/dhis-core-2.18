@@ -86,7 +86,7 @@ public interface SqlViewService
 
     String createViewTable( SqlView sqlView );
 
-    void dropViewTable( String viewName );
+    void dropViewTable( SqlView sqlView );
     
     /**
     * Returns the SQL view as a grid.

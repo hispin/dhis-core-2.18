@@ -18,11 +18,12 @@
 			<td><textarea id="description" name="description"></textarea></td>
 		</tr>
 		<tr>
-			<td><label for="query">$encoder.htmlEncode( $i18n.getString( "sql_type" ) )</label></td>
+			<td><label for="type">$encoder.htmlEncode( $i18n.getString( "sql_type" ) )</label></td>
 			<td>
-				<select id="query" name="query">
-					<option value="false">$i18n.getString( "sql_view_type" ) ($i18n.getString( "created_in_database" ))</option>
-					<option value="true">$i18n.getString( "sql_query_type" ) ($i18n.getString( "allows_for_variables" ))</option>
+				<select id="type" name="type">
+					<option value="VIEW">$i18n.getString( "sql_view_type" ) ($i18n.getString( "created_in_database" ))</option>
+					<option value="MATERIALIZED_VIEW">$i18n.getString( "materialized_sql_view_type" ) ($i18n.getString( "materialized_in_database" ))</option>
+					<option value="QUERY">$i18n.getString( "sql_query_type" ) ($i18n.getString( "allows_for_variables" ))</option>
 				</select>
 			</td>
 		</tr>

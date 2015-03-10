@@ -28,34 +28,7 @@ package org.hisp.dhis.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.common.Grid;
-
-/**
- * @author Dang Duy Hieu
- */
-public interface SqlViewStore
-    extends GenericIdentifiableObjectStore<SqlView>
+public enum SqlViewType
 {
-    String ID = SqlViewStore.class.getName();
-
-    boolean viewTableExists( String viewTableName );
-
-    String createViewTable( SqlView sqlView );
-
-    void dropViewTable( SqlView sqlView );
-
-    void setUpDataSqlViewTable( Grid sqlViewGrid, String viewTableName, Map<String, String> criteria );
-    
-    void executeQuery( Grid grid, String sql );
-
-    /**
-     * Tests the given SQL for validity.
-     * 
-     * @param sql the SQL string.
-     * @return a non-null description if invalid, and null if valid.
-     */
-    String testSqlGrammar( String sql );
+    VIEW, MATERIALIZED_VIEW, QUERY
 }

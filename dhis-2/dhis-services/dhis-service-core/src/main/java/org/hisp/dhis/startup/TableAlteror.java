@@ -695,8 +695,9 @@ public class TableAlteror
         executeSql( "alter table validationrulegroup rename column validationgroupid to validationrulegroupid" );
         executeSql( "update sqlview set sqlviewid=viweid" );
         executeSql( "alter table sqlview drop column viewid" );
-        executeSql( "update sqlview set query = false where query is null" );
-
+        executeSql( "update sqlview set type = 'QUERY' where query is true" );
+        executeSql( "update sqlview set type = 'VIEW' where type is null" );
+        
         executeSql( "UPDATE dashboard SET publicaccess='--------' WHERE publicaccess is null" );
 
         executeSql( "UPDATE optionset SET version=1 WHERE version IS NULL" );

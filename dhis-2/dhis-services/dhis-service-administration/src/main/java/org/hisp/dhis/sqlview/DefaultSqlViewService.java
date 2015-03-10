@@ -67,11 +67,14 @@ public class DefaultSqlViewService
     // -------------------------------------------------------------------------
 
     @Override
-    public void deleteSqlView( SqlView sqlViewObject )
+    public void deleteSqlView( SqlView sqlView )
     {
-        dropViewTable( sqlViewObject.getViewName() );
+        if ( !sqlView.isQuery() )
+        {
+            dropViewTable( sqlView );
+        }
         
-        sqlViewStore.delete( sqlViewObject );
+        sqlViewStore.delete( sqlView );
     }
 
     @Override
@@ -105,15 +108,15 @@ public class DefaultSqlViewService
     }
 
     @Override
-    public int saveSqlView( SqlView sqlViewObject )
+    public int saveSqlView( SqlView sqlView )
     {
-        return sqlViewStore.save( sqlViewObject );
+        return sqlViewStore.save( sqlView );
     }
 
     @Override
-    public void updateSqlView( SqlView sqlViewObject )
+    public void updateSqlView( SqlView sqlView )
     {
-        sqlViewStore.update( sqlViewObject );
+        sqlViewStore.update( sqlView );
     }
 
     @Override
@@ -282,8 +285,8 @@ public class DefaultSqlViewService
     }
 
     @Override
-    public void dropViewTable( String sqlViewTableName )
+    public void dropViewTable( SqlView sqlView )
     {
-        sqlViewStore.dropViewTable( sqlViewTableName );
+        sqlViewStore.dropViewTable( sqlView );
     }
 }

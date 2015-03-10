@@ -73,7 +73,7 @@ public class SqlView
 
     private String sqlQuery;
 
-    private boolean query;
+    private SqlViewType type;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -83,11 +83,11 @@ public class SqlView
     {
     }
 
-    public SqlView( String name, String sqlQuery, boolean query )
+    public SqlView( String name, String sqlQuery, SqlViewType type )
     {
         this.name = name;
         this.sqlQuery = sqlQuery;
-        this.query = query;
+        this.type = type;
     }
 
     // -------------------------------------------------------------------------
@@ -175,6 +175,14 @@ public class SqlView
         return this;
     }
 
+    /**
+     * Indicates whether this SQL view is a query.
+     */
+    public boolean isQuery()
+    {
+        return SqlViewType.QUERY.equals( type );
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -209,16 +217,15 @@ public class SqlView
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isQuery()
+    public SqlViewType getType()
     {
-        return query;
+        return type;
     }
 
-    public void setQuery( boolean query )
+    public void setType( SqlViewType type )
     {
-        this.query = query;
+        this.type = type;
     }
-        
 
     @Override
     public void mergeWith( IdentifiableObject other )
@@ -231,7 +238,7 @@ public class SqlView
 
             description = sqlView.getDescription() == null ? description : sqlView.getDescription();
             sqlQuery = sqlView.getSqlQuery() == null ? sqlQuery : sqlView.getSqlQuery();
-            query = sqlView.isQuery();
+            type = sqlView.getType() == null ? type : sqlView.getType();
         }
     }
 }
