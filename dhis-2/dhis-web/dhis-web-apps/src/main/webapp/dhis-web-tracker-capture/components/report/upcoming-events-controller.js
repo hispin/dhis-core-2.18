@@ -187,14 +187,14 @@ trackerCapture.controller('UpcomingEventsController',
     };
     
     $scope.sortGrid = function(gridHeader){
-        if ($scope.sortHeader === gridHeader.id){
+        if ($scope.sortColumn === gridHeader.id){
             $scope.reverse = !$scope.reverse;
             return;
         }        
-        $scope.sortHeader = gridHeader.id;
+        $scope.sortColumn = gridHeader.id;
         $scope.reverse = false;
         
-        $scope.upcomingEvents = orderByFilter($scope.upcomingEvents, $scope.sortHeader);
+        $scope.upcomingEvents = orderByFilter($scope.upcomingEvents, $scope.sortColumn);
         
         if($scope.reverse){
             $scope.upcomingEvents.reverse();

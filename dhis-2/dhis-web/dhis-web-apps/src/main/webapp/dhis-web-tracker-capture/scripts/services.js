@@ -969,6 +969,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     this.currentSelection = '';
     this.relationshipInfo = '';
     this.optionSets = null;
+    this.sortedTeiIds = [];
     
     this.set = function(currentSelection){  
         this.currentSelection = currentSelection;        
@@ -989,7 +990,14 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
     };
     this.getOptionSets = function(){
         return this.optionSets;
-    };    
+    };
+    
+    this.setSortedTeiIds = function(sortedTeiIds){
+        this.sortedTeiIds = sortedTeiIds;
+    };
+    this.getSortedTeiIds = function(){
+        return this.sortedTeiIds;
+    };
 })
 
 .service('TEIGridService', function(OrgUnitService, OptionSetService, DateUtils, $translate, AttributesFactory){
@@ -1068,6 +1076,7 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
         },
         generateGridColumns: function(attributes, ouMode){
             
+            var filterTypes = {}, filterText = {};
             var columns = attributes ? angular.copy(attributes) : [];
        
             //also add extra columns which are not part of attributes (orgunit for example)
@@ -1075,17 +1084,22 @@ var trackerCaptureServices = angular.module('trackerCaptureServices', ['ngResour
             columns.push({id: 'created', name: $translate('registration_date'), valueType: 'date', displayInListNoProgram: false});
 
             //generate grid column for the selected program/attributes
-            angular.forEach(columns, function(column){
-                if(column.id === 'orgUnitName' && ouMode !== 'SELECTED'){
+            angular.forEach(columns, function(column){                
+                column.show = false;                
+                if( (column.id === 'orgUnitName' && ouMode !== 'SELECTED') ||
+                    column.displayInListNoProgram || 
+                    column.displayInList || 
+                    column.id === 'created'){
                     column.show = true;    
+                }                
+                column.showFilter = false;                
+                filterTypes[column.id] = column.valueType;
+                if(column.valueType === 'date' || column.valueType === 'number' ){
+                    filterText[column.id]= {};
                 }
-
-                if(column.displayInListNoProgram || column.displayInList){
-                    column.show = true;
-                }  
-                column.showFilter = false;
             });
-            return columns;  
+            
+            return {columns: columns, filterTypes: filterTypes, filterText: filterText};  
         },
         getData: function(rows, columns){
             var data = [];

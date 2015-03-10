@@ -2,7 +2,11 @@
     <div class="col-sm-12 vertical-spacing  not-printable">
 
         <button type="button" class="btn btn-default" ng-click="back()">{{'back'| translate}}</button>
-
+        
+        <button ng-disabled="!previousTeiExists" type="button" class="btn btn-default small-horizonal-spacing" ng-click="fetchTei('PREV')" title="{{'prv_rcrd'| translate}}"><i class="fa fa-backward"></i></button>
+        
+        <button ng-disabled="!nextTeiExists" type="button" class="btn btn-default small-horizonal-spacing" ng-click="fetchTei('NEXT')" title="{{'nxt_rcrd'| translate}}"><i class="fa fa-forward"></i></button>
+     
         <select ng-model="selectedProgram"
                 class="form-control-program"
                 ng-options="program as program.name for program in programs | orderBy: 'name'" 

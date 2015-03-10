@@ -161,8 +161,8 @@
                                     <!-- sort icon begins -->
                                     <span ng-click="sortGrid(gridColumn)">
                                         {{gridColumn.name| translate}}
-                                        <i ng-if="sortHeader === gridColumn.id && reverse" class="fa fa-sort-desc"></i>
-                                        <i ng-if="sortHeader === gridColumn.id && !reverse" class="fa fa-sort-asc"></i>
+                                        <i ng-if="sortColumn === gridColumn.id && reverse" class="fa fa-sort-desc"></i>
+                                        <i ng-if="sortColumn === gridColumn.id && !reverse" class="fa fa-sort-asc"></i>
                                     </span>
                                     <!-- sort icon ends -->
 
@@ -205,7 +205,7 @@
                             </tr>                        
                         </thead>
                         <tbody id="list">
-                            <tr ng-repeat="upcomingEvent in upcomingEvents| orderBy:sortHeader:reverse | gridFilter:filterText:filterTypes"
+                            <tr ng-repeat="upcomingEvent in upcomingEvents| orderBy:sortColumn:reverse | gridFilter:filterText:filterTypes"
                                 ng-click="showDashboard(upcomingEvent.trackedEntityInstance)"
                                 title="{{'go_to_dashboard'| translate}}">
                                 <td ng-show="gridColumn.show"                                            

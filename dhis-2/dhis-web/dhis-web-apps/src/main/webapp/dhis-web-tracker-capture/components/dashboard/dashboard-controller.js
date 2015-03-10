@@ -5,6 +5,7 @@ trackerCapture.controller('DashboardController',
                 $location,
                 $modal,
                 $timeout,
+                $route,
                 storage,
                 TEIService, 
                 TEService,
@@ -35,6 +36,24 @@ trackerCapture.controller('DashboardController',
     $scope.selectedTeiId = ($location.search()).tei; 
     $scope.selectedProgramId = ($location.search()).program; 
     $scope.selectedOrgUnit = storage.get('SELECTED_OU');
+    $scope.sortedTeiIds = CurrentSelection.getSortedTeiIds();    
+    
+    $scope.previousTeiExists = false;
+    $scope.nextTeiExists = false;
+    
+    if($scope.sortedTeiIds && $scope.sortedTeiIds.length > 0){
+        var current = $scope.sortedTeiIds.indexOf($scope.selectedTeiId);
+        
+        if(current !== -1){
+            if($scope.sortedTeiIds.length-1 > current){
+                $scope.nextTeiExists = true;
+            }
+            
+            if(current > 0){
+                $scope.previousTeiExists = true;
+            }
+        }
+    }
 
     $scope.selectedProgram;    
     $scope.selectedTei;    
@@ -141,5 +160,18 @@ trackerCapture.controller('DashboardController',
 
         modalInstance.result.then(function () {
         });
+    };
+    
+    $scope.fetchTei = function(mode){
+        var current = $scope.sortedTeiIds.indexOf($scope.selectedTeiId);
+        var pr = ($location.search()).program;
+        var tei = null;
+        if(mode === 'NEXT'){            
+            tei = $scope.sortedTeiIds[current+1];
+        }
+        else{            
+            tei = $scope.sortedTeiIds[current-1];
+        }        
+        $location.path('/dashboard').search({tei: tei, program: pr ? pr: null});
     };
 });
