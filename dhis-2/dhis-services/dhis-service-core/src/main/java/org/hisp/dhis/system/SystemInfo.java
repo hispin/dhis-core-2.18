@@ -28,13 +28,14 @@ package org.hisp.dhis.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.Date;
+
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.system.database.DatabaseInfo;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Lars Helge Overland
@@ -42,6 +43,10 @@ import java.util.Date;
 @JacksonXmlRootElement( localName = "systemInfo", namespace = DxfNamespaces.DXF_2_0 )
 public class SystemInfo
 {
+    // -------------------------------------------------------------------------
+    // Transient properties
+    // -------------------------------------------------------------------------
+
     private String contextPath;
 
     private String userAgent;
@@ -49,6 +54,12 @@ public class SystemInfo
     private String calendar;
 
     private String dateFormat;
+        
+    private Date lastAnalyticsTableSuccess;
+    
+    // -------------------------------------------------------------------------
+    // Stable properties
+    // -------------------------------------------------------------------------
 
     private String version;
 
@@ -158,6 +169,18 @@ public class SystemInfo
     public void setDateFormat( String dateFormat )
     {
         this.dateFormat = dateFormat;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Date getLastAnalyticsTableSuccess()
+    {
+        return lastAnalyticsTableSuccess;
+    }
+
+    public void setLastAnalyticsTableSuccess( Date lastAnalyticsTableSuccess )
+    {
+        this.lastAnalyticsTableSuccess = lastAnalyticsTableSuccess;
     }
 
     @JsonProperty

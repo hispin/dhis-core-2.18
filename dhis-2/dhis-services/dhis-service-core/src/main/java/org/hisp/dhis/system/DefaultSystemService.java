@@ -28,16 +28,7 @@ package org.hisp.dhis.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.io.IOUtils;
-import org.hisp.dhis.calendar.CalendarService;
-import org.hisp.dhis.configuration.Configuration;
-import org.hisp.dhis.configuration.ConfigurationService;
-import org.hisp.dhis.external.location.LocationManager;
-import org.hisp.dhis.external.location.LocationManagerException;
-import org.hisp.dhis.system.database.DatabaseInfoProvider;
-import org.hisp.dhis.system.util.SystemUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_LAST_SUCCESSFUL_ANALYTICS_TABLES_UPDATE;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +38,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+
+import org.apache.commons.io.IOUtils;
+import org.hisp.dhis.calendar.CalendarService;
+import org.hisp.dhis.configuration.Configuration;
+import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.external.location.LocationManager;
+import org.hisp.dhis.external.location.LocationManagerException;
+import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.system.database.DatabaseInfoProvider;
+import org.hisp.dhis.system.util.SystemUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * @author Lars Helge Overland
@@ -65,7 +68,10 @@ public class DefaultSystemService
 
     @Autowired
     private CalendarService calendarService;
-
+    
+    @Autowired
+    private SystemSettingManager systemSettingManager;
+    
     private SystemInfo systemInfo = null;
 
     // -------------------------------------------------------------------------
@@ -86,6 +92,7 @@ public class DefaultSystemService
 
         systemInfo.setCalendar( calendarService.getSystemCalendar().name() );
         systemInfo.setDateFormat( calendarService.getSystemDateFormat().getJs() );
+        systemInfo.setLastAnalyticsTableSuccess( (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_ANALYTICS_TABLES_UPDATE ) );
 
         // ---------------------------------------------------------------------
         // Version
