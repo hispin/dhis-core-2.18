@@ -65,7 +65,8 @@ trackerCapture.controller('ProgramSummaryController',
         });
             
         AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){            
-            $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode.name);   
+            var grid = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode.name);   
+            $scope.gridColumns = grid.columns;
         });  
         
         //fetch TEIs for the selected program and orgunit/mode
