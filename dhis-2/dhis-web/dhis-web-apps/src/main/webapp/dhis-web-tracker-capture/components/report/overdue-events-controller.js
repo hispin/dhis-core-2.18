@@ -144,7 +144,8 @@ trackerCapture.controller('OverdueEventsController',
             });
 
             AttributesFactory.getByProgram($scope.selectedProgram).then(function(atts){            
-                $scope.gridColumns = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode);
+                var grid = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode);
+                $scope.gridColumns = grid.columns;
 
                 $scope.gridColumns.push({name: $translate('event_orgunit_name'), id: 'eventOrgUnitName', type: 'string', displayInListNoProgram: false, showFilter: false, show: true});
                 $scope.filterTypes['eventOrgUnitName'] = 'string';
