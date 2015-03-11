@@ -7459,6 +7459,8 @@ Ext.onReady( function() {
             objectStores: ['optionSets']
         });
 
+        dhis2.er.store.open();
+
 		// requests
 		Ext.Ajax.request({
 			url: 'manifest.webapp',
@@ -7640,58 +7642,86 @@ Ext.onReady( function() {
 
                                         // option sets
                                         requests.push({
-                                            url: contextPath + '/api/optionSets.json?fields=id,version&paging=false',
-                                            success: function(r) {
-                                                var optionSets = Ext.decode(r.responseText).optionSets || [],
-                                                    store = dhis2.er.store,
-                                                    ids = [],
-                                                    url = '',
-                                                    callbacks = 0,
-                                                    checkOptionSet,
-                                                    updateStore;
+                                            url: '.',
+                                            disableCaching: false,
+                                            success: function() {
 
-                                                updateStore = function() {
-                                                    if (++callbacks === optionSets.length) {
-                                                        if (!ids.length) {
-                                                            fn();
-                                                            return;
-                                                        }
+                                                // check if idb has any option sets
+                                                dhis2.er.store.count('optionSets').done( function(count) {
+                                                    var store = dhis2.er.store;
 
-                                                        for (var i = 0; i < ids.length; i++) {
-                                                            url += '&filter=id:eq:' + ids[i];
-                                                        }
-
+                                                    if (count === 0) {
                                                         Ext.Ajax.request({
-                                                            url: contextPath + '/api/optionSets.json?fields=id,name,version,options[code,name]&paging=false' + url,
+                                                            url: contextPath + '/api/optionSets.json?fields=id,name,version,options[code,name]&paging=false',
                                                             success: function(r) {
                                                                 var sets = Ext.decode(r.responseText).optionSets;
 
-                                                                store.setAll('optionSets', sets).done(fn);
+                                                                if (sets.length) {
+                                                                    store.setAll('optionSets', sets).done(fn);
+                                                                }
+                                                                else {
+                                                                    fn();
+                                                                }
                                                             }
                                                         });
                                                     }
-                                                };
+                                                    else {
+                                                        Ext.Ajax.request({
+                                                            url: contextPath + '/api/optionSets.json?fields=id,version&paging=false',
+                                                            success: function(r) {
+                                                                var optionSets = Ext.decode(r.responseText).optionSets || [],
+                                                                    ids = [],
+                                                                    url = '',
+                                                                    callbacks = 0,
+                                                                    checkOptionSet,
+                                                                    updateStore;
 
-                                                registerOptionSet = function(optionSet) {
-                                                    store.get('optionSets', optionSet.id).done( function(obj) {
-                                                        if (!Ext.isObject(obj) || obj.version !== optionSet.version) {
-                                                            ids.push(optionSet.id);
-                                                        }
+                                                                updateStore = function() {
+                                                                    if (++callbacks === optionSets.length) {
+                                                                        if (!ids.length) {
+                                                                            fn();
+                                                                            return;
+                                                                        }
 
-                                                        updateStore();
-                                                    });
-                                                };
+                                                                        for (var i = 0; i < ids.length; i++) {
+                                                                            url += '&filter=id:eq:' + ids[i];
+                                                                        }
 
-                                                if (optionSets.length) {
-                                                    store.open().done( function() {
-                                                        for (var i = 0; i < optionSets.length; i++) {
-                                                            registerOptionSet(optionSets[i]);
-                                                        }
-                                                    });
-                                                }
-                                                else {
-                                                    fn();
-                                                }
+                                                                        Ext.Ajax.request({
+                                                                            url: contextPath + '/api/optionSets.json?fields=id,name,version,options[code,name]&paging=false' + url,
+                                                                            success: function(r) {
+                                                                                var sets = Ext.decode(r.responseText).optionSets;
+
+                                                                                store.setAll('optionSets', sets).done(fn);
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                };
+
+                                                                registerOptionSet = function(optionSet) {
+                                                                    store.get('optionSets', optionSet.id).done( function(obj) {
+                                                                        if (!Ext.isObject(obj) || obj.version !== optionSet.version) {
+                                                                            ids.push(optionSet.id);
+                                                                        }
+
+                                                                        updateStore();
+                                                                    });
+                                                                };
+
+                                                                if (optionSets.length) {
+                                                                    store.open().done( function() {
+                                                                        for (var i = 0; i < optionSets.length; i++) {
+                                                                            registerOptionSet(optionSets[i]);
+                                                                        }
+                                                                    });
+                                                                }
+                                                                else {
+                                                                    fn();
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                });
                                             }
                                         });
 
