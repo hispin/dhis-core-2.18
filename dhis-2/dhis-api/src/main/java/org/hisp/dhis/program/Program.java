@@ -527,8 +527,7 @@ public class Program
         return programAttributes;
     }
 
-    public void setProgramAttributes(
-        List<ProgramTrackedEntityAttribute> programAttributes )
+    public void setProgramAttributes( List<ProgramTrackedEntityAttribute> programAttributes )
     {
         this.programAttributes = programAttributes;
     }
