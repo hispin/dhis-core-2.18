@@ -126,7 +126,6 @@ public class ProgramDeletionHandler
                 {
                     program.getProgramAttributes().remove( programAttribute );
                     programService.updateProgram( program );
-                    break;
                 }
             }
         }
