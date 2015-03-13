@@ -174,18 +174,14 @@ public class GetOrganisationUnitTreeAction
 
         username = currentUserService.getCurrentUsername();
 
-        Collection<OrganisationUnit> userOrganisationUnits = new ArrayList<>();
-
         User user = currentUserService.getCurrentUser();
 
         if ( user != null && user.hasOrganisationUnit() )
         {
-            userOrganisationUnits = new ArrayList<>( user.getOrganisationUnits() );
             rootOrganisationUnits = new ArrayList<>( user.getOrganisationUnits() );
         }
         else if ( currentUserService.currentUserIsSuper() || user == null )
         {
-            userOrganisationUnits = new ArrayList<>( organisationUnitService.getRootOrganisationUnits() );
             rootOrganisationUnits = new ArrayList<>( organisationUnitService.getRootOrganisationUnits() );
         }
 
@@ -246,14 +242,9 @@ public class GetOrganisationUnitTreeAction
 
         if ( !versionOnly && !rootOrganisationUnits.isEmpty() )
         {
-            OrganisationUnitLevel offlineOrgUnitLevel = offlineLevel != null ? new OrganisationUnitLevel( offlineLevel, "<no-name>" )
-                : configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
-
-            List<OrganisationUnitLevel> orgUnitLevels = organisationUnitService.getOrganisationUnitLevels();
-
-            final Integer maxLevels = (offlineOrgUnitLevel != null && !orgUnitLevels.isEmpty()) ? offlineOrgUnitLevel.getLevel() : null;
-
-            for ( OrganisationUnit unit : userOrganisationUnits )
+            final Integer maxLevels = getMaxLevels();
+            
+            for ( OrganisationUnit unit : rootOrganisationUnits )
             {
                 organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId(), maxLevels ) );
             }
@@ -286,5 +277,15 @@ public class GetOrganisationUnitTreeAction
         }
 
         return orgUnitVersion.getValue();
+    }
+    
+    private Integer getMaxLevels()
+    {
+        OrganisationUnitLevel offlineOrgUnitLevel = offlineLevel != null ? new OrganisationUnitLevel( offlineLevel, "" )
+            : configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
+
+        List<OrganisationUnitLevel> orgUnitLevels = organisationUnitService.getOrganisationUnitLevels();
+
+        return ( offlineOrgUnitLevel != null && !orgUnitLevels.isEmpty() ) ? offlineOrgUnitLevel.getLevel() : null;
     }
 }
