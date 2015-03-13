@@ -483,8 +483,6 @@ public interface DataElementService
 
     Collection<DataElementGroupSet> getAllDataElementGroupSets();
 
-    Collection<DataElementGroupSet> getDataDimensionDataElementGroupSets();
-
     Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers );
 
     List<DataElementGroupSet> getDataElementGroupSetsByUid( Collection<String> uids );

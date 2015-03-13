@@ -133,7 +133,9 @@ public interface IdentifiableObjectManager
 
     <T extends NameableObject> int getCountLikeShortName( Class<T> clazz, String shortName );
     
-    <T extends DimensionalObject> List<T> getByDataDimensionNoAcl( Class<T> clazz, boolean dataDimension );
+    <T extends DimensionalObject> List<T> getDataDimensions( Class<T> clazz );
+
+    <T extends DimensionalObject> List<T> getDataDimensionsNoAcl( Class<T> clazz );
 
     void refresh( Object object );
 

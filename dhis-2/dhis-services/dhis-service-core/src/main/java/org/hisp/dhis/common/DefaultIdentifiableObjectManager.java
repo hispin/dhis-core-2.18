@@ -899,7 +899,7 @@ public class DefaultIdentifiableObjectManager
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public <T extends DimensionalObject> List<T> getByDataDimensionNoAcl( Class<T> clazz, boolean dataDimension )
+    public <T extends DimensionalObject> List<T> getDataDimensions( Class<T> clazz )
     {
         GenericDimensionalObjectStore<DimensionalObject> store = getDimensionalObjectStore( clazz );
 
@@ -908,7 +908,21 @@ public class DefaultIdentifiableObjectManager
             return new ArrayList<>();
         }
 
-        return (List<T>) store.getByDataDimensionNoAcl( dataDimension );
+        return (List<T>) store.getByDataDimension( true );
+    }
+    
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends DimensionalObject> List<T> getDataDimensionsNoAcl( Class<T> clazz )
+    {
+        GenericDimensionalObjectStore<DimensionalObject> store = getDimensionalObjectStore( clazz );
+
+        if ( store == null )
+        {
+            return new ArrayList<>();
+        }
+
+        return (List<T>) store.getByDataDimensionNoAcl( true );
     }
     
     //--------------------------------------------------------------------------

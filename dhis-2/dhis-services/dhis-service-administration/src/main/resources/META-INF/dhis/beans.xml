@@ -11,8 +11,8 @@
 
   <bean id="org.hisp.dhis.resourcetable.ResourceTableService" class="org.hisp.dhis.resourcetable.DefaultResourceTableService">
     <property name="resourceTableStore" ref="org.hisp.dhis.resourcetable.ResourceTableStore" />
+    <property name="idObjectManager" ref="org.hisp.dhis.common.IdentifiableObjectManager" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />

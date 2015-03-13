@@ -46,6 +46,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.calendar.Calendar;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
@@ -61,7 +62,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
@@ -92,19 +92,19 @@ public class DefaultResourceTableService
     {
         this.resourceTableStore = resourceTableStore;
     }
+    
+    private IdentifiableObjectManager idObjectManager;
+
+    public void setIdObjectManager( IdentifiableObjectManager idObjectManager )
+    {
+        this.idObjectManager = idObjectManager;
+    }
 
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     private DataElementCategoryService categoryService;
@@ -241,7 +241,7 @@ public class DefaultResourceTableService
         List<DataElementCategoryOptionCombo> categoryOptionCombos =
             new ArrayList<>( categoryService.getAllDataElementCategoryOptionCombos() );
 
-        List<CategoryOptionGroupSet> groupSets = new ArrayList<>( categoryService.getAllCategoryOptionGroupSets() );
+        List<CategoryOptionGroupSet> groupSets = new ArrayList<>( idObjectManager.getAllNoAcl( CategoryOptionGroupSet.class ) );
 
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
 
@@ -283,7 +283,7 @@ public class DefaultResourceTableService
     @Transactional
     public void generateDataElementGroupSetTable()
     {
-        List<DataElementGroupSet> groupSets = new ArrayList<>( dataElementService.getDataDimensionDataElementGroupSets() );
+        List<DataElementGroupSet> groupSets = new ArrayList<>( idObjectManager.getDataDimensionsNoAcl( DataElementGroupSet.class ) );
 
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
 
@@ -322,7 +322,7 @@ public class DefaultResourceTableService
     public void generateOrganisationUnitGroupSetTable()
     {
         List<OrganisationUnitGroupSet> groupSets = new ArrayList<>(
-            organisationUnitGroupService.getDataDimensionOrganisationUnitGroupSets() );
+            idObjectManager.getDataDimensionsNoAcl( OrganisationUnitGroupSet.class ) );
 
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
 
@@ -345,7 +345,8 @@ public class DefaultResourceTableService
         // Create table - only using data dimension categories
         // ---------------------------------------------------------------------
 
-        List<DataElementCategory> categories = new ArrayList<>( categoryService.getDataDimensionDataElementCategories() );
+        List<DataElementCategory> categories = new ArrayList<>( 
+            idObjectManager.getDataDimensionsNoAcl( DataElementCategory.class ) );
 
         Collections.sort( categories, IdentifiableObjectNameComparator.INSTANCE );
 
