@@ -139,23 +139,6 @@ public class DefaultDataElementCategoryService
     }
 
     @Override
-    public Collection<DataElementCategory> getDataDimensionDataElementCategories()
-    {
-        Collection<DataElementCategory> categories = getAllDataElementCategories();
-
-        FilterUtils.filter( categories, new Filter<DataElementCategory>()
-        {
-            @Override
-            public boolean retain( DataElementCategory category )
-            {
-                return category != null && category.isDataDimension();
-            }
-        } );
-
-        return categories;
-    }
-
-    @Override
     public Collection<DataElementCategory> getAllDataElementCategories()
     {
         return i18n( i18nService, categoryStore.getAll() );
@@ -996,12 +979,6 @@ public class DefaultDataElementCategoryService
     public Collection<CategoryOptionGroupSet> getAllCategoryOptionGroupSets()
     {
         return categoryOptionGroupSetStore.getAll();
-    }
-
-    @Override
-    public Collection<CategoryOptionGroupSet> getDataDimensionCategoryOptionGroupSets()
-    {
-        return categoryOptionGroupSetStore.getByDataDimension( true );
     }
 
     @Override

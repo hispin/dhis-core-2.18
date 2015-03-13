@@ -293,12 +293,6 @@ public class DefaultOrganisationUnitGroupService
     }
 
     @Override
-    public Collection<OrganisationUnitGroupSet> getDataDimensionOrganisationUnitGroupSets()
-    {
-        return i18n( i18nService, organisationUnitGroupSetStore.getByDataDimension( true ) );
-    }
-
-    @Override
     public Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSets()
     {
         Collection<OrganisationUnitGroupSet> groupSets = new ArrayList<>();

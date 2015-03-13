@@ -114,13 +114,6 @@ public interface DataElementCategoryService
     DataElementCategory getDataElementCategoryByName( String name );
 
     /**
-     * Returns DataElementCategories which are considered data dimensions.
-     * 
-     * @return DataElementCategories which are considered data dimensions.
-     */
-    Collection<DataElementCategory> getDataDimensionDataElementCategories();
-
-    /**
      * Returns all DataElementCategories.
      * 
      * @return a collection of all DataElementCategories.
@@ -634,8 +627,6 @@ public interface DataElementCategoryService
     Collection<CategoryOptionGroupSet> getCategoryOptionGroupSetsBetweenByName( int first, int max, String name );
 
     Collection<CategoryOptionGroupSet> getAllCategoryOptionGroupSets();
-
-    Collection<CategoryOptionGroupSet> getDataDimensionCategoryOptionGroupSets();
 
     CategoryOptionGroupSet getCategoryOptionGroupSetByName( String name );
 

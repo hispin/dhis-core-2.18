@@ -289,10 +289,10 @@ public class DefaultDimensionService
     @Override
     public List<DimensionalObject> getAllDimensions()
     {
-        Collection<DataElementCategory> dcs = categoryService.getDataDimensionDataElementCategories();
-        Collection<CategoryOptionGroupSet> cogs = categoryService.getDataDimensionCategoryOptionGroupSets();
-        Collection<DataElementGroupSet> degs = dataElementService.getDataDimensionDataElementGroupSets();
-        Collection<OrganisationUnitGroupSet> ougs = organisationUnitGroupService.getDataDimensionOrganisationUnitGroupSets();
+        Collection<DataElementCategory> dcs = identifiableObjectManager.getDataDimensions( DataElementCategory.class );
+        Collection<CategoryOptionGroupSet> cogs = identifiableObjectManager.getDataDimensions( CategoryOptionGroupSet.class );
+        Collection<DataElementGroupSet> degs = identifiableObjectManager.getDataDimensions( DataElementGroupSet.class );
+        Collection<OrganisationUnitGroupSet> ougs = identifiableObjectManager.getDataDimensions( OrganisationUnitGroupSet.class );
 
         final List<DimensionalObject> dimensions = new ArrayList<>();
 
@@ -309,7 +309,7 @@ public class DefaultDimensionService
     @Override
     public List<DimensionalObject> getDimensionConstraints()
     {
-        Collection<CategoryOptionGroupSet> cogs = categoryService.getDataDimensionCategoryOptionGroupSets();
+        Collection<CategoryOptionGroupSet> cogs = identifiableObjectManager.getDataDimensions( CategoryOptionGroupSet.class );
         Collection<DataElementCategory> cs = categoryService.getAttributeCategories();
 
         final List<DimensionalObject> dimensions = new ArrayList<>();
