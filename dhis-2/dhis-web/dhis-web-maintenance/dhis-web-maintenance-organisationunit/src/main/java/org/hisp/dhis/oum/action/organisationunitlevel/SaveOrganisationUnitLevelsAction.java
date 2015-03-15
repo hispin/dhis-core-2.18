@@ -28,16 +28,18 @@ package org.hisp.dhis.oum.action.organisationunitlevel;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.MathUtils.isInteger;
+
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.util.ContextUtils;
 
-import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -48,6 +50,7 @@ public class SaveOrganisationUnitLevelsAction
     implements Action
 {
     private static final String LEVEL_PARAM_PREFIX = "level";
+    private static final String OFFLINE_LEVELS_PARAM_PREFIX = "offline";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -78,11 +81,15 @@ public class SaveOrganisationUnitLevelsAction
             
             if ( key != null && key.startsWith( LEVEL_PARAM_PREFIX ) )
             {
-                if ( value != null && value.trim().length() > 0 )
+                if ( value != null && !value.isEmpty() )
                 {
                     int level = Integer.parseInt( key.substring( LEVEL_PARAM_PREFIX.length(), key.length() ) );
                     
-                    organisationUnitService.addOrUpdateOrganisationUnitLevel( new OrganisationUnitLevel( level, value ) );
+                    String offlineLevelsValue = params.get( OFFLINE_LEVELS_PARAM_PREFIX + level );
+                    
+                    Integer offlineLevels = isInteger( offlineLevelsValue ) ? Integer.parseInt( offlineLevelsValue ) : null;
+                    
+                    organisationUnitService.addOrUpdateOrganisationUnitLevel( new OrganisationUnitLevel( level, value, offlineLevels ) );
                     
                     levels.add( level );
                 }
