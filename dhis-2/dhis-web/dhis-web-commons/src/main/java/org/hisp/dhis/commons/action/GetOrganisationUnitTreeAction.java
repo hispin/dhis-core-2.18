@@ -278,14 +278,56 @@ public class GetOrganisationUnitTreeAction
 
         return orgUnitVersion.getValue();
     }
-    
+
+    /**
+     * Returns the number of org unit levels to cache offline based on the given
+     * org unit level argument, next the org unit level from the user org unit,
+     * next the level from the configuration.
+     */
     private Integer getMaxLevels()
     {
-        OrganisationUnitLevel offlineOrgUnitLevel = offlineLevel != null ? new OrganisationUnitLevel( offlineLevel, "" )
-            : configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
-
         List<OrganisationUnitLevel> orgUnitLevels = organisationUnitService.getOrganisationUnitLevels();
 
-        return ( offlineOrgUnitLevel != null && !orgUnitLevels.isEmpty() ) ? offlineOrgUnitLevel.getLevel() : null;
+        Integer levelFromUserOrgUnit = null;
+        
+        if ( orgUnitLevels == null || orgUnitLevels.isEmpty() )
+        {
+            return null;
+        }
+        
+        if ( offlineLevel != null )
+        {
+            return offlineLevel;
+        }
+        else if ( ( levelFromUserOrgUnit = getMaxLevelsFromUserOrgUnits() ) != null )
+        {
+            return levelFromUserOrgUnit;
+        }
+        else
+        {
+            OrganisationUnitLevel level = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
+            
+            return level != null ? level.getLevel() : null;
+        }
+    }
+
+    /**
+     * Returns the number of org unit levels to cache offline based on the org unit
+     * level of the first user org unit. Returns null if not defined.
+     */
+    private Integer getMaxLevelsFromUserOrgUnits()
+    {
+        if ( !rootOrganisationUnits.isEmpty() )
+        {
+            OrganisationUnit orgUnit = rootOrganisationUnits.get( 0 );
+            
+            int level = organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() );
+            
+            OrganisationUnitLevel orgUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( level );
+            
+            return orgUnitLevel != null && orgUnitLevel.getOfflineLevels() != null ? orgUnitLevel.getOfflineLevels() : null;
+        }
+        
+        return null;
     }
 }

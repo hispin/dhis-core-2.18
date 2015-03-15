@@ -18,6 +18,8 @@
     <property name="name" column="name" not-null="true" unique="true" length="230" />
 
     <property name="level" not-null="true" unique="true" />
+    
+    <property name="offlineLevels" />
 
   </class>
 </hibernate-mapping>

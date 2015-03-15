@@ -814,6 +814,7 @@ public class DefaultOrganisationUnitService
         else
         {
             existing.setName( level.getName() );
+            existing.setOfflineLevels( level.getOfflineLevels() );
 
             updateOrganisationUnitLevel( existing );
         }
