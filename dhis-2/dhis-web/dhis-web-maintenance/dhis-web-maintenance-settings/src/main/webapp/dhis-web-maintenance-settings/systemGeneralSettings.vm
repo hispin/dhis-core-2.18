@@ -125,9 +125,8 @@
 <div class="setting">
 <select id="offlineOrganisationUnitLevel" name="offlineOrganisationUnitLevel">
     #set( $level = 1)
-
 	#foreach ( $organisationUnitLevel in $organisationUnitLevels )
-    <option value="$organisationUnitLevel.id" #if( $organisationUnitLevel.id == $!offlineOrganisationUnitLevel.id)selected="selected"#end>Level $level</option>
+    <option value="$organisationUnitLevel.id" #if( $organisationUnitLevel.id == $!offlineOrganisationUnitLevel.id)selected="selected"#end>${level}</option>
     #set( $level = $level + 1)
 	#end
 </select>

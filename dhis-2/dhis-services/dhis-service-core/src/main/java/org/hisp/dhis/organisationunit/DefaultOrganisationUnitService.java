@@ -45,6 +45,7 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
+import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
@@ -99,6 +100,13 @@ public class DefaultOrganisationUnitService
     public void setVersionService( VersionService versionService )
     {
         this.versionService = versionService;
+    }
+
+    private ConfigurationService configurationService;
+
+    public void setConfigurationService( ConfigurationService configurationService )
+    {
+        this.configurationService = configurationService;
     }
 
     private I18nService i18nService;
@@ -937,6 +945,60 @@ public class DefaultOrganisationUnitService
     public int getMaxOfOrganisationUnitLevels()
     {
         return organisationUnitLevelStore.getMaxLevels();
+    }
+
+    @Override
+    public int getOfflineOrganisationUnitLevels()
+    {
+        // ---------------------------------------------------------------------
+        // Get level from organisation unit of current user
+        // ---------------------------------------------------------------------
+
+        User user = currentUserService.getCurrentUser();
+        
+        if ( user != null && user.hasOrganisationUnit() )
+        {
+            OrganisationUnit organisationUnit = user.getOrganisationUnit();
+            
+            int level = getLevelOfOrganisationUnit( organisationUnit.getId() );
+            
+            OrganisationUnitLevel orgUnitLevel = getOrganisationUnitLevelByLevel( level );
+            
+            if ( orgUnitLevel != null && orgUnitLevel.getOfflineLevels() != null )
+            {
+                return orgUnitLevel.getOfflineLevels();
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Get level from system configuration
+        // ---------------------------------------------------------------------
+
+        OrganisationUnitLevel level = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
+        
+        if ( level != null )
+        {
+            return level.getLevel();
+        }
+
+        // ---------------------------------------------------------------------
+        // Get max level
+        // ---------------------------------------------------------------------
+
+        int max = getOrganisationUnitLevels().size();
+
+        OrganisationUnitLevel maxLevel = getOrganisationUnitLevelByLevel( max );
+        
+        if ( maxLevel != null )
+        {
+            return maxLevel.getLevel();
+        }
+
+        // ---------------------------------------------------------------------
+        // Return 1 level as fall back
+        // ---------------------------------------------------------------------
+
+        return 1;
     }
 
     /**

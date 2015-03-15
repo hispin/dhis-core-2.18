@@ -28,6 +28,8 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.TextUtils.SEP;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,11 +39,9 @@ import java.util.Set;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitDataSetAssociationSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
@@ -50,8 +50,6 @@ import org.hisp.dhis.webapi.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
-
-import static org.hisp.dhis.system.util.TextUtils.SEP;
 /**
  * @author Lars Helge Overland
  */
@@ -60,9 +58,6 @@ public class GetDataSetAssociationsAction
 {
     @Autowired
     private OrganisationUnitService organisationUnitService;
-    
-    @Autowired
-    private ConfigurationService configurationService;
     
     @Autowired
     private IdentifiableObjectManager identifiableObjectManager;
@@ -96,21 +91,19 @@ public class GetDataSetAssociationsAction
     public String execute()
     {
         User user = currentUserService.getCurrentUser();
-        
+
+        Integer level = organisationUnitService.getOfflineOrganisationUnitLevels();
+
         Date lastUpdated = DateUtils.max( 
             identifiableObjectManager.getLastUpdated( DataSet.class ), 
             identifiableObjectManager.getLastUpdated( OrganisationUnit.class ) );
-        String tag = lastUpdated != null && user != null ? ( DateUtils.LONG_DATE_FORMAT.format( lastUpdated ) + SEP + user.getUid() ): null;
+        String tag = lastUpdated != null && user != null ? ( DateUtils.LONG_DATE_FORMAT.format( lastUpdated ) + SEP + level + SEP + user.getUid() ): null;
         
         if ( ContextUtils.isNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), tag ) )
         {
             return SUCCESS;
         }
         
-        OrganisationUnitLevel offlineOrgUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
-
-        Integer level = offlineOrgUnitLevel != null ? offlineOrgUnitLevel.getLevel() : null;
-
         OrganisationUnitDataSetAssociationSet organisationUnitSet = organisationUnitService.getOrganisationUnitDataSetAssociationSet( level );
 
         dataSetAssociationSets = organisationUnitSet.getDataSetAssociationSets();
