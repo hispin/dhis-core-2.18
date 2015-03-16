@@ -33,6 +33,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -47,6 +48,9 @@ public class InputUtils
 {
     @Autowired
     private DataElementCategoryService categoryService;
+    
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
     
     /**
      * Validates and retrieves the attribute option combo. 409 conflict as status
@@ -75,7 +79,7 @@ public class InputUtils
 
         DataElementCategoryCombo categoryCombo = null;
         
-        if ( cc != null && ( categoryCombo = categoryService.getDataElementCategoryCombo( cc ) ) == null )
+        if ( cc != null && ( categoryCombo = idObjectManager.get( DataElementCategoryCombo.class, cc ) ) == null )
         {
             ContextUtils.conflictResponse( response, "Illegal category combo identifier: " + cc );
             return null;
@@ -91,13 +95,13 @@ public class InputUtils
         {
             Set<DataElementCategoryOption> categoryOptions = new HashSet<>();
 
-            for ( String id : opts )
+            for ( String uid : opts )
             {
-                DataElementCategoryOption categoryOption = categoryService.getDataElementCategoryOption( id );
+                DataElementCategoryOption categoryOption = idObjectManager.get( DataElementCategoryOption.class, uid );
                 
                 if ( categoryOption == null )
                 {
-                    ContextUtils.conflictResponse( response, "Illegal category option identifier: " + id );
+                    ContextUtils.conflictResponse( response, "Illegal category option identifier: " + uid );
                     return null;
                 }
                 
