@@ -31,16 +31,11 @@ package org.hisp.dhis.acl;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.user.User;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public interface AclService
 {
-    public static final List<String> ACL_OVERRIDE_AUTHORITIES = Arrays.asList( "ALL" );
-
     /**
      * Is type supported for acl?
      *

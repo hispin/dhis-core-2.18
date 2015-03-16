@@ -28,6 +28,8 @@ package org.hisp.dhis.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -60,9 +62,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
-
-import java.util.List;
+import com.google.common.collect.Lists;
 
 /**
  * @author Lars Helge Overland
@@ -183,14 +183,16 @@ public class HibernateGenericStore<T>
 
     protected final Criteria getSharingCriteria()
     {
-        return getSharingCriteria( currentUserService.getCurrentUser(), "r%" );
+        return getSharingCriteria( "r%" );
     }
 
-    protected final Criteria getSharingCriteria( User user, String access )
+    private final Criteria getSharingCriteria( String access )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( getClazz(), "c" ).setCacheable( cacheable );
 
-        if ( !sharingEnabled() || user == null )
+        User user = currentUserService.getCurrentUser();
+        
+        if ( !sharingEnabled( user ) || user == null )
         {
             return criteria;
         }
@@ -355,8 +357,8 @@ public class HibernateGenericStore<T>
     private boolean checkPublicAccess( User user, IdentifiableObject identifiableObject )
     {
         return aclService.canCreatePublic( user, identifiableObject.getClass() ) ||
-            (aclService.canCreatePrivate( user, identifiableObject.getClass() ) &&
-                !AccessStringHelper.canReadOrWrite( identifiableObject.getPublicAccess() ));
+            ( aclService.canCreatePrivate( user, identifiableObject.getClass() ) &&
+                !AccessStringHelper.canReadOrWrite( identifiableObject.getPublicAccess() ) );
     }
 
     @Override
@@ -487,10 +489,9 @@ public class HibernateGenericStore<T>
         return Dashboard.class.isAssignableFrom( clazz );
     }
 
-    protected boolean sharingEnabled()
+    protected boolean sharingEnabled( User currentUser )
     {
-        return forceAcl() || (aclService.isShareable( clazz ) && !(currentUserService.getCurrentUser() == null ||
-            CollectionUtils.containsAny( currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities(), AclService.ACL_OVERRIDE_AUTHORITIES )));
+        return forceAcl() || ( aclService.isShareable( clazz ) && !( currentUser == null || currentUser.isSuper() ) );
     }
 
     protected boolean isReadAllowed( T object )
@@ -499,9 +500,11 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( sharingEnabled() )
+            User currentUser = currentUserService.getCurrentUser();
+            
+            if ( sharingEnabled( currentUser ) )
             {
-                return aclService.canRead( currentUserService.getCurrentUser(), idObject );
+                return aclService.canRead( currentUser, idObject );
             }
         }
 
@@ -514,9 +517,11 @@ public class HibernateGenericStore<T>
         {
             IdentifiableObject idObject = (IdentifiableObject) object;
 
-            if ( sharingEnabled() )
+            User currentUser = currentUserService.getCurrentUser();
+            
+            if ( sharingEnabled( currentUser ) )
             {
-                return aclService.canWrite( currentUserService.getCurrentUser(), idObject );
+                return aclService.canWrite( currentUser, idObject );
             }
         }
 

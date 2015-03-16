@@ -280,7 +280,7 @@ public class DefaultAclService implements AclService
 
     private boolean haveOverrideAuthority( User user )
     {
-        return user == null || haveAuthority( user, ACL_OVERRIDE_AUTHORITIES );
+        return user == null || user.isSuper();
     }
 
     private boolean canAccess( User user, Collection<String> requiredAuthorities )
