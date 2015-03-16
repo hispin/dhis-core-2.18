@@ -29,10 +29,14 @@ package org.hisp.dhis.webapi.controller;
  */
 
 import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -52,11 +56,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 /**
  * @author Lars Helge Overland
  */
@@ -74,9 +73,6 @@ public class DataValueController
     private CurrentUserService currentUserService;
 
     @Autowired
-    private DataElementService dataElementService;
-
-    @Autowired
     private DataElementCategoryService categoryService;
 
     @Autowired
@@ -88,6 +84,9 @@ public class DataValueController
     @Autowired
     private DataSetService dataSetService;
 
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
+    
     @Autowired
     private InputUtils inputUtils;
 
@@ -112,7 +111,7 @@ public class DataValueController
         // Input validation
         // ---------------------------------------------------------------------
 
-        DataElement dataElement = dataElementService.getDataElement( de );
+        DataElement dataElement = idObjectManager.get( DataElement.class, de );
 
         if ( dataElement == null )
         {
@@ -152,7 +151,7 @@ public class DataValueController
             return;
         }
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( ou );
+        OrganisationUnit organisationUnit = idObjectManager.get( OrganisationUnit.class, ou );
 
         if ( organisationUnit == null )
         {
@@ -277,7 +276,7 @@ public class DataValueController
         // Input validation
         // ---------------------------------------------------------------------
 
-        DataElement dataElement = dataElementService.getDataElement( de );
+        DataElement dataElement = idObjectManager.get( DataElement.class, de );
 
         if ( dataElement == null )
         {
@@ -317,7 +316,7 @@ public class DataValueController
             return;
         }
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( ou );
+        OrganisationUnit organisationUnit = idObjectManager.get( OrganisationUnit.class, ou );
 
         if ( organisationUnit == null )
         {
@@ -376,7 +375,7 @@ public class DataValueController
         // Input validation
         // ---------------------------------------------------------------------
 
-        DataElement dataElement = dataElementService.getDataElement( de );
+        DataElement dataElement = idObjectManager.get( DataElement.class, de );
 
         if ( dataElement == null )
         {
@@ -416,7 +415,7 @@ public class DataValueController
             return null;
         }
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( ou );
+        OrganisationUnit organisationUnit = idObjectManager.get( OrganisationUnit.class, ou );
 
         if ( organisationUnit == null )
         {
