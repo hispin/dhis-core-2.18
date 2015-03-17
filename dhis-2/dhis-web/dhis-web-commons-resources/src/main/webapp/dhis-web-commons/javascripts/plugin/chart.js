@@ -3184,7 +3184,7 @@ Ext.onReady(function() {
                         defaultConfig.legend = getDefaultLegend(store, config);
 
                         if (defaultConfig.legend.position === 'right') {
-                            defaultConfig.insetPaddingObject.top = ns.dashboard ? 20 : 40;
+                            defaultConfig.insetPaddingObject.top = ns.dashboard ? 22 : 40;
                             defaultConfig.insetPaddingObject.right = ns.dashboard ? 5 : 40;
                         }
                     }
