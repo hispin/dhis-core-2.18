@@ -9275,7 +9275,7 @@ Ext.onReady( function() {
 				layout = gis.api.layout.Layout(JSON.parse(sessionStorage.getItem('dhis2'))[session]);
 
 				if (layout) {
-					GIS.core.MapLoader(gis).load([layout]);
+					GIS.core.MapLoader(gis, true).load([layout]);
 				}
 			}
 
