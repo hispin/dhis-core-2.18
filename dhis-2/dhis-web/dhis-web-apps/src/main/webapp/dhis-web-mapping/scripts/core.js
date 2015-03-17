@@ -1048,7 +1048,7 @@ Ext.onReady( function() {
 		return window;
 	};
 
-	GIS.core.MapLoader = function(gis) {
+	GIS.core.MapLoader = function(gis, isSession) {
 		var getMap,
 			setMap,
 			afterLoad,
@@ -1168,8 +1168,8 @@ Ext.onReady( function() {
 
 		afterLoad = function() {
 			register = [];
-
-			if (gis.el) {
+            
+			if (gis.el || isSession) {
 				gis.olmap.zoomToVisibleExtent();
 			}
 			else {
@@ -2375,7 +2375,11 @@ Ext.onReady( function() {
 		};
 
 		loadLegend = function(view) {
-			var bounds,
+            var bounds = [],
+                colors = [],
+                names = [],
+                legends = [],
+
 				addNames,
 				fn;
 
@@ -2417,38 +2421,33 @@ Ext.onReady( function() {
 			};
 
 			fn = function() {
-				addNames(gis.response);
+                addNames(gis.response);
 
-				// Classification options
-				var options = {
-					indicator: gis.conf.finals.widget.value,
-					method: view.legendSet ? mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS : view.method,
-					numClasses: view.classes,
-					bounds: bounds,
-					colors: layer.core.getColors(view.colorLow, view.colorHigh),
-					minSize: view.radiusLow,
-					maxSize: view.radiusHigh
-				};
+                // Classification options
+                var options = {
+                    indicator: gis.conf.finals.widget.value,
+                    method: view.legendSet ? mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS : view.method,
+                    numClasses: view.classes,
+                    bounds: bounds,
+                    colors: layer.core.getColors(view.colorLow, view.colorHigh),
+                    minSize: view.radiusLow,
+                    maxSize: view.radiusHigh
+                };
 
-				layer.core.view = view;
-				layer.core.colorInterpolation = colors;
-				layer.core.applyClassification(options);
+                layer.core.view = view;
+                layer.core.colorInterpolation = colors;
+                layer.core.applyClassification(options);
 
-				afterLoad(view);
-			};
+                afterLoad(view);
+            };
 
-			if (view.legendSet) {
-				var bounds = [],
-					colors = [],
-					names = [],
-					legends = [];
-
-				Ext.Ajax.request({
-					url: gis.init.contextPath + '/api/mapLegendSets/' + view.legendSet.id + '.json?fields=' + gis.conf.url.mapLegendSetFields.join(','),
+            loadLegendSet = function(view) {
+                Ext.Ajax.request({
+					url: gis.init.contextPath + '/api/legendSets/' + view.legendSet.id + '.json?fields=' + gis.conf.url.legendSetFields.join(','),
 					scope: this,
                     disableCaching: false,
 					success: function(r) {
-						legends = Ext.decode(r.responseText).mapLegends;
+						legends = Ext.decode(r.responseText).legends;
 
 						Ext.Array.sort(legends, function (a, b) {
 							return a.startValue - b.startValue;
@@ -2471,13 +2470,42 @@ Ext.onReady( function() {
 						view.legendSet.names = names;
 						view.legendSet.bounds = bounds;
 						view.legendSet.colors = colors;
-
+					},
+                    callback: function() {
 						fn();
-					}
+                    }
 				});
-			}
+            };
+
+			if (view.legendSet) {
+                loadLegendSet(view);
+            }
 			else {
-				fn();
+                var elementMap = {
+                        'in': 'indicators',
+                        'de': 'dataElements',
+                        'ds': 'dataSets'
+                    },
+                    elementUrl = elementMap[view.columns[0].dimension],
+                    id = view.columns[0].items[0].id;
+
+                Ext.Ajax.request({
+                    url: gis.init.contextPath + '/api/' + elementUrl + '.json?fields=legendSet[id,name]&paging=false&filter=id:eq:' + id,
+                    success: function(r) {
+                        var set = Ext.decode(r.responseText)[elementUrl][0].legendSet;
+
+                        if (set) {
+                            view.legendSet = set;
+                            loadLegendSet(view);
+                        }
+                        else {
+                            fn();
+                        }
+                    },
+                    failure: function() {
+                        fn();
+                    }
+                });
 			}
 		};
 
