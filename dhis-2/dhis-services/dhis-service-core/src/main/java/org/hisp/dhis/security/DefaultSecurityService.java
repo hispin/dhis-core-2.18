@@ -28,6 +28,15 @@ package org.hisp.dhis.security;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.acl.AclService;
@@ -51,14 +60,6 @@ import org.hisp.dhis.user.UserSettingService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * @author Lars Helge Overland
  */
@@ -68,6 +69,7 @@ public class DefaultSecurityService
     private static final Log log = LogFactory.getLog( DefaultSecurityService.class );
 
     private static final String RESTORE_PATH = "/dhis-web-commons/security/";
+    private static final Pattern INVITE_USERNAME_PATTERN = Pattern.compile( "^invite\\-(.+?)\\-(\\w{11})$" );
 
     private static final String DEFAULT_APPLICATION_TITLE = "DHIS 2";
 
@@ -152,7 +154,7 @@ public class DefaultSecurityService
 
         return true;
     }
-
+    
     @Override
     public String validateRestore( UserCredentials credentials )
     {
@@ -459,6 +461,17 @@ public class DefaultSecurityService
         boolean validToken = passwordManager.legacyOrCurrentMatches( token, restoreToken, credentials.getUsername() );
 
         return validToken ? null : "restore_token_does_not_match_supplied_token";
+    }
+
+    @Override
+    public boolean isInviteUsername( String username )
+    {
+        if ( username == null || username.isEmpty() )
+        {
+            return true;
+        }
+        
+        return INVITE_USERNAME_PATTERN.matcher( username ).matches();
     }
 
     @Override
