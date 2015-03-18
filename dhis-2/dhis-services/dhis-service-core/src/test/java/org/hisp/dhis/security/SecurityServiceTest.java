@@ -231,4 +231,15 @@ public class SecurityServiceTest
         assertEquals( RestoreType.INVITE, restoreOptions.getRestoreType() );
         assertEquals( true, restoreOptions.isUsernameChoice() );
     }
+    
+    @Test
+    public void testIsInviteUsername()
+    {
+        assertTrue( securityService.isInviteUsername( "invite-johndoe@gmail.com-OsTci1JyHRU" ) );
+        assertTrue( securityService.isInviteUsername( "invite-fr37@abc.gov-OsTci1JyHRU" ) );
+        assertTrue( securityService.isInviteUsername( null ) );
+        assertFalse( securityService.isInviteUsername( "inv1te-mark@gmail.com-OsTci1JyHRU" ) );
+        assertFalse( securityService.isInviteUsername( "invite-tomjohnson@yahoo.com-OsTci1JyHRUC" ) );
+        assertFalse( securityService.isInviteUsername( "invite-johnthomson@gmail.com-OsTci1yHRU" ) );
+    }    
 }

@@ -242,6 +242,39 @@ public class UserController
         }
     }
 
+    @RequestMapping( value = "/{id}" + INVITE_PATH, method = RequestMethod.POST )
+    public void resendInvite( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        User user = userService.getUser( id );
+        
+        if ( user == null )
+        {
+            ContextUtils.conflictResponse( response, "User not found: " + id );
+            return;
+        }
+        
+        if ( user.getUserCredentials() == null || !user.getUserCredentials().isInvitation() )
+        {
+            ContextUtils.conflictResponse( response, "User account is not an invitation: " + id );
+            return;
+        }
+
+        String valid = securityService.validateRestore( user.getUserCredentials() );
+        
+        if ( valid != null )
+        {
+            ContextUtils.conflictResponse( response, valid );
+            return;
+        }
+        
+        boolean isInviteUsername = securityService.isInviteUsername( user.getUsername() );
+        
+        RestoreOptions restoreOptions = isInviteUsername ? RestoreOptions.INVITE_WITH_USERNAME_CHOICE : RestoreOptions.INVITE_WITH_DEFINED_USERNAME;
+        
+        securityService.sendRestoreMessage( user.getUserCredentials(),
+            ContextUtils.getContextPath( request ), restoreOptions );
+    }
+    
     @RequestMapping( value = BULK_INVITE_PATH, method = RequestMethod.POST, consumes = "application/json" )
     public void postJsonInvites( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {

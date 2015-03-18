@@ -239,3 +239,18 @@ function replicateUser() {
 function cancelReplicateUser() {
 	$( "#replicateUserForm" ).dialog( "destroy" );
 }
+
+function resendInvitation( context ) {
+	var userId = context.uid;
+	
+	$.ajax( {
+		url: "../api/users/" + userId + "/invite",
+		type: "post",
+		success: function() {
+			setHeaderDelayMessage( i18n_invitation_sent );
+		},
+		error: function( xhr, status, error ) {
+			setHeaderDelayMessage( xhr.responseText );
+		}
+	} );
+}
