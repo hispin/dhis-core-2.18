@@ -101,15 +101,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
             return null;
         }
 
-        T object = getObject( Restrictions.eq( "uid", uid ) );
-
-        if ( !isReadAllowed( object ) )
-        {
-            AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ_DENIED );
-            throw new ReadAccessDeniedException( object.toString() );
-        }
-
-        return object;
+        return getSharingObject( Restrictions.eq( "uid", uid ) );
     }
 
     @Override
@@ -175,15 +167,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
             return null;
         }
 
-        T object = getObject( Restrictions.eq( "code", code ) );
-
-        if ( !isReadAllowed( object ) )
-        {
-            AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ_DENIED );
-            throw new ReadAccessDeniedException( object.toString() );
-        }
-
-        return object;
+        return getSharingObject( Restrictions.eq( "code", code ) );
     }
 
     @Override
