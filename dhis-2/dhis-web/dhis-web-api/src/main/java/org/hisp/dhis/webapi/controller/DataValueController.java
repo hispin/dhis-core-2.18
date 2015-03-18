@@ -112,7 +112,7 @@ public class DataValueController
         // ---------------------------------------------------------------------
 
         DataElement dataElement = idObjectManager.get( DataElement.class, de );
-
+        
         if ( dataElement == null )
         {
             ContextUtils.conflictResponse( response, "Illegal data element identifier: " + de );

@@ -281,6 +281,18 @@ public class HibernateGenericStore<T>
     }
 
     /**
+     * Retrieves an object based on the given Criterions using a sharing Criteria.
+     *
+     * @param expressions the Criterions for the Criteria.
+     * @return an object of the implementation Class type.
+     */
+    @SuppressWarnings( "unchecked" )
+    protected final T getSharingObject( Criterion... expressions )
+    {
+        return (T) getSharingCriteria( expressions ).uniqueResult();
+    }
+
+    /**
      * Retrieves a List based on the given Criterions.
      *
      * @param expressions the Criterions for the Criteria.
