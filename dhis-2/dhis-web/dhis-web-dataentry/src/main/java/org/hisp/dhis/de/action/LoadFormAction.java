@@ -213,13 +213,6 @@ public class LoadFormAction
         return greyedFields;
     }
 
-    private List<DataElement> dataElementsNotInForm = new ArrayList<>();
-
-    public List<DataElement> getDataElementsNotInForm()
-    {
-        return dataElementsNotInForm;
-    }
-
     private DataSet dataSet;
 
     public DataSet getDataSet()
@@ -235,15 +228,31 @@ public class LoadFormAction
     public String execute()
         throws Exception
     {
-        if ( dataSetId == null )
+        dataSet = dataSetService.getDataSet( dataSetId, true, false, false, true );
+
+        if ( dataSet == null )
         {
             return INPUT;
         }
 
-        dataSet = dataSetService.getDataSet( dataSetId, true, false, false, true );
+        String dataSetType = dataSet.getDataSetType();
 
-        List<DataElement> dataElements = new ArrayList<>( dataElementService.getDataElements( dataSet, null,
-            null ) );
+        // ---------------------------------------------------------------------
+        // Custom form
+        // ---------------------------------------------------------------------
+
+        if ( DataSet.TYPE_CUSTOM.equals( dataSetType ) && dataSet.hasDataEntryForm() )
+        {
+            dataEntryForm = dataSet.getDataEntryForm();            
+            customDataEntryFormCode = dataEntryFormService.prepareDataEntryFormForEntry( dataEntryForm.getHtmlCode(), i18n, dataSet );
+            return dataSetType;
+        }
+
+        // ---------------------------------------------------------------------
+        // Section / default form
+        // ---------------------------------------------------------------------
+
+        List<DataElement> dataElements = new ArrayList<>( dataElementService.getDataElements( dataSet, null, null ) );
 
         if ( dataElements.isEmpty() )
         {
@@ -320,10 +329,9 @@ public class LoadFormAction
         // Get data entry form
         // ---------------------------------------------------------------------
 
-        String displayMode = dataSet.getDataSetType();
         DataSet dsOriginal = dataSet;
 
-        if ( displayMode.equals( DataSet.TYPE_DEFAULT ) )
+        if ( dataSetType.equals( DataSet.TYPE_DEFAULT ) )
         {
             DataSet dataSetCopy = new DataSet();
             dataSetCopy.setName( dataSet.getName() );
@@ -347,7 +355,7 @@ public class LoadFormAction
                 section.setIndicators( new ArrayList<>( dataSet.getIndicators() ) );
             }
 
-            displayMode = DataSet.TYPE_SECTION;
+            dataSetType = DataSet.TYPE_SECTION;
         }
 
         // ---------------------------------------------------------------------
@@ -378,19 +386,12 @@ public class LoadFormAction
 
             getSectionForm( dataElements, dataSet );
 
-            displayMode = DataSet.TYPE_SECTION_MULTIORG;
+            dataSetType = DataSet.TYPE_SECTION_MULTIORG;
         }
 
-        if ( displayMode.equals( DataSet.TYPE_SECTION ) )
-        {
-            getSectionForm( dataElements, dataSet );
-        }
-        else
-        {
-            getOtherDataEntryForm( dataElements, dataSet );
-        }
+        getSectionForm( dataElements, dataSet );
 
-        return displayMode;
+        return dataSetType;
     }
 
     // -------------------------------------------------------------------------
@@ -421,32 +422,6 @@ public class LoadFormAction
                     greyedFields.put( operand.getDataElement().getUid() + ":" + operand.getCategoryOptionCombo().getUid(), true );
                 }
             }
-        }
-    }
-
-    private void getOtherDataEntryForm( List<DataElement> dataElements, DataSet dataSet )
-    {
-        dataEntryForm = dataSet.getDataEntryForm();
-
-        if ( dataEntryForm != null )
-        {
-            customDataEntryFormCode = dataEntryFormService.prepareDataEntryFormForEntry( dataEntryForm.getHtmlCode(),
-                i18n, dataSet );
-
-            dataElementsNotInForm = new ArrayList<>( dataSet.getDataElements() );
-            dataElementsNotInForm.removeAll( dataEntryFormService.getDataElementsInDataEntryForm( dataSet ) );
-            Collections.sort( dataElementsNotInForm, IdentifiableObjectNameComparator.INSTANCE );
-        }
-
-        List<DataElement> des;
-
-        for ( DataElementCategoryCombo categoryCombo : orderedCategoryCombos )
-        {
-            des = orderedDataElements.get( categoryCombo );
-
-            Collections.sort( des, IdentifiableObjectNameComparator.INSTANCE );
-
-            orderedDataElements.put( categoryCombo, des );
         }
     }
 }
