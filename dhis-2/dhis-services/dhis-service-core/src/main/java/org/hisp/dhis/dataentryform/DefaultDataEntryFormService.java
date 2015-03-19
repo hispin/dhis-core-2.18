@@ -44,6 +44,7 @@ import java.util.regex.Matcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -289,8 +290,10 @@ public class DefaultDataEntryFormService
         // ---------------------------------------------------------------------
 
         Map<String, DataElement> dataElementMap = getDataElementMap( dataSet );
-
+        
         CachingMap<String, DataElementCategoryOptionCombo> optionComboMap = new CachingMap<>();
+        
+        optionComboMap.putAll( IdentifiableObjectUtils.getUidObjectMap( dataSet.getDataElementOptionCombos() ) );
         
         IdentifiableObjectCallable<DataElementCategoryOptionCombo> optionComboCallabel = 
             new IdentifiableObjectCallable<DataElementCategoryOptionCombo>( idObjectManager, DataElementCategoryOptionCombo.class, null );

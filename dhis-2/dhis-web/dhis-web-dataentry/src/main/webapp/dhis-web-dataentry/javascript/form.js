@@ -914,12 +914,15 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
 
         $.safeEach( dataSetList, function( idx, item )
         {
-            addOptionById( 'selectedDataSetId', item.id, item.name );
-
-            if ( dataSetId == item.id )
-            {
-                dataSetValid = true;
-            }
+        	if ( item )
+        	{
+	            addOptionById( 'selectedDataSetId', item.id, item.name );
+	
+	            if ( dataSetId == item.id )
+	            {
+	                dataSetValid = true;
+	            }
+        	}
         } );
 
         if ( children )
