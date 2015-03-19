@@ -286,7 +286,11 @@ public class DataEntryFormServiceTest
         String title = "" + dataElementUid + " - " + dataElement.getName() + " - " + categoryOptionComboUid + " - " + categoryOptionCombo.getName() + " - " + dataElement.getType();
         String value = "[ " + dataElement.getName() + " " + categoryOptionCombo.getName() + " ]";
         String expected = "<table><tr><td><input id=\"" + dataElementUid + "-" + categoryOptionComboUid + "-val\" style=\"width:4em;text-align:center\" title=\"" + title + "\" value=\"" + value + "\" /></td></tr></table>";
-        String actual = dataEntryFormService.prepareDataEntryFormForEdit( html, i18n );
+        
+        DataSet dsA = createDataSet( 'A', null );
+        DataEntryForm dfA = new DataEntryForm( "A", html );
+        
+        String actual = dataEntryFormService.prepareDataEntryFormForEdit( dfA, dsA, i18n );
 
         assertEquals( expected.length(), actual.length() );
     }
