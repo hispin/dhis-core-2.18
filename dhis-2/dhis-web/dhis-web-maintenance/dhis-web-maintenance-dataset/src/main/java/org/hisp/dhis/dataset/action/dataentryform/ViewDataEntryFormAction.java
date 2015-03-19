@@ -171,8 +171,7 @@ public class ViewDataEntryFormAction
 
         dataEntryForm = dataSet.getDataEntryForm();
 
-        dataEntryValue = dataEntryForm != null ? dataEntryFormService.prepareDataEntryFormForEdit( dataEntryForm
-            .getHtmlCode(), i18n ) : "";
+        dataEntryValue = dataEntryForm != null ? dataEntryFormService.prepareDataEntryFormForEdit( dataEntryForm, dataSet, i18n ) : "";
 
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );
         
