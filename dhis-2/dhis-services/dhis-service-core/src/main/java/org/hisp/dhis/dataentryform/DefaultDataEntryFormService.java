@@ -43,15 +43,17 @@ import java.util.regex.Matcher;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.system.callable.IdentifiableObjectCallable;
+import org.hisp.dhis.system.util.CachingMap;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,11 +83,11 @@ public class DefaultDataEntryFormService
         this.dataEntryFormStore = dataEntryFormStore;
     }
 
-    private DataElementCategoryService categoryService;
+    private IdentifiableObjectManager idObjectManager;
 
-    public void setCategoryService( DataElementCategoryService categoryService )
+    public void setIdObjectManager( IdentifiableObjectManager idObjectManager )
     {
-        this.categoryService = categoryService;
+        this.idObjectManager = idObjectManager;
     }
 
     private DataElementService dataElementService;
@@ -192,6 +194,11 @@ public class DefaultDataEntryFormService
         {
             return null;
         }
+
+        CachingMap<String, DataElementCategoryOptionCombo> optionComboMap = new CachingMap<>();
+        
+        IdentifiableObjectCallable<DataElementCategoryOptionCombo> optionComboCallabel = 
+            new IdentifiableObjectCallable<DataElementCategoryOptionCombo>( idObjectManager, DataElementCategoryOptionCombo.class, null );
         
         StringBuffer sb = new StringBuffer();
 
@@ -214,8 +221,10 @@ public class DefaultDataEntryFormService
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
                 String optionComboId = identifierMatcher.group( 2 );
-                DataElementCategoryOptionCombo categegoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
-                String optionComboName = categegoryOptionCombo != null ? escapeHtml( categegoryOptionCombo.getName() ) : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
+
+                DataElementCategoryOptionCombo categoryOptionCombo = optionComboMap.get( optionComboId, optionComboCallabel.setUid( optionComboId ) );
+
+                String optionComboName = categoryOptionCombo != null ? escapeHtml( categoryOptionCombo.getName() ) : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
 
                 StringBuilder title = dataElement != null ?
                     new StringBuilder( "title=\"" ).append( dataElementId ).append( " - " ).
@@ -277,13 +286,18 @@ public class DefaultDataEntryFormService
         // Inline javascript/html to add to HTML before output
         // ---------------------------------------------------------------------
 
+        Map<String, DataElement> dataElementMap = getDataElementMap( dataSet );
+
+        CachingMap<String, DataElementCategoryOptionCombo> optionComboMap = new CachingMap<>();
+        
+        IdentifiableObjectCallable<DataElementCategoryOptionCombo> optionComboCallabel = 
+            new IdentifiableObjectCallable<DataElementCategoryOptionCombo>( idObjectManager, DataElementCategoryOptionCombo.class, null );
+        
         int i = 1;
 
         StringBuffer sb = new StringBuffer();
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
-
-        Map<String, DataElement> dataElementMap = getDataElementMap( dataSet );
 
         while ( inputMatcher.find() )
         {
@@ -309,8 +323,7 @@ public class DefaultDataEntryFormService
                     return i18n.getString( "dataelement_with_id" ) + ": " + dataElementId + " " + i18n.getString( "does_not_exist" );
                 }
 
-                DataElementCategoryOptionCombo categoryOptionCombo = categoryService
-                    .getDataElementCategoryOptionCombo( optionComboId );
+                DataElementCategoryOptionCombo categoryOptionCombo = optionComboMap.get( optionComboId, optionComboCallabel.setUid( optionComboId ) );
 
                 if ( categoryOptionCombo == null )
                 {
