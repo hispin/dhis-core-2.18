@@ -16,6 +16,7 @@ var i18n_uploading_data_notification = 'Uploading locally stored data to the ser
 var PROGRAMS_METADATA = 'EVENT_PROGRAMS';
 
 var EVENT_VALUES = 'EVENT_VALUES';
+var optionSetsInPromise = [];
 
 dhis2.ec.store = null;
 dhis2.ec.memoryOnly = $('html').hasClass('ie7') || $('html').hasClass('ie8');
@@ -453,9 +454,10 @@ function getOptionSets( programs )
                     build = build.then(function() {
                         var d = $.Deferred();
                         var p = d.promise();
-                        dhis2.ec.store.get('optionSets', prStDe.dataElement.optionSet.id).done(function(obj) {                    
-                            if(!obj || obj.version !== prStDe.dataElement.optionSet.version) {
-                                promise = promise.then( getOptionSet( prStDe.dataElement.optionSet.id ) );
+                        dhis2.ec.store.get('optionSets', prStDe.dataElement.optionSet.id).done(function(obj) {
+                            if( (!obj || obj.version !== prStDe.dataElement.optionSet.version) && optionSetsInPromise.indexOf(prStDe.dataElement.optionSet.id) === -1) {
+                                optionSetsInPromise.push( prStDe.dataElement.optionSet.id );
+                                promise = promise.then( getOptionSet( prStDe.dataElement.optionSet.id ) );                                
                             }
                             d.resolve();
                         });

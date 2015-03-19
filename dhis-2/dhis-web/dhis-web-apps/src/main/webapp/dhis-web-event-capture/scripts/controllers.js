@@ -28,6 +28,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     //selected org unit
     $scope.selectedOrgUnit = '';
     $scope.treeLoaded = false;    
+    $scope.searchLabel = $translate('search');
     
     $scope.calendarSetting = CalendarService.getSetting();
     
