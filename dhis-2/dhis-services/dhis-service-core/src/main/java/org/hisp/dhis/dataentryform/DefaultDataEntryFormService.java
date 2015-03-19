@@ -186,23 +186,25 @@ public class DefaultDataEntryFormService
     }
 
     @Override
-    public String prepareDataEntryFormForEdit( String htmlCode, I18n i18n )
+    public String prepareDataEntryFormForEdit( DataEntryForm dataEntryForm, DataSet dataSet, I18n i18n )
     {
         //TODO HTML encode names
 
-        if ( htmlCode == null )
+        if ( dataEntryForm == null || !dataEntryForm.hasForm() || dataSet == null )
         {
             return null;
         }
-
+        
         CachingMap<String, DataElementCategoryOptionCombo> optionComboMap = new CachingMap<>();
+
+        optionComboMap.putAll( IdentifiableObjectUtils.getUidObjectMap( dataSet.getDataElementOptionCombos() ) );
         
         IdentifiableObjectCallable<DataElementCategoryOptionCombo> optionComboCallabel = 
             new IdentifiableObjectCallable<DataElementCategoryOptionCombo>( idObjectManager, DataElementCategoryOptionCombo.class, null );
         
         StringBuffer sb = new StringBuffer();
 
-        Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
+        Matcher inputMatcher = INPUT_PATTERN.matcher( dataEntryForm.getHtmlCode() );
 
         while ( inputMatcher.find() )
         {
@@ -273,11 +275,11 @@ public class DefaultDataEntryFormService
     }
 
     @Override
-    public String prepareDataEntryFormForEntry( String htmlCode, I18n i18n, DataSet dataSet )
+    public String prepareDataEntryFormForEntry( DataEntryForm dataEntryForm, DataSet dataSet, I18n i18n )
     {
         //TODO HTML encode names
 
-        if ( htmlCode == null )
+        if ( dataEntryForm == null || !dataEntryForm.hasForm() || dataSet == null )
         {
             return null;
         }
@@ -297,7 +299,7 @@ public class DefaultDataEntryFormService
 
         StringBuffer sb = new StringBuffer();
 
-        Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
+        Matcher inputMatcher = INPUT_PATTERN.matcher( dataEntryForm.getHtmlCode() );
 
         while ( inputMatcher.find() )
         {

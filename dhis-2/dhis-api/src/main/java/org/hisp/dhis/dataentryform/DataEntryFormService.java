@@ -122,26 +122,23 @@ public interface DataEntryFormService
      * Prepares the data entry form code by injecting the data element operand
      * name as value and title for each entry field.
      * 
-     * @param htmlCode the HTML code of the data entry form.
+     * @param dataEntryForm the data entry form.
+     * @param dataSet the data set associated with this form.
      * @param i18n the i18n object.
      * @return HTML code for the data entry form.
      */
-    String prepareDataEntryFormForEdit( String htmlCode, I18n i18n );
+    String prepareDataEntryFormForEdit( DataEntryForm dataEntryForm, DataSet dataSet, I18n i18n );
     
     /**
      * Prepares the data entry form for data entry by injecting required javascripts
      * and drop down lists.
      * 
-     * @param htmlCode the HTML code of the data entry form. 
-     * @param dataValues the data values which are registered for this form.
-     * @param minMaxMap a map with data element operand identifier as key and
-     *        corresponding min max data element as value.
-     * @param disabled whether this form is disabled for entry.
-     * @param i18n the i18n object.
+     * @param dataEntryForm the data entry form.
      * @param dataSet the data set associated with this form.
+     * @param i18n the i18n object.
      * @return HTML code for the form.
      */
-    String prepareDataEntryFormForEntry( String htmlCode, I18n i18n, DataSet dataSet );
+    String prepareDataEntryFormForEntry( DataEntryForm dataEntryForm, DataSet dataSet, I18n i18n );
     
     Set<DataElement> getDataElementsInDataEntryForm( DataSet dataSet );
     
