@@ -376,4 +376,26 @@ public class IdentifiableObjectUtils
 
         return map;
     }
+
+    /**
+     * Returns a mapping between the uid and the name of the given identifiable
+     * objects.
+     *
+     * @param objects the identifiable objects.
+     * @return mapping between the uid and the name of the given objects.
+     */
+    public static <T extends IdentifiableObject> Map<String, T> getUidObjectMap( Collection<T> objects )
+    {
+        Map<String, T> map = new HashMap<>();
+
+        if ( objects != null )
+        {
+            for ( T object : objects )
+            {
+                map.put( object.getUid(), object );
+            }
+        }
+
+        return map;
+    }
 }

@@ -419,6 +419,11 @@ public class DataElement
         return aggregationLevels != null && aggregationLevels.size() > 0;
     }
 
+    public boolean hasCategoryCombo()
+    {
+        return categoryCombo != null;
+    }
+    
     /**
      * Tests whether the DataElement is associated with a
      * DataElementCategoryCombo with more than one DataElementCategory, or any
