@@ -30,7 +30,11 @@
     </tr>
     <tr>
         <td>$i18n.getString( "organisation_units" )</td>
-        <td>$objects.getValue( "SOURCE" )</td>
+        <td>$objects.getValue( "ORGANISATIONUNIT" )</td>
+    </tr>
+    <tr>
+        <td>$i18n.getString( "organisation_unit_groups" )</td>
+        <td>$objects.getValue( "ORGANISATIONUNITGROUP" )</td>
     </tr>
     <tr>
         <td>$i18n.getString( "validation_rules" )</td>
@@ -43,6 +47,10 @@
     <tr>
         <td>$i18n.getString( "users" )</td>
         <td>$objects.getValue( "USER" )</td>
+    </tr>
+    <tr>
+        <td>$i18n.getString( "user_groups" )</td>
+        <td>$objects.getValue( "USERGROUP" )</td>
     </tr>
     <tr>
         <td>$i18n.getString( "data_values" )</td>

@@ -37,7 +37,6 @@ import java.util.Map;
  * enums.
  * 
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class EnumMapWrapper<E extends Enum<E>, T>
 {
