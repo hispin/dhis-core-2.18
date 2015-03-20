@@ -68,10 +68,12 @@ public class JdbcStatisticsProvider
         objectCounts.put( Objects.INDICATOR, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM indicator", Integer.class ) );
         objectCounts.put( Objects.INDICATORGROUP, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM indicatorgroup", Integer.class ) );
         objectCounts.put( Objects.DATASET, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM dataset", Integer.class ) );
-        objectCounts.put( Objects.SOURCE, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM organisationunit", Integer.class ) );
+        objectCounts.put( Objects.ORGANISATIONUNIT, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM organisationunit", Integer.class ) );
+        objectCounts.put( Objects.ORGANISATIONUNITGROUP, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM orgunitgroup", Integer.class ) );
         objectCounts.put( Objects.VALIDATIONRULE, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM validationrule", Integer.class ) );
         objectCounts.put( Objects.PERIOD, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM period", Integer.class ) );
         objectCounts.put( Objects.USER, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM users", Integer.class ) );
+        objectCounts.put( Objects.USERGROUP, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM usergroup", Integer.class ) );
         objectCounts.put( Objects.DATAVALUE, jdbcTemplate.queryForObject( "SELECT COUNT(*) FROM datavalue", Integer.class ) );
         
         return objectCounts;
