@@ -64,8 +64,19 @@
       context.target.on('dblclick', 'option', context.defaultTargetDblClickHandler);
       context.source.on('scroll', context.makeScrollHandler(context));
 
+      context.source.on('move-all', function() {
+        context.defaultLoader(context).then(function() {
+          context.source.find('option').attr('selected', 'selected').trigger('dblclick');
+          context.page = undefined;
+        });
+      });
+
+      context.target.on('move-all', function() {
+        context.target.find('option').attr('selected', 'selected').trigger('dblclick');
+      });
+
       if( context.search instanceof $ ) {
-        context.search.on('keyup', context.makeSearchHandler(context));
+        context.search.on('keypress', context.makeSearchHandler(context));
         context.searchButton = $("#" + context.search.attr('id') + "Button");
 
         context.searchButton.on('click', function() {
@@ -102,7 +113,7 @@
       $(sel).find(':selected').trigger('dblclick');
     },
     defaultMoveAll: function( sel ) {
-      $(sel).find('option').attr('selected', 'selected').trigger('dblclick');
+      $(sel).trigger('move-all');
     },
     defaultSourceDblClickHandler: function() {
       var $this = $(this);
@@ -133,6 +144,7 @@
           context.like = $(this).val();
           context.defaultProgressiveLoader(context);
           e.preventDefault();
+          return false;
         }
       }
     },
@@ -195,9 +207,46 @@
       }).fail(function() {
         context.source.children().remove();
       }).always(function() {
-         context.searchButton.find('i').removeClass('fa-spinner fa-spin');
-         context.searchButton.find('i').addClass('fa-search');
-         context.searchButton.removeAttr('disabled');
+        context.searchButton.find('i').removeClass('fa-spinner fa-spin');
+        context.searchButton.find('i').addClass('fa-search');
+        context.searchButton.removeAttr('disabled');
+      });
+    },
+    defaultLoader: function( context ) {
+      context.source.children().remove();
+
+      var request = {
+        url: context.url,
+        data: {
+          paging: false
+        },
+        dataType: 'json'
+      };
+
+      if( context.like !== undefined && context.like.length > 0 ) {
+        request.data.filter = 'name:like:' + context.like;
+      }
+
+      context.searchButton.find('i').removeClass('fa-search');
+      context.searchButton.find('i').addClass('fa-spinner fa-spin');
+      context.searchButton.attr('disabled', true);
+
+      return $.ajax(request).done(function( data ) {
+        if( data[context.iterator] === undefined ) {
+          return;
+        }
+
+        $.each(data[context.iterator], function() {
+          if( context.target.find('option[value=' + this.id + ']').length == 0 ) {
+            context.source.append(context.handler(this));
+          }
+        });
+      }).fail(function() {
+        context.source.children().remove();
+      }).always(function() {
+        context.searchButton.find('i').removeClass('fa-spinner fa-spin');
+        context.searchButton.find('i').addClass('fa-search');
+        context.searchButton.removeAttr('disabled');
       });
     }
   };
