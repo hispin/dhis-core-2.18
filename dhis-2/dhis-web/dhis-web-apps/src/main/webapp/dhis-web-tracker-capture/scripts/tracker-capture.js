@@ -442,10 +442,10 @@ function getOptionSetsForAttributes( programs )
                     build = build.then(function() {
                         var d = $.Deferred();
                         var p = d.promise();
-                        dhis2.tc.store.get('optionSets', teAttribute.optionSet.id).done(function(obj) {                            
-                            if((!obj || obj.version !== teAttribute.optionSet.version) && optionSetsInPromise.indexOf(teAttribute.optionSet.id) === -1) {                                
-                                optionSetsInPromise.push(teAttribute.optionSet.id);
-                                promise = promise.then( getOptionSet( teAttribute.optionSet.id ) );
+                        dhis2.tc.store.get('optionSets', teAttribute.trackedEntityAttribute.optionSet.id).done(function(obj) {                            
+                            if((!obj || obj.version !== teAttribute.trackedEntityAttribute.optionSet.version) && optionSetsInPromise.indexOf(teAttribute.trackedEntityAttribute.optionSet.id) === -1) {                                
+                                optionSetsInPromise.push(teAttribute.trackedEntityAttribute.optionSet.id);
+                                promise = promise.then( getOptionSet( teAttribute.trackedEntityAttribute.optionSet.id ) );
                             }
                             d.resolve();
                         });
