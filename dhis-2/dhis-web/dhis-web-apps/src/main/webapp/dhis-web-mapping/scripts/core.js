@@ -2443,7 +2443,7 @@ Ext.onReady( function() {
 
             loadLegendSet = function(view) {
                 Ext.Ajax.request({
-					url: gis.init.contextPath + '/api/legendSets/' + view.legendSet.id + '.json?fields=' + gis.conf.url.legendSetFields.join(','),
+					url: gis.init.contextPath + '/api/legendSets/' + view.legendSet.id + '.json?fields=' + gis.conf.url.mapLegendSetFields.join(','),
 					scope: this,
                     disableCaching: false,
 					success: function(r) {
