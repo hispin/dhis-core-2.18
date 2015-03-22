@@ -1460,9 +1460,39 @@ Ext.onReady(function() {
     // ext config
     Ext.Ajax.method = 'GET';
 
-    Ext.isIE = function() {
-        return /trident/.test(Ext.userAgent);
-    }();
+    Ext.isIE = (/trident/.test(Ext.userAgent));
+
+    Ext.isIE11 = Ext.isIE && (/rv:11.0/.test(Ext.userAgent));
+
+    Ext.util.CSS.createStyleSheet = function(cssText, id) {
+        var ss,
+            head = document.getElementsByTagName("head")[0],
+            styleEl = document.createElement("style");
+
+        styleEl.setAttribute("type", "text/css");
+        
+        if (id) {
+           styleEl.setAttribute("id", id);
+        }
+
+        if (Ext.isIE && !Ext.isIE11) {
+           head.appendChild(styleEl);
+           ss = styleEl.styleSheet;
+           ss.cssText = cssText;
+        }
+        else {
+            try {
+                styleEl.appendChild(document.createTextNode(cssText));
+            }
+            catch(e) {
+               styleEl.cssText = cssText;
+            }
+            head.appendChild(styleEl);
+            ss = styleEl.styleSheet ? styleEl.styleSheet : (styleEl.sheet || document.styleSheets[document.styleSheets.length-1]);
+        }
+        this.cacheStyleSheet(ss);
+        return ss;
+    };
 
     // gis
     GIS = {
