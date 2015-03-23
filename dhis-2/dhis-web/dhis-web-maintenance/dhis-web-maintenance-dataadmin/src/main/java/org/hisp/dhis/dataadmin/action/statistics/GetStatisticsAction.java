@@ -36,6 +36,8 @@ import org.hisp.dhis.common.Objects;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.statistics.StatisticsProvider;
 import org.hisp.dhis.system.util.EnumMapWrapper;
+import org.hisp.dhis.user.UserInvitationStatus;
+import org.hisp.dhis.user.UserQueryParams;
 import org.hisp.dhis.user.UserService;
 import org.joda.time.DateTime;
 
@@ -89,14 +91,21 @@ public class GetStatisticsAction
     {
         return activeUsers;
     }
-    
+
+    private EnumMapWrapper<UserInvitationStatus, Integer> userInvitations;
+
+    public EnumMapWrapper<UserInvitationStatus, Integer> getUserInvitations()
+    {
+        return userInvitations;
+    }
+
     private Map<Integer, Integer> dataValueCount = new HashMap<>();
 
     public Map<Integer, Integer> getDataValueCount()
     {
         return dataValueCount;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -116,6 +125,18 @@ public class GetStatisticsAction
         activeUsers.put( 2, userService.getActiveUsersCount( 1 ) );
         activeUsers.put( 7, userService.getActiveUsersCount( 7 ) );
         activeUsers.put( 30, userService.getActiveUsersCount( 30 ) );
+        
+        Map<UserInvitationStatus, Integer> invitations = new HashMap<>();
+        
+        UserQueryParams inviteAll = new UserQueryParams();
+        inviteAll.setInvitationStatus( UserInvitationStatus.ALL );
+        invitations.put( UserInvitationStatus.ALL, userService.getUserCount( inviteAll ) );
+
+        UserQueryParams inviteExpired = new UserQueryParams();
+        inviteExpired.setInvitationStatus( UserInvitationStatus.EXPIRED );
+        invitations.put( UserInvitationStatus.EXPIRED, userService.getUserCount( inviteExpired ) );             
+        
+        userInvitations = new EnumMapWrapper<>( UserInvitationStatus.class, invitations );
         
         dataValueCount.put( 0, dataValueService.getDataValueCount( 0 ) );
         dataValueCount.put( 1, dataValueService.getDataValueCount( 1 ) );
