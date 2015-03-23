@@ -50,8 +50,8 @@ jQuery(function() {
             #getSymbol( $ip )
           </div>
           <div class="interpretationUser">
-             <a class="bold userLink" href="profile.action?id=${ip.user.uid}">${encoder.htmlEncode( $ip.user.name )}</a><br>
-             <span class="tipText">${format.formatDate( $ip.created )}</span>
+             <a class="bold userLink" href="profile.action?id=${ip.user.uid}">$!{encoder.htmlEncode( $ip.user.name )}</a><br>
+             <span class="tipText">$!{format.formatDate( $ip.created )}</span>
           </div>
           #gearDropDown( $ip.user )
         </div>
