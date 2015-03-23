@@ -539,7 +539,7 @@ Ext.onReady( function() {
 		};
 
 		window = Ext.create('Ext.window.Window', {
-			title: NS.i18n.table_layout,
+			title: NS.i18n.chart_layout,
 			bodyStyle: 'background-color:#fff; padding:' + margin + 'px',
 			closeAction: 'hide',
 			autoShow: true,
