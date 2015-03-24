@@ -30,16 +30,17 @@ package org.hisp.dhis.program;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Chau Thu Tran
- * @version ProgramDeleteHandler.java Sep 30, 2010 1:39:15 PM
  */
 public class ProgramDeletionHandler
     extends DeletionHandler
@@ -48,13 +49,12 @@ public class ProgramDeletionHandler
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private ProgramService programService;
 
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -73,20 +73,20 @@ public class ProgramDeletionHandler
         for ( Program program : programs )
         {
             program.getValidationCriteria().remove( validationCriteria );
-            programService.updateProgram( program );
+            idObjectManager.updateNoAcl( program );
         }
     }
 
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
-        Collection<Program> programs = programService.getAllPrograms();
+        Collection<Program> programs = idObjectManager.getAllNoAcl( Program.class );
 
         for ( Program program : programs )
         {
             if ( program.getOrganisationUnits().remove( unit ) )
             {
-                programService.updateProgram( program );
+                idObjectManager.updateNoAcl( program );
             }
         }
     }
@@ -94,13 +94,13 @@ public class ProgramDeletionHandler
     @Override
     public void deleteUserAuthorityGroup( UserAuthorityGroup group )
     {
-        Collection<Program> programs = programService.getAllPrograms();
+        Collection<Program> programs = idObjectManager.getAllNoAcl( Program.class );
 
         for ( Program program : programs )
         {
             if ( program.getUserRoles().remove( group ) )
             {
-                programService.updateProgram( program );
+                idObjectManager.updateNoAcl( program );
             }
         }
     }
@@ -116,7 +116,7 @@ public class ProgramDeletionHandler
     @Override
     public void deleteTrackedEntityAttribute( TrackedEntityAttribute trackedEntityAttribute )
     {
-        Collection<Program> programs = programService.getAllPrograms();
+        Collection<Program> programs = idObjectManager.getAllNoAcl( Program.class );
 
         for ( Program program : programs )
         {
@@ -125,7 +125,7 @@ public class ProgramDeletionHandler
                 if ( programAttribute.getAttribute().equals( trackedEntityAttribute ) )
                 {
                     program.getProgramAttributes().remove( programAttribute );
-                    programService.updateProgram( program );
+                    idObjectManager.updateNoAcl( program );
                 }
             }
         }

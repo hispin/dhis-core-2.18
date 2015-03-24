@@ -432,9 +432,7 @@
 			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.program.ProgramDeletionHandler" class="org.hisp.dhis.program.ProgramDeletionHandler">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
+	<bean id="org.hisp.dhis.program.ProgramDeletionHandler" class="org.hisp.dhis.program.ProgramDeletionHandler" />
 
 	<bean
 		id="org.hisp.dhis.trackedentity.TrackedEntityInstanceDeletionHandler"

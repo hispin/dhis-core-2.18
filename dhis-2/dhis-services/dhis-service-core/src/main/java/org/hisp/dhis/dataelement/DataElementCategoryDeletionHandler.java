@@ -30,7 +30,9 @@ package org.hisp.dhis.dataelement;
 
 import java.util.Set;
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Dang Duy Hieu
@@ -38,17 +40,9 @@ import org.hisp.dhis.system.deletion.DeletionHandler;
 public class DataElementCategoryDeletionHandler
     extends DeletionHandler
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -67,7 +61,7 @@ public class DataElementCategoryDeletionHandler
         for ( DataElementCategory category : categories )
         {
             category.removeDataElementCategoryOption( categoryOption );
-            categoryService.updateDataElementCategory( category );
+            idObjectManager.updateNoAcl( category );
         }
     }
 }

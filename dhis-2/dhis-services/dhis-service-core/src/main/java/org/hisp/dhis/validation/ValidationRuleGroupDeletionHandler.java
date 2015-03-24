@@ -28,7 +28,9 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -36,16 +38,8 @@ import org.hisp.dhis.system.deletion.DeletionHandler;
 public class ValidationRuleGroupDeletionHandler
     extends DeletionHandler
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private ValidationRuleService validationRuleService;
-
-    public void setValidationRuleService( ValidationRuleService validationRuleService )
-    {
-        this.validationRuleService = validationRuleService;
-    }
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
     
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
@@ -63,7 +57,7 @@ public class ValidationRuleGroupDeletionHandler
         for ( ValidationRuleGroup group : validationRule.getGroups() )
         {
             group.getMembers().remove( validationRule );
-            validationRuleService.updateValidationRuleGroup( group );
+            idObjectManager.updateNoAcl( group );
         }
     }
 }

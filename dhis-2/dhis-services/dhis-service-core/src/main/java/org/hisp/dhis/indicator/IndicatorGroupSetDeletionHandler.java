@@ -28,7 +28,9 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -36,17 +38,9 @@ import org.hisp.dhis.system.deletion.DeletionHandler;
 public class IndicatorGroupSetDeletionHandler
     extends DeletionHandler
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -65,7 +59,7 @@ public class IndicatorGroupSetDeletionHandler
         if ( groupSet != null )
         {
             groupSet.getMembers().remove( indicatorGroup );
-            indicatorService.updateIndicatorGroupSet( groupSet );
+            idObjectManager.updateNoAcl( groupSet );
         }
     }
 }

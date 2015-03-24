@@ -31,31 +31,24 @@ package org.hisp.dhis.dataset;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class DataSetDeletionHandler
     extends DeletionHandler
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -75,10 +68,10 @@ public class DataSetDeletionHandler
         {
             DataSet dataSet = iterator.next();
             dataSet.removeDataElement( dataElement );
-            dataSetService.updateDataSet( dataSet );
+            idObjectManager.updateNoAcl( dataSet );
         }
         
-        for ( DataSet dataSet : dataSetService.getAllDataSets() )
+        for ( DataSet dataSet : idObjectManager.getAllNoAcl( DataSet.class ) )
         {
             boolean update = false;
             
@@ -97,7 +90,7 @@ public class DataSetDeletionHandler
             
             if ( update )
             {
-                dataSetService.updateDataSet( dataSet );
+                idObjectManager.updateNoAcl( dataSet );
             }
         }
     }
@@ -111,7 +104,7 @@ public class DataSetDeletionHandler
         {
             DataSet dataSet = iterator.next();
             dataSet.getIndicators().remove( indicator );
-            dataSetService.updateDataSet( dataSet );
+            idObjectManager.updateNoAcl( dataSet );
         }
     }
     
@@ -123,21 +116,21 @@ public class DataSetDeletionHandler
         if ( dataSet != null )
         {
             dataSet.getSections().remove( section );
-            dataSetService.updateDataSet( dataSet );
+            idObjectManager.updateNoAcl( dataSet );
         }
     }
     
     @Override
     public void deleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
-        Collection<DataSet> dataSets = dataSetService.getAllDataSets();
+        Collection<DataSet> dataSets = idObjectManager.getAllNoAcl( DataSet.class );
 
         for ( DataSet dataSet : dataSets )
         {            
             if ( dataSet != null && categoryCombo.equals( dataSet.getCategoryCombo() ) )
             {
                 dataSet.setCategoryCombo( null );
-                dataSetService.updateDataSet( dataSet );
+                idObjectManager.updateNoAcl( dataSet );
             }
         }        
     }
@@ -151,7 +144,7 @@ public class DataSetDeletionHandler
         {
             DataSet dataSet = iterator.next();
             dataSet.getSources().remove( unit );
-            dataSetService.updateDataSet( dataSet );
+            idObjectManager.updateNoAcl( dataSet );
         }
     }
 }

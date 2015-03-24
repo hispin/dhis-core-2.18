@@ -47,8 +47,7 @@ public class CompleteDataSetRegistrationDeletionHandler
 
     public CompleteDataSetRegistrationService completeDataSetRegistrationService;
 
-    public void setCompleteDataSetRegistrationService(
-        CompleteDataSetRegistrationService completeDataSetRegistrationService )
+    public void setCompleteDataSetRegistrationService( CompleteDataSetRegistrationService completeDataSetRegistrationService )
     {
         this.completeDataSetRegistrationService = completeDataSetRegistrationService;
     }

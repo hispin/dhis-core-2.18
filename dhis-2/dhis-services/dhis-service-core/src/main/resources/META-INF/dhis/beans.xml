@@ -1027,20 +1027,12 @@
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementDeletionHandler" class="org.hisp.dhis.dataelement.DataElementDeletionHandler">
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="jdbcTemplate" ref="jdbcTemplate" />
-  </bean>
+  <bean id="org.hisp.dhis.dataelement.DataElementDeletionHandler" class="org.hisp.dhis.dataelement.DataElementDeletionHandler" />
 
-  <bean id="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler" class="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler">
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-  </bean>
+  <bean id="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler" class="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler" />
 
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler"
-    class="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler">
-    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-  </bean>
+    class="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler" />
 
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler"
     class="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler">
@@ -1056,9 +1048,7 @@
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryDimensionDeletionHandler" 
     class="org.hisp.dhis.dataelement.DataElementCategoryDimensionDeletionHandler" />
 
-  <bean id="org.hisp.dhis.dataset.DataSetDeletionHandler" class="org.hisp.dhis.dataset.DataSetDeletionHandler">
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-  </bean>
+  <bean id="org.hisp.dhis.dataset.DataSetDeletionHandler" class="org.hisp.dhis.dataset.DataSetDeletionHandler" />
 
   <bean id="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler"
     class="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler">
@@ -1079,13 +1069,9 @@
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
   </bean>
 
-  <bean id="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler" class="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler">
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-  </bean>
+  <bean id="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler" class="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler" />
 
-  <bean id="org.hisp.dhis.indicator.IndicatorGroupSetDeletionHandler" class="org.hisp.dhis.indicator.IndicatorGroupSetDeletionHandler">
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-  </bean>
+  <bean id="org.hisp.dhis.indicator.IndicatorGroupSetDeletionHandler" class="org.hisp.dhis.indicator.IndicatorGroupSetDeletionHandler" />
 
   <bean id="org.hisp.dhis.minmax.MinMaxDataElementDeletionHandler" class="org.hisp.dhis.minmax.MinMaxDataElementDeletionHandler">
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
@@ -1096,36 +1082,26 @@
   </bean>
 
   <bean id="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler"
-    class="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler">
-    <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
-  </bean>
+    class="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler" />
 
   <bean id="org.hisp.dhis.datavalue.DataValueDeletionHandler" class="org.hisp.dhis.datavalue.DataValueDeletionHandler">
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler"
-    class="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler">
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-  </bean>
+    class="org.hisp.dhis.organisationunit.OrganisationUnitDeletionHandler" />
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler"
-    class="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler">
-    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-  </bean>
+    class="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler" />
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler"
-    class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler">
-    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-  </bean>
+    class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler" />
 
   <bean id="org.hisp.dhis.datavalue.DataValueAuditDeletionHandler" class="org.hisp.dhis.datavalue.DataValueAuditDeletionHandler">
     <property name="dataValueAuditService" ref="org.hisp.dhis.datavalue.DataValueAuditService" />
   </bean>
 
-  <bean id="org.hisp.dhis.user.UserDeletionHandler" class="org.hisp.dhis.user.UserDeletionHandler">
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
-  </bean>
+  <bean id="org.hisp.dhis.user.UserDeletionHandler" class="org.hisp.dhis.user.UserDeletionHandler" />
 
   <bean id="org.hisp.dhis.user.UserGroupDeletionHandler" class="org.hisp.dhis.user.UserGroupDeletionHandler">
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
@@ -1137,15 +1113,11 @@
 
   <bean id="org.hisp.dhis.user.UserSettingDeletionHandler" class="org.hisp.dhis.user.UserSettingDeletionHandler" />
 
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler"
-    class="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler">
-    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-  </bean>
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" 
+  	class="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" />
 
   <bean id="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler"
-    class="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler">
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-  </bean>
+    class="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler" />
 
   <bean id="org.hisp.dhis.configuration.ConfigurationDeletionHandler" class="org.hisp.dhis.configuration.ConfigurationDeletionHandler">
     <property name="jdbcTemplate" ref="jdbcTemplate" />
