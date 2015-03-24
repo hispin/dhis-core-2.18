@@ -350,7 +350,7 @@ public class HibernateDataApprovalStore
             "select a.categoryoptioncomboid, a.organisationunitid, " +
             "(select min(coalesce(dal.level, 0)) from period p " +
             "left join dataapproval da on da.datasetid in (" + dataSetIds + ") and da.periodid = p.periodid " +
-                    "and da.attributeoptioncomboid = a.categoryoptioncomboid and da.organisationunitid = a.organisationunitid " +
+					"and da.attributeoptioncomboid = a.categoryoptioncomboid and da.organisationunitid = a.organisationunitid " +
                 "left join dataapprovallevel dal on dal.dataapprovallevelid = da.dataapprovallevelid " +
                 "where p.periodid in (" + periodIds + ") " +
             ") as highest_approved_level, " +
@@ -376,9 +376,10 @@ public class HibernateDataApprovalStore
                 "left join usergroupaccess uga on uga.usergroupaccessid = couga.usergroupaccessid " +
                 "left join usergroupmembers ugm on ugm.usergroupid = uga.usergroupid " +
                 "where ( coo.categoryoptionid is null or ous.organisationunitid is not null " + testAncestors + ") " +
-                 ( isSuperUser || user == null ? "" : "and ( ugm.userid = " + user.getId() + " or co.userid = " + user.getId() + " " +
-                     "or co.publicaccess is null or left(co.publicaccess, 1) = 'r' ) " ) +
-                 ( attributeOptionCombo == null ? "" : "and cocco.categoryoptioncomboid = " + attributeOptionCombo.getId() + " " ) +
+                ( attributeOptionCombo == null ? "" : " and cocco.categoryoptioncomboid = " + attributeOptionCombo.getId() ) +
+                ( isSuperUser || user == null ? "" : "and ( ugm.userid = " + user.getId() + " or co.userid = " + user.getId() + " " +
+                    "or co.publicaccess is null or left(co.publicaccess, 1) = 'r' ) " ) +
+                ( attributeOptionCombo == null ? "" : "and cocco.categoryoptioncomboid = " + attributeOptionCombo.getId() + " " ) +
             ") as a";
 
         log.debug( "Get approval SQL: " + sql );
