@@ -91,7 +91,8 @@ public interface DataApprovalStore
      * to a given organisation unit, or it may be all the organisation units
      * the user is allowed to see. The list may also be constrained to a given
      * attribute category combination, or it may be all the attribute category
-     * combos the user is allowed to see.
+     * combos the user is allowed to see. If the list is constrained to a given
+     * attribute category combination, then only a single value is returned.
      *
      * @param dataSets Data sets to look within
      * @param period Period to look within
