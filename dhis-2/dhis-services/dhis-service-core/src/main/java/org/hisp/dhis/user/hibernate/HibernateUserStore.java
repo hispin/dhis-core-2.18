@@ -187,12 +187,12 @@ public class HibernateUserStore
         
         if ( params.getLastLogin() != null )
         {
-            query.setDate( "lastLogin", params.getLastLogin() );
+            query.setTimestamp( "lastLogin", params.getLastLogin() );
         }
         
         if ( params.getInactiveSince() != null )
         {
-            query.setDate( "inactiveSince", params.getInactiveSince() );
+            query.setTimestamp( "inactiveSince", params.getInactiveSince() );
         }
         
         if ( params.getOrganisationUnit() != null )
