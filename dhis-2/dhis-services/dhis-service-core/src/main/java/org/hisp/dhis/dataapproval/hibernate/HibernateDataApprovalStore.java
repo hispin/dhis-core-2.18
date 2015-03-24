@@ -237,7 +237,7 @@ public class HibernateDataApprovalStore
 
         final String dataSetIds = getCommaDelimitedString( getIdentifiers( DataSet.class, dataSets ) );
 
-        boolean isDefaultCombo = ( attributeOptionCombo == categoryService.getDefaultDataElementCategoryOptionCombo() );
+        boolean isDefaultCombo = categoryService.getDefaultDataElementCategoryOptionCombo().equals( attributeOptionCombo );
 
         final String categoryComboIds;
 
