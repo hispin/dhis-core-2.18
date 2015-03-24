@@ -28,6 +28,7 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,13 +38,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CategoryOptionGroupSetDeletionHandler
     extends DeletionHandler
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
     @Autowired
-    private DataElementCategoryService dataElementCategoryService;
-
+    private IdentifiableObjectManager idObjectManager;
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -62,7 +59,7 @@ public class CategoryOptionGroupSetDeletionHandler
         if ( groupSet != null )
         {
             groupSet.getMembers().remove( categoryOptionGroup );
-            dataElementCategoryService.updateCategoryOptionGroupSet( groupSet );
+            idObjectManager.updateNoAcl( groupSet );
         }
     }
 }

@@ -28,8 +28,10 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -37,17 +39,9 @@ import org.hisp.dhis.system.deletion.DeletionHandler;
 public class UserDeletionHandler
     extends DeletionHandler
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
-    }
-
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -64,7 +58,7 @@ public class UserDeletionHandler
         for ( UserCredentials credentials : authorityGroup.getMembers() )
         {
             credentials.getUserAuthorityGroups().remove( authorityGroup );
-            userService.updateUserCredentials( credentials );
+            idObjectManager.updateNoAcl( credentials );
         }
     }
     
@@ -74,7 +68,7 @@ public class UserDeletionHandler
         for ( User user : unit.getUsers() )
         {
             user.getOrganisationUnits().remove( unit );
-            userService.updateUser( user );
+            idObjectManager.updateNoAcl( user );
         }
     }
 
@@ -84,14 +78,14 @@ public class UserDeletionHandler
         for ( User user : group.getMembers() )
         {
             user.getGroups().remove( group );
-            userService.updateUser( user );
+            idObjectManager.updateNoAcl( user );
         }
     }
 
     @Override
     public String allowDeleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
     {
-        for ( UserCredentials credentials : userService.getAllUserCredentials() )
+        for ( UserCredentials credentials : authorityGroup.getMembers() )
         {
             for ( UserAuthorityGroup role : credentials.getUserAuthorityGroups() )
             {

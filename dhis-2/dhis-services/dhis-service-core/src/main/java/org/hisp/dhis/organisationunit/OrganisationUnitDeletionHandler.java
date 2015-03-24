@@ -28,9 +28,11 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -38,17 +40,9 @@ import org.hisp.dhis.user.User;
 public class OrganisationUnitDeletionHandler
     extends DeletionHandler
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -65,7 +59,7 @@ public class OrganisationUnitDeletionHandler
         for ( OrganisationUnit unit : dataSet.getSources() )
         {
             unit.getDataSets().remove( dataSet );
-            organisationUnitService.updateOrganisationUnit( unit );
+            idObjectManager.updateNoAcl( unit );
         }
     }
 
@@ -75,7 +69,7 @@ public class OrganisationUnitDeletionHandler
         for ( OrganisationUnit unit : user.getOrganisationUnits() )
         {
             unit.getUsers().remove( user );
-            organisationUnitService.updateOrganisationUnit( unit );
+            idObjectManager.updateNoAcl( unit );
         }
     }
 
@@ -85,7 +79,7 @@ public class OrganisationUnitDeletionHandler
         for ( OrganisationUnit unit : group.getMembers() )
         {
             unit.getGroups().remove( group );
-            organisationUnitService.updateOrganisationUnit( unit );
+            idObjectManager.updateNoAcl( unit );
         }
     }
 

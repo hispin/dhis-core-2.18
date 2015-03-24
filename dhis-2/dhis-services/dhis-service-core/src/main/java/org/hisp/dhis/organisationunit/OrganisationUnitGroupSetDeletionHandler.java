@@ -28,25 +28,18 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class OrganisationUnitGroupSetDeletionHandler
     extends DeletionHandler
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
     
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
@@ -66,7 +59,7 @@ public class OrganisationUnitGroupSetDeletionHandler
         if ( groupSet != null )
         {
             groupSet.getOrganisationUnitGroups().remove( group );
-            organisationUnitGroupService.updateOrganisationUnitGroupSet( groupSet );
+            idObjectManager.updateNoAcl( groupSet );
         }
     }
 }

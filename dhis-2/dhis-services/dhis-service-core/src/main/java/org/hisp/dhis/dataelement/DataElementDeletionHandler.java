@@ -30,9 +30,11 @@ package org.hisp.dhis.dataelement;
 
 import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -41,30 +43,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class DataElementDeletionHandler
     extends DeletionHandler
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
+    
+    @Autowired
     private DataElementCategoryService categoryService;
 
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-
+    @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
     
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
@@ -82,13 +68,13 @@ public class DataElementDeletionHandler
         DataElementCategoryCombo default_ = categoryService
             .getDataElementCategoryComboByName( DEFAULT_CATEGORY_COMBO_NAME );
 
-        for ( DataElement dataElement : dataElementService.getAllDataElements() )
+        for ( DataElement dataElement : idObjectManager.getAllNoAcl( DataElement.class ) )
         {
             if ( dataElement.getCategoryCombo().equals( categoryCombo ) )
             {
                 dataElement.setCategoryCombo( default_ );
 
-                dataElementService.updateDataElement( dataElement );
+                idObjectManager.updateNoAcl( dataElement );
             }
         }
     }
@@ -99,7 +85,7 @@ public class DataElementDeletionHandler
         for ( DataElement element : dataSet.getDataElements() )
         {
             element.getDataSets().remove( dataSet );
-            dataElementService.updateDataElement( element );
+            idObjectManager.updateNoAcl( element );
         }
     }
 
@@ -109,7 +95,7 @@ public class DataElementDeletionHandler
         for ( DataElement element : group.getMembers() )
         {
             element.getGroups().remove( group );
-            dataElementService.updateDataElement( element );
+            idObjectManager.updateNoAcl( element );
         }
     }
     

@@ -28,7 +28,9 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -36,17 +38,9 @@ import org.hisp.dhis.system.deletion.DeletionHandler;
 public class DataElementGroupDeletionHandler
     extends DeletionHandler
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DataElementService dataElementService;
-        
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -63,7 +57,7 @@ public class DataElementGroupDeletionHandler
         for ( DataElementGroup group : dataElement.getGroups() )
         {
             group.getMembers().remove( dataElement );
-            dataElementService.updateDataElementGroup( group );
+            idObjectManager.updateNoAcl( group );
         }
     }
 }
