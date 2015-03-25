@@ -80,7 +80,7 @@
         context.searchButton = $("#" + context.search.attr('id') + "Button");
 
         context.searchButton.on('click', function() {
-          context.search.trigger({type: 'keyup', which: 13, keyCode: 13});
+          context.search.trigger({type: 'keypress', which: 13, keyCode: 13});
         });
       }
 
