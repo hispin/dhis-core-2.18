@@ -3296,8 +3296,10 @@ Ext.onReady( function() {
 
             baseWidth = 446,
             toolWidth = 36,
+            accBaseWidth = baseWidth - 2,
 
-            accBaseWidth = baseWidth - 2;
+            conf = ns.core.conf,
+            rp = conf.period.relativePeriods;
 
 		// stores
 
@@ -4182,22 +4184,22 @@ Ext.onReady( function() {
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_WEEK',
+                    relativePeriodId: rp[rp.push('LAST_WEEK') - 1],
                     boxLabel: NS.i18n.last_week
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_4_WEEKS',
+                    relativePeriodId: rp[rp.push('LAST_4_WEEKS') - 1],
                     boxLabel: NS.i18n.last_4_weeks
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_12_WEEKS',
+                    relativePeriodId: rp[rp.push('LAST_12_WEEKS') - 1],
                     boxLabel: NS.i18n.last_12_weeks
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_52_WEEKS',
+                    relativePeriodId: rp[rp.push('LAST_52_WEEKS') - 1],
                     boxLabel: NS.i18n.last_52_weeks
                 }
             ]
@@ -4217,22 +4219,22 @@ Ext.onReady( function() {
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_MONTH',
+                    relativePeriodId: rp[rp.push('LAST_MONTH') - 1],
                     boxLabel: NS.i18n.last_month
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_3_MONTHS',
+                    relativePeriodId: rp[rp.push('LAST_3_MONTHS') - 1],
                     boxLabel: NS.i18n.last_3_months
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_6_MONTHS',
+                    relativePeriodId: rp[rp.push('LAST_6_MONTHS') - 1],
                     boxLabel: NS.i18n.last_6_months
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_12_MONTHS',
+                    relativePeriodId: rp[rp.push('LAST_12_MONTHS') - 1],
                     boxLabel: NS.i18n.last_12_months,
                     checked: true
                 }
@@ -4253,12 +4255,12 @@ Ext.onReady( function() {
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_BIMONTH',
+                    relativePeriodId: rp[rp.push('LAST_BIMONTH') - 1],
                     boxLabel: NS.i18n.last_bimonth
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_6_BIMONTHS',
+                    relativePeriodId: rp[rp.push('LAST_6_BIMONTHS') - 1],
                     boxLabel: NS.i18n.last_6_bimonths
                 }
             ]
@@ -4278,12 +4280,12 @@ Ext.onReady( function() {
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_QUARTER',
+                    relativePeriodId: rp[rp.push('LAST_QUARTER') - 1],
                     boxLabel: NS.i18n.last_quarter
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_4_QUARTERS',
+                    relativePeriodId: rp[rp.push('LAST_4_QUARTERS') - 1],
                     boxLabel: NS.i18n.last_4_quarters
                 }
             ]
@@ -4303,12 +4305,12 @@ Ext.onReady( function() {
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_SIX_MONTH',
+                    relativePeriodId: rp[rp.push('LAST_SIX_MONTH') - 1],
                     boxLabel: NS.i18n.last_sixmonth
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_2_SIXMONTHS',
+                    relativePeriodId: rp[rp.push('LAST_2_SIXMONTHS') - 1],
                     boxLabel: NS.i18n.last_2_sixmonths
                 }
             ]
@@ -4329,17 +4331,17 @@ Ext.onReady( function() {
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'THIS_FINANCIAL_YEAR',
+                    relativePeriodId: rp[rp.push('THIS_FINANCIAL_YEAR') - 1],
                     boxLabel: NS.i18n.this_financial_year
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_FINANCIAL_YEAR',
+                    relativePeriodId: rp[rp.push('LAST_FINANCIAL_YEAR') - 1],
                     boxLabel: NS.i18n.last_financial_year
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_5_FINANCIAL_YEARS',
+                    relativePeriodId: rp[rp.push('LAST_5_FINANCIAL_YEARS') - 1],
                     boxLabel: NS.i18n.last_5_financial_years
                 }
             ]
@@ -4359,17 +4361,17 @@ Ext.onReady( function() {
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'THIS_YEAR',
+                    relativePeriodId: rp[rp.push('THIS_YEAR') - 1],
                     boxLabel: NS.i18n.this_year
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_YEAR',
+                    relativePeriodId: rp[rp.push('LAST_YEAR') - 1],
                     boxLabel: NS.i18n.last_year
                 },
                 {
                     xtype: 'checkbox',
-                    relativePeriodId: 'LAST_5_YEARS',
+                    relativePeriodId: rp[rp.push('LAST_5_YEARS') - 1],
                     boxLabel: NS.i18n.last_5_years
                 }
             ]
