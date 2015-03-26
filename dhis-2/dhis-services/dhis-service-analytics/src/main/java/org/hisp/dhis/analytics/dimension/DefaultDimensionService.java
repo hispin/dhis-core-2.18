@@ -397,11 +397,11 @@ public class DefaultDimensionService
 
                 if ( INDICATOR.equals( type ) )
                 {
-                    object.getIndicators().addAll( identifiableObjectManager.getByUid( Indicator.class, uids ) );
+                    object.getIndicators().addAll( identifiableObjectManager.getByUidOrdered( Indicator.class, uids ) );
                 }
                 else if ( DATAELEMENT.equals( type ) )
                 {
-                    object.getDataElements().addAll( identifiableObjectManager.getByUid( DataElement.class, uids ) );
+                    object.getDataElements().addAll( identifiableObjectManager.getByUidOrdered( DataElement.class, uids ) );
                 }
                 else if ( DATAELEMENT_OPERAND.equals( type ) )
                 {
@@ -409,7 +409,7 @@ public class DefaultDimensionService
                 }
                 else if ( DATASET.equals( type ) )
                 {
-                    object.getDataSets().addAll( identifiableObjectManager.getByUid( DataSet.class, uids ) );
+                    object.getDataSets().addAll( identifiableObjectManager.getByUidOrdered( DataSet.class, uids ) );
                 }
                 else if ( PERIOD.equals( type ) )
                 {
@@ -493,15 +493,15 @@ public class DefaultDimensionService
                 }
                 else if ( DATAELEMENT_GROUPSET.equals( type ) )
                 {
-                    object.getDataElementGroups().addAll( identifiableObjectManager.getByUid( DataElementGroup.class, uids ) );
+                    object.getDataElementGroups().addAll( identifiableObjectManager.getByUidOrdered( DataElementGroup.class, uids ) );
                 }
                 else if ( ORGANISATIONUNIT_GROUPSET.equals( type ) )
                 {
-                    object.getOrganisationUnitGroups().addAll( identifiableObjectManager.getByUid( OrganisationUnitGroup.class, uids ) );
+                    object.getOrganisationUnitGroups().addAll( identifiableObjectManager.getByUidOrdered( OrganisationUnitGroup.class, uids ) );
                 }
                 else if ( CATEGORYOPTION_GROUPSET.equals( type ) )
                 {
-                    object.getCategoryOptionGroups().addAll( identifiableObjectManager.getByUid( CategoryOptionGroup.class, uids ) );
+                    object.getCategoryOptionGroups().addAll( identifiableObjectManager.getByUidOrdered( CategoryOptionGroup.class, uids ) );
                 }
                 else if ( TRACKED_ENTITY_ATTRIBUTE.equals( type ) )
                 {
