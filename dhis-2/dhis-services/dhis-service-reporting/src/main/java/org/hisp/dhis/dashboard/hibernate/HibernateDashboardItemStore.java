@@ -65,8 +65,7 @@ public class HibernateDashboardItemStore extends HibernateIdentifiableObjectStor
     @Override
     public int countReportTableDashboardItems( ReportTable reportTable )
     {
-        Query query = getQuery( "select count(distinct c) from DashboardItem c where c.reportTable=:reportTable" +
-            " or :reportTable in elements(c.reportTables)" );
+        Query query = getQuery( "select count(distinct c) from DashboardItem c where c.reportTable=:reportTable" );
         query.setEntity( "reportTable", reportTable );
 
         return ((Long) query.uniqueResult()).intValue();
