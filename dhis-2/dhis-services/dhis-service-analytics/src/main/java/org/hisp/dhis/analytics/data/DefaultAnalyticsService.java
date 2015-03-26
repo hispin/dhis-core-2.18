@@ -100,6 +100,7 @@ import org.hisp.dhis.common.DimensionalObjectUtils;
 import org.hisp.dhis.common.DisplayProperty;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.common.IllegalQueryException;
@@ -118,11 +119,9 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -141,7 +140,6 @@ import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.hisp.dhis.system.util.UniqueArrayList;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.util.Timer;
@@ -172,8 +170,8 @@ public class DefaultAnalyticsService
     private QueryPlanner queryPlanner;
 
     @Autowired
-    private IndicatorService indicatorService;
-
+    private IdentifiableObjectManager idObjectManager;
+    
     @Autowired
     private DataElementService dataElementService;
 
@@ -181,16 +179,10 @@ public class DefaultAnalyticsService
     private DataElementCategoryService categoryService;
 
     @Autowired
-    private DataSetService dataSetService;
-
-    @Autowired
     private OrganisationUnitService organisationUnitService;
 
     @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
-
-    @Autowired
-    private TrackedEntityAttributeService attributeService;
 
     @Autowired
     private ExpressionService expressionService;
@@ -944,7 +936,7 @@ public class DefaultAnalyticsService
                     continue itemLoop;
                 }
                 
-                Indicator in = indicatorService.getIndicator( uid );
+                Indicator in = idObjectManager.get( Indicator.class, uid );
 
                 if ( in != null )
                 {
@@ -952,7 +944,7 @@ public class DefaultAnalyticsService
                     continue itemLoop;
                 }
 
-                DataElement de = dataElementService.getDataElement( uid );
+                DataElement de = idObjectManager.get( DataElement.class, uid );
 
                 if ( de != null )
                 {
@@ -960,7 +952,7 @@ public class DefaultAnalyticsService
                     continue itemLoop;
                 }
 
-                DataSet ds = dataSetService.getDataSet( uid );
+                DataSet ds = idObjectManager.get( DataSet.class, uid );
 
                 if ( ds != null )
                 {
