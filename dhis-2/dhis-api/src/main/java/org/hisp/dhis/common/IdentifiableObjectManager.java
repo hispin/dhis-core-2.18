@@ -79,6 +79,8 @@ public interface IdentifiableObjectManager
 
     <T extends IdentifiableObject> List<T> getByUid( Class<T> clazz, Collection<String> uids );
 
+    <T extends IdentifiableObject> List<T> getByUidOrdered( Class<T> clazz, List<String> uids );
+    
     <T extends IdentifiableObject> Collection<T> getLikeName( Class<T> clazz, String name );
 
     <T extends NameableObject> Collection<T> getLikeShortName( Class<T> clazz, String shortName );

@@ -350,6 +350,35 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> List<T> getByUidOrdered( Class<T> clazz, List<String> uids )
+    {
+        GenericIdentifiableObjectStore<T> store = (GenericIdentifiableObjectStore<T>) getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            return new ArrayList<>();
+        }
+
+        List<T> list = new ArrayList<>();
+
+        if ( uids != null )
+        {
+            for ( String uid : uids )
+            {
+                T object = store.getByUid( uid );
+
+                if ( object != null )
+                {
+                    list.add( object );
+                }
+            }
+        }
+
+        return list;
+    }
+
+    @Override
     public <T extends IdentifiableObject> int getCount( Class<T> clazz )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
