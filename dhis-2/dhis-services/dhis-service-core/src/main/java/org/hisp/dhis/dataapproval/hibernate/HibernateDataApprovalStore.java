@@ -71,15 +71,13 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.system.util.CachingMap;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 
 /**
  * @author Jim Grace
@@ -191,9 +189,9 @@ public class HibernateDataApprovalStore
     public List<DataApprovalStatus> getDataApprovals( Set<DataSet> dataSets, Period period,
         OrganisationUnit orgUnit, DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        final Cache<Integer, DataElementCategoryOptionCombo> optionComboCache = CacheBuilder.newBuilder().build();
-        final Cache<Integer, OrganisationUnit> orgUnitCache = CacheBuilder.newBuilder().build();
-
+        final CachingMap<Integer, DataElementCategoryOptionCombo> optionComboCache = new CachingMap<>();
+        final CachingMap<Integer, OrganisationUnit> orgUnitCache = new CachingMap<>();
+        
         final User user = currentUserService.getCurrentUser();
 
         if ( CollectionUtils.isEmpty( dataSets ) )
@@ -392,40 +390,40 @@ public class HibernateDataApprovalStore
 
         DataSet dataSet = ( dataSets.size() == 1 ? dataSets.iterator().next() : null );
 
-        try
+        while ( rowSet.next() )
         {
-            while ( rowSet.next() )
+            final Integer aoc = rowSet.getInt( 1 );
+            final Integer ouId = rowSet.getInt( 2 );
+            final Integer level = rowSet.getInt( 3 );
+            final String acceptedString = rowSet.getString( 4 );
+            final boolean readyBelow = rowSet.getBoolean( 5 );
+            final boolean approvedAbove = rowSet.getBoolean( 6 );
+
+            final boolean accepted = ( acceptedString == null ? false : acceptedString.substring( 0, 1 ).equalsIgnoreCase( "t" ) );
+
+            DataApprovalLevel statusLevel = ( level == null || level == 0 ? null : levelMap.get( level ) ); // null if not approved
+            DataApprovalLevel daLevel = ( statusLevel == null ? lowestApprovalLevelForOrgUnit : statusLevel );
+
+            DataElementCategoryOptionCombo optionCombo = ( aoc == null || aoc == 0 ? null : optionComboCache.get( aoc, new Callable<DataElementCategoryOptionCombo>()
             {
-                final Integer aoc = rowSet.getInt( 1 );
-                final Integer ouId = rowSet.getInt( 2 );
-                final Integer level = rowSet.getInt( 3 );
-                final String acceptedString = rowSet.getString( 4 );
-                final boolean readyBelow = rowSet.getBoolean( 5 );
-                final boolean approvedAbove = rowSet.getBoolean( 6 );
-
-                final boolean accepted = ( acceptedString == null ? false : acceptedString.substring( 0, 1 ).equalsIgnoreCase( "t" ) );
-
-                DataApprovalLevel statusLevel = ( level == null || level == 0 ? null : levelMap.get( level ) ); // null if not approved
-                DataApprovalLevel daLevel = ( statusLevel == null ? lowestApprovalLevelForOrgUnit : statusLevel );
-
-                DataElementCategoryOptionCombo optionCombo = ( aoc == null || aoc == 0 ? null : optionComboCache.get( aoc, new Callable<DataElementCategoryOptionCombo>()
+                public DataElementCategoryOptionCombo call() throws ExecutionException
                 {
-                    public DataElementCategoryOptionCombo call() throws ExecutionException
-                    {
-                        return categoryService.getDataElementCategoryOptionCombo( aoc );
-                    }
-                } ) );
+                    return categoryService.getDataElementCategoryOptionCombo( aoc );
+                }
+            } ) );
 
-                OrganisationUnit ou = ( orgUnit != null ? orgUnit : orgUnitCache.get( ouId, new Callable<OrganisationUnit>()
+            OrganisationUnit ou = ( orgUnit != null ? orgUnit : orgUnitCache.get( ouId, new Callable<OrganisationUnit>()
+            {
+                public OrganisationUnit call() throws ExecutionException
                 {
-                    public OrganisationUnit call() throws ExecutionException
-                    {
-                        return organisationUnitService.getOrganisationUnit( ouId );
-                    }
-                } ) );
+                    return organisationUnitService.getOrganisationUnit( ouId );
+                }
+            } ) );
 
+            if ( ou != null )
+            {
                 DataApproval da = new DataApproval( daLevel, dataSet, period, ou, optionCombo, accepted, null, null );
-
+    
                 DataApprovalState state = (
                     statusLevel == null ?
                         lowestApprovalLevelForOrgUnit == null ?
@@ -438,18 +436,14 @@ public class HibernateDataApprovalStore
                             accepted ?
                                 ACCEPTED_HERE :
                                 APPROVED_HERE );
-
+    
                 statusList.add( new DataApprovalStatus( state, da, statusLevel, null ) );
-
+    
                 log.debug( "Get approval result: level " + level + " dataApprovalLevel " + ( daLevel != null ? daLevel.getLevel() : "[none]" )
                         + " approved " + ( statusLevel != null )
                         + " readyBelow " + readyBelow + " approvedAbove " + approvedAbove
                         + " accepted " + accepted + " state " + ( state != null ? state.name() : "[none]" ) + " " + da );
             }
-        }
-        catch ( ExecutionException ex )
-        {
-            throw new RuntimeException( ex );
         }
 
         return statusList;
