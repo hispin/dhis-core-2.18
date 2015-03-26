@@ -116,12 +116,12 @@ public class DefaultAnalyticsSecurityManager
 
         boolean hideUnapprovedData = (Boolean) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, false );
         
-        boolean canViewUnapproveData = user.getUserCredentials().isAuthorized( DataApproval.AUTH_VIEW_UNAPPROVED_DATA );
-        
-        Map<OrganisationUnit, Integer> approvalLevels = null;
+        boolean canViewUnapproveData = user != null ? user.getUserCredentials().isAuthorized( DataApproval.AUTH_VIEW_UNAPPROVED_DATA ) : true;
         
         if ( hideUnapprovedData && user != null )
         {
+            Map<OrganisationUnit, Integer> approvalLevels = null;
+            
             if ( params.hasApprovalLevel() ) 
             {
                 // Set approval level from query
