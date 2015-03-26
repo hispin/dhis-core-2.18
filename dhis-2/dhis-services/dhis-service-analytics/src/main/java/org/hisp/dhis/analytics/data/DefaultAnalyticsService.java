@@ -823,7 +823,7 @@ public class DefaultAnalyticsService
     @Override
     public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, AggregationType aggregationType,
         String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit,
-        boolean hideEmptyRows, boolean showHierarchy, DisplayProperty displayProperty, IdentifiableProperty outputIdScheme, I18nFormat format )
+        boolean hideEmptyRows, boolean showHierarchy, DisplayProperty displayProperty, IdentifiableProperty outputIdScheme, String approvalLevel, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
 
@@ -852,6 +852,7 @@ public class DefaultAnalyticsService
         params.setShowHierarchy( showHierarchy );
         params.setDisplayProperty( displayProperty );
         params.setOutputIdScheme( outputIdScheme );
+        params.setApprovalLevel( approvalLevel );
 
         return params;
     }

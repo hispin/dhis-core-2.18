@@ -59,6 +59,14 @@ public interface DataApprovalLevelService
     DataApprovalLevel getDataApprovalLevel( int id );
 
     /**
+     * Gets the data approval level with the given uid.
+     *
+     * @param uid the uid.
+     * @return a data approval level.
+     */
+    DataApprovalLevel getDataApprovalLevel( String uid );
+
+    /**
      * Gets the data approval level with the given name.
      *
      * @param name the name.
@@ -233,4 +241,6 @@ public interface DataApprovalLevelService
      *         the minimum data approval level within that subhierarchy.
      */
     Map<OrganisationUnit, Integer> getUserReadApprovalLevels();
+    
+    Map<OrganisationUnit, Integer> getUserReadApprovalLevels( DataApprovalLevel approvalLevel );
 }

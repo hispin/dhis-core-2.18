@@ -152,20 +152,24 @@ public interface AnalyticsService
      * @param aggregationType the aggregation type.
      * @param measureCriteria the measure criteria.
      * @param skipMeta whether to skip the meta data part of the response.
-     * @param skipRounding whether to skip rounding and provide full precision for values.
-     * @param hierarchyMeta whether to include meta data about the org units 
-     *        in the hierarchy.
+     * @param skipRounding whether to skip rounding and provide full precision 
+     *        for values.
+     * @param hierarchyMeta whether to include meta data about the organisation 
+     *        units in the hierarchy.
      * @param ignoreLimit whether to ignore the max number of cells limit.
-     * @param hideEmptyRows whether to hide rows without data values, applies to table layout.
-     * @param showHierarchy whether to show the org unit hierarchy together with the name.
+     * @param hideEmptyRows whether to hide rows without data values, applies to
+     *        table layout.
+     * @param showHierarchy whether to show the organisation unit hierarchy 
+     *        together with the name.
      * @param displayProperty the property to display for meta-data.
      * @param outputIdScheme the identifier scheme to use in the query response.
+     * @param approvalLevel the approval level identifier.
      * @param format the i18n format.
      * @return a data query parameter object created based on the given URL info.
      */
     DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, AggregationType aggregationType, String measureCriteria, 
         boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit, boolean hideEmptyRows, boolean showHierarchy, 
-        DisplayProperty displayProperty, IdentifiableProperty outputIdScheme, I18nFormat format );
+        DisplayProperty displayProperty, IdentifiableProperty outputIdScheme, String approvalLevel, I18nFormat format );
     
     /**
      * Creates a data query parameter object from the given BaseAnalyticalObject.
