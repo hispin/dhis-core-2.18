@@ -43,6 +43,8 @@ import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IllegalQueryException;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.dataapproval.DataApproval;
+import org.hisp.dhis.dataapproval.DataApprovalLevel;
 import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -110,13 +112,35 @@ public class DefaultAnalyticsSecurityManager
     @Override
     public void applyDataApprovalConstraints( DataQueryParams params )
     {
-        boolean approval = (Boolean) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, false );
-
         User user = currentUserService.getCurrentUser();
+
+        boolean hideUnapprovedData = (Boolean) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, false );
         
-        if ( approval && user != null )
+        boolean canViewUnapproveData = user.getUserCredentials().isAuthorized( DataApproval.AUTH_VIEW_UNAPPROVED_DATA );
+        
+        Map<OrganisationUnit, Integer> approvalLevels = null;
+        
+        if ( hideUnapprovedData && user != null )
         {
-            Map<OrganisationUnit, Integer> approvalLevels = approvalLevelService.getUserReadApprovalLevels();
+            if ( params.hasApprovalLevel() ) 
+            {
+                // Set approval level from query
+                
+                DataApprovalLevel approvalLevel = approvalLevelService.getDataApprovalLevel( params.getApprovalLevel() );
+                
+                if ( approvalLevel == null )
+                {
+                    throw new IllegalQueryException( "Approval level does not exist:" + params.getApprovalLevel() );
+                }
+                
+                approvalLevels = approvalLevelService.getUserReadApprovalLevels( approvalLevel );
+            }
+            else if ( !canViewUnapproveData )
+            {
+                // Set approval level from user level
+                
+                approvalLevels = approvalLevelService.getUserReadApprovalLevels();
+            }
             
             if ( approvalLevels != null && !approvalLevels.isEmpty() )
             {
@@ -126,7 +150,7 @@ public class DefaultAnalyticsSecurityManager
                 }
                 
                 params.setDataApprovalLevels( approvalLevels );
-            
+                
                 log.info( "User: " + user.getUsername() + " constrained by data approval levels: " + approvalLevels.values() );
             }
         }

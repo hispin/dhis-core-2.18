@@ -159,6 +159,11 @@ public class DataQueryParams
      */
     protected IdentifiableProperty outputIdScheme;
     
+    /**
+     * The required approval level identifier for data to be included in query response.
+     */
+    protected String approvalLevel;
+    
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -217,6 +222,7 @@ public class DataQueryParams
         params.showHierarchy = this.showHierarchy;
         params.displayProperty = this.displayProperty;
         params.outputIdScheme = this.outputIdScheme;
+        params.approvalLevel = this.approvalLevel;
         
         params.partitions = new Partitions( this.partitions );
         params.dataType = this.dataType;
@@ -925,6 +931,15 @@ public class DataQueryParams
     }
     
     /**
+     * Indicates whether this params specifies a approval level.
+     * @return
+     */
+    public boolean hasApprovalLevel()
+    {
+        return approvalLevel != null;
+    }
+    
+    /**
      * Ignore data approval constraints for this query.
      */
     public void ignoreDataApproval()
@@ -1196,6 +1211,16 @@ public class DataQueryParams
     public void setOutputIdScheme( IdentifiableProperty outputIdScheme )
     {
         this.outputIdScheme = outputIdScheme;
+    }
+
+    public String getApprovalLevel()
+    {
+        return approvalLevel;
+    }
+
+    public void setApprovalLevel( String approvalLevel )
+    {
+        this.approvalLevel = approvalLevel;
     }
 
     // -------------------------------------------------------------------------

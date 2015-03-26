@@ -123,6 +123,12 @@ public class DefaultDataApprovalLevelService
     }
 
     @Override
+    public DataApprovalLevel getDataApprovalLevel( String uid )
+    {
+        return dataApprovalLevelStore.getByUid( uid );
+    }
+
+    @Override
     public DataApprovalLevel getDataApprovalLevelByName( String name )
     {
         return dataApprovalLevelStore.getByName( name );
@@ -514,6 +520,10 @@ public class DefaultDataApprovalLevelService
 
         User user = currentUserService.getCurrentUser();
 
+        // ---------------------------------------------------------------------
+        // Add user organisation units if authorized to approve at lower levels
+        // ---------------------------------------------------------------------
+
         if ( user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE_LOWER_LEVELS ) )
         {
             for ( OrganisationUnit orgUnit : user.getOrganisationUnits() )
@@ -529,6 +539,10 @@ public class DefaultDataApprovalLevelService
             }
         }
 
+        // ---------------------------------------------------------------------
+        // Add data view organisation units with approval levels
+        // ---------------------------------------------------------------------
+
         Collection<OrganisationUnit> dataViewOrgUnits = user.getDataViewOrganisationUnits();
 
         if ( dataViewOrgUnits == null || dataViewOrgUnits.isEmpty() )
@@ -542,6 +556,28 @@ public class DefaultDataApprovalLevelService
             {
                 map.put( orgUnit, requiredApprovalLevel( orgUnit, user ) );
             }
+        }
+
+        return map;
+    }
+    
+    @Override
+    public Map<OrganisationUnit, Integer> getUserReadApprovalLevels( DataApprovalLevel approvalLevel )
+    {
+        Map<OrganisationUnit, Integer> map = new HashMap<>();
+        
+        User user = currentUserService.getCurrentUser();
+
+        Collection<OrganisationUnit> dataViewOrgUnits = user.getDataViewOrganisationUnits();
+
+        if ( dataViewOrgUnits == null || dataViewOrgUnits.isEmpty() )
+        {
+            dataViewOrgUnits = organisationUnitService.getRootOrganisationUnits();
+        }
+
+        for ( OrganisationUnit orgUnit : dataViewOrgUnits )
+        {
+            map.put( orgUnit, approvalLevel.getLevel() );
         }
 
         return map;
@@ -637,7 +673,7 @@ public class DefaultDataApprovalLevelService
 
     /**
      * Get the approval level for an organisation unit that is required
-     * in order for the user to see the data -- if user is limited to seeing
+     * in order for the user to see the data, assuming user is limited to seeing
      * approved data only from lower approval levels.
      *
      * @param orgUnit organisation unit to test.
