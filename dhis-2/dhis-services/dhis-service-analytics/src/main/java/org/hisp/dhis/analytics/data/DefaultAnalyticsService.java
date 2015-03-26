@@ -516,7 +516,7 @@ public class DefaultAnalyticsService
             User user = currentUserService.getCurrentUser();
             
             List<OrganisationUnit> organisationUnits = asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class );
-            Collection<OrganisationUnit> roots = user != null ? user.getDataViewOrganisationUnits() : null;
+            Collection<OrganisationUnit> roots = user != null ? user.getOrganisationUnits() : null;
             
             if ( params.isHierarchyMeta() )
             {
@@ -1080,17 +1080,17 @@ public class DefaultAnalyticsService
 
             for ( String ou : items )
             {
-                if ( KEY_USER_ORGUNIT.equals( ou ) && user != null && user.hasDataViewOrganisationUnitWithFallback() )
+                if ( KEY_USER_ORGUNIT.equals( ou ) && user != null && user.hasOrganisationUnit() )
                 {
-                    ous.add( user.getDataViewOrganisationUnitWithFallback() );
+                    ous.add( user.getOrganisationUnit() );
                 }
-                else if ( KEY_USER_ORGUNIT_CHILDREN.equals( ou ) && user != null && user.hasDataViewOrganisationUnitWithFallback() )
+                else if ( KEY_USER_ORGUNIT_CHILDREN.equals( ou ) && user != null && user.hasOrganisationUnit() )
                 {
-                    ous.addAll( user.getDataViewOrganisationUnitWithFallback().getSortedChildren() );
+                    ous.addAll( user.getOrganisationUnit().getSortedChildren() );
                 }
-                else if ( KEY_USER_ORGUNIT_GRANDCHILDREN.equals( ou ) && user != null && user.hasDataViewOrganisationUnitWithFallback() )
+                else if ( KEY_USER_ORGUNIT_GRANDCHILDREN.equals( ou ) && user != null && user.hasOrganisationUnit() )
                 {
-                    ous.addAll( user.getDataViewOrganisationUnitWithFallback().getSortedGrandChildren() );
+                    ous.addAll( user.getOrganisationUnit().getSortedGrandChildren() );
                 }
                 else if ( ou != null && ou.startsWith( KEY_LEVEL ) )
                 {

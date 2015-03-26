@@ -258,19 +258,19 @@ public abstract class BaseAnalyticalObject
             items.addAll( organisationUnits );
             items.addAll( transientOrganisationUnits );
 
-            if ( userOrganisationUnit && user != null && user.hasDataViewOrganisationUnitWithFallback() )
+            if ( userOrganisationUnit && user != null && user.hasOrganisationUnit() )
             {
-                items.add( user.getDataViewOrganisationUnitWithFallback() );
+                items.add( user.getOrganisationUnit() );
             }
 
-            if ( userOrganisationUnitChildren && user != null && user.hasDataViewOrganisationUnitWithFallback() )
+            if ( userOrganisationUnitChildren && user != null && user.hasOrganisationUnit() )
             {
-                items.addAll( user.getDataViewOrganisationUnitWithFallback().getSortedChildren() );
+                items.addAll( user.getOrganisationUnit().getSortedChildren() );
             }
 
-            if ( userOrganisationUnitGrandChildren && user != null && user.hasDataViewOrganisationUnitWithFallback() )
+            if ( userOrganisationUnitGrandChildren && user != null && user.hasOrganisationUnit() )
             {
-                items.addAll( user.getDataViewOrganisationUnitWithFallback().getSortedGrandChildren() );
+                items.addAll( user.getOrganisationUnit().getSortedGrandChildren() );
             }
 
             if ( organisationUnitLevels != null && !organisationUnitLevels.isEmpty() && organisationUnitsAtLevel != null )
