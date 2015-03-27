@@ -18,11 +18,9 @@ trackerCapture.controller('DataEntryController',
     $scope.currentElement = {};
     $scope.schedulingEnabled = false;
     
-    var loginDetails = storage.get('LOGIN_DETAILS');
-    var storedBy = '';
-    if(loginDetails){
-        storedBy = loginDetails.userCredentials.username;
-    }
+    var userProfile = storage.get('USER_PROFILE');
+    var storedBy = userProfile && userProfile.username ? userProfile.username : '';
+    
     var today = DateUtils.getToday();
     $scope.invalidDate = false;
     
