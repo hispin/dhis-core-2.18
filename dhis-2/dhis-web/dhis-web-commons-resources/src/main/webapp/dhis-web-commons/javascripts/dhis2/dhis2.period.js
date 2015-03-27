@@ -118,10 +118,12 @@ dhis2.period.DatePicker.prototype.updateDate = function( fieldId ) {
   var $isoField = $(fieldId);
   var $el = $(fieldId + '-dp');
 
-  var date = this.calendar.parseDate('yyyy-mm-dd', $isoField.val());
-  var localDate = this.calendar.formatDate(this.format, date);
+  if($el.length > 0 ) {
+    var date = this.calendar.parseDate('yyyy-mm-dd', $isoField.val());
+    var localDate = this.calendar.formatDate(this.format, date);
 
-  $el.val(localDate);
+    $el.val(localDate);
+  }
 };
 
 /**
