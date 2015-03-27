@@ -22,11 +22,7 @@
 
   <bean id="org.hisp.dhis.oum.action.organisationunit.AddOrganisationUnitAction" class="org.hisp.dhis.oum.action.organisationunit.AddOrganisationUnitAction"
     scope="prototype">
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.oum.action.organisationunit.GetCompulsoryGroupSetAction" class="org.hisp.dhis.oum.action.organisationunit.GetCompulsoryGroupSetAction"
@@ -42,12 +38,7 @@
   </bean>
 
   <bean id="org.hisp.dhis.oum.action.organisationunit.UpdateOrganisationUnitAction" class="org.hisp.dhis.oum.action.organisationunit.UpdateOrganisationUnitAction"
-    scope="prototype">
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
-  </bean>
+    scope="prototype" />
 
   <bean id="org.hisp.dhis.oum.action.organisationunit.RemoveOrganisationUnitAction" class="org.hisp.dhis.oum.action.organisationunit.RemoveOrganisationUnitAction"
     scope="prototype">

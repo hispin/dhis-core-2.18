@@ -38,10 +38,9 @@ import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.system.util.AttributeUtils;
@@ -60,19 +59,17 @@ public class AddOrganisationUnitAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private OrganisationUnitService organisationUnitService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
+    @Autowired
+    private AttributeService attributeService;
 
-    private OrganisationUnitGroupService organisationUnitGroupService;
+    @Autowired
+    private IdentifiableObjectManager manager;
 
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
+    @Autowired
+    private CalendarService calendarService;
 
     private OrganisationUnitSelectionManager selectionManager;
 
@@ -80,31 +77,6 @@ public class AddOrganisationUnitAction
     {
         this.selectionManager = selectionManager;
     }
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
-    private AttributeService attributeService;
-
-    public void setAttributeService( AttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
-
-    private IdentifiableObjectManager manager;
-
-    @Autowired
-    public void setManager( IdentifiableObjectManager manager )
-    {
-        this.manager = manager;
-    }
-
-    @Autowired
-    private CalendarService calendarService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -315,13 +287,12 @@ public class AddOrganisationUnitAction
 
         for ( String id : dataSets )
         {
-            organisationUnit.addDataSet( dataSetService.getDataSet( Integer.parseInt( id ) ) );
+            organisationUnit.addDataSet( manager.getNoAcl( DataSet.class, Integer.parseInt( id ) ) );
         }
 
         for ( String id : selectedGroups )
         {
-            OrganisationUnitGroup group = organisationUnitGroupService
-                .getOrganisationUnitGroup( Integer.parseInt( id ) );
+            OrganisationUnitGroup group = manager.getNoAcl( OrganisationUnitGroup.class, Integer.parseInt( id ) );
 
             if ( group != null )
             {

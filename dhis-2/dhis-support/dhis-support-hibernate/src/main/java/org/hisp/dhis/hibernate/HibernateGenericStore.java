@@ -412,6 +412,13 @@ public class HibernateGenericStore<T>
 
     @Override
     @SuppressWarnings( "unchecked" )
+    public final T getNoAcl( int id )
+    {
+        return (T) sessionFactory.getCurrentSession().get( getClazz(), id );
+    }
+    
+    @Override
+    @SuppressWarnings( "unchecked" )
     public final T load( int id )
     {
         T object = (T) sessionFactory.getCurrentSession().load( getClazz(), id );

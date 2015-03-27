@@ -146,6 +146,8 @@ public interface IdentifiableObjectManager
     // -------------------------------------------------------------------------
 
     <T extends IdentifiableObject> T getNoAcl( Class<T> clazz, String uid );
+    
+    <T extends IdentifiableObject> T getNoAcl( Class<T> clazz, int id );
 
     <T extends IdentifiableObject> void updateNoAcl( T object );
 
