@@ -28,15 +28,22 @@ package org.hisp.dhis.oum.action.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import static org.hisp.dhis.system.util.ValidationUtils.coordinateIsValid;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.calendar.DateTimeUnit;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -45,13 +52,7 @@ import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.hisp.dhis.system.util.ValidationUtils.coordinateIsValid;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -70,8 +71,8 @@ public class GetOrganisationUnitAction
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     @Autowired
-    private DataSetService dataSetService;
-
+    private IdentifiableObjectManager idObjectManager;
+    
     @Autowired
     private AttributeService attributeService;
 
@@ -185,13 +186,12 @@ public class GetOrganisationUnitAction
 
         numberOfChildren = organisationUnit.getChildren().size();
 
-        availableDataSets = new ArrayList<>( dataSetService.getAllDataSets() );
+        availableDataSets = new ArrayList<>( idObjectManager.getAllNoAcl( DataSet.class ) );
         availableDataSets.removeAll( organisationUnit.getDataSets() );
 
         dataSets = new ArrayList<>( organisationUnit.getDataSets() );
 
-        groupSets = new ArrayList<>(
-            organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSetsWithMembers() );
+        groupSets = new ArrayList<>( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSetsWithMembers() );
 
         attributes = new ArrayList<>( attributeService.getOrganisationUnitAttributes() );
 
