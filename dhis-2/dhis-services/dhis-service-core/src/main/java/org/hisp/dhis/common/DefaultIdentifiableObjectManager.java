@@ -873,6 +873,20 @@ public class DefaultIdentifiableObjectManager
 
         return (T) store.getByUidNoAcl( uid );
     }
+    
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> T getNoAcl( Class<T> clazz, int id )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            return null;
+        }
+
+        return (T) store.getNoAcl( id );
+    }
 
     @Override
     public <T extends IdentifiableObject> void updateNoAcl( T object )

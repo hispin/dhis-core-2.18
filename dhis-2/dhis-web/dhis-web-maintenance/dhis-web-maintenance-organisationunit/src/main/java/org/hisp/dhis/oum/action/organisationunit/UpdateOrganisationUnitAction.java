@@ -43,10 +43,8 @@ import org.hisp.dhis.calendar.CalendarService;
 import org.hisp.dhis.calendar.DateTimeUnit;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.AttributeUtils;
@@ -65,41 +63,14 @@ public class UpdateOrganisationUnitAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private OrganisationUnitService organisationUnitService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
+    @Autowired
     private AttributeService attributeService;
 
-    public void setAttributeService( AttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
-
-    private IdentifiableObjectManager manager;
-
     @Autowired
-    public void setManager( IdentifiableObjectManager manager )
-    {
-        this.manager = manager;
-    }
+    private IdentifiableObjectManager manager;
 
     @Autowired
     private CalendarService calendarService;
@@ -334,7 +305,7 @@ public class UpdateOrganisationUnitAction
 
         for ( String id : dataSets )
         {
-            sets.add( dataSetService.getDataSet( Integer.parseInt( id ) ) );
+            sets.add( manager.getNoAcl( DataSet.class, Integer.parseInt( id ) ) );
         }
 
         organisationUnit.updateDataSets( sets );
@@ -343,12 +314,12 @@ public class UpdateOrganisationUnitAction
 
         for ( int i = 0; i < orgUnitGroupSets.size(); i++ )
         {
-            OrganisationUnitGroupSet groupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( Integer
+            OrganisationUnitGroupSet groupSet = manager.getNoAcl( OrganisationUnitGroupSet.class, Integer
                 .parseInt( orgUnitGroupSets.get( i ) ) );
 
             OrganisationUnitGroup oldGroup = groupSet.getGroup( organisationUnit );
 
-            OrganisationUnitGroup newGroup = organisationUnitGroupService.getOrganisationUnitGroup( Integer
+            OrganisationUnitGroup newGroup = manager.getNoAcl( OrganisationUnitGroup.class, Integer
                 .parseInt( orgUnitGroups.get( i ) ) );
 
             if ( oldGroup != null && oldGroup.getMembers().remove( organisationUnit ) )
