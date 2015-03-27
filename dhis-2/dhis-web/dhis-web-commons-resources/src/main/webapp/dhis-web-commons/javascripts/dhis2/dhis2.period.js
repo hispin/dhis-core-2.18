@@ -102,20 +102,26 @@ dhis2.period.DatePicker.prototype.createInstance = function( el, fromIso, option
       id: isoFieldId
     }));
 
-  $(document).on('dhis2.de.event.dataValuesLoaded', function() {
-    var $isoField = $('#' + isoFieldId);
-
-    var date = self.calendar.parseDate('yyyy-mm-dd', $isoField.val());
-    var localDate = self.calendar.formatDate(self.format, date);
-
-    $el.val(localDate);
-  });
-
   if (options) {
 	  options.altField = '#' + isoFieldId;
   }
   
   $el.calendarsPicker($.extend({}, this.defaults, options));
+};
+
+/**
+ * Formats and sets the formatted date value.
+ *
+ * @param {String} fieldId field id
+ */
+dhis2.period.DatePicker.prototype.updateDate = function( fieldId ) {
+  var $isoField = $(fieldId);
+  var $el = $(fieldId + '-dp');
+
+  var date = this.calendar.parseDate('yyyy-mm-dd', $isoField.val());
+  var localDate = this.calendar.formatDate(this.format, date);
+
+  $el.val(localDate);
 };
 
 /**

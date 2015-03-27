@@ -1649,6 +1649,8 @@ function insertDataValues( json )
         }
         
         dataValueMap[value.id] = value.val;
+
+        dhis2.period.picker.updateDate(fieldId);
     } );
 
     // Set min-max values and colorize violation fields
