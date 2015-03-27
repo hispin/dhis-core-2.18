@@ -34,11 +34,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
@@ -80,7 +83,7 @@ public class DefaultCsvImportService
     // -------------------------------------------------------------------------
 
     @Override
-    public MetaData fromCsv( InputStream input, Class<?> clazz )
+    public MetaData fromCsv( InputStream input, Class<? extends IdentifiableObject> clazz )
         throws IOException
     {
         CsvReader reader = new CsvReader( input, Charset.forName( "UTF-8" ) );
@@ -118,7 +121,7 @@ public class DefaultCsvImportService
         }
         else if ( OptionSet.class.equals( clazz ) )
         {
-            metaData.setOptionSets( getOptionSetsFromCsv( reader ) );
+            setOptionSetsFromCsv( reader, metaData );
         }
 
         return metaData;
@@ -360,41 +363,65 @@ public class DefaultCsvImportService
         return list;
     }
 
-    private List<OptionSet> getOptionSetsFromCsv( CsvReader reader )
+    /**
+     * Option set format:
+     * 
+     * <ul>
+     * <li>option set name</li>
+     * <li>option set uid</li>
+     * <li>option set code</li>
+     * <li>option name</li>
+     * <li>option uid</li>
+     * <li>option code</li>
+     * </ul>
+     */
+    private void setOptionSetsFromCsv( CsvReader reader, MetaData metaData )
         throws IOException
     {
-        ListMap<OptionSet, String> listMap = new ListMap<>();
+        ListMap<String, Option> nameOptionMap = new ListMap<>();
+        Map<String, OptionSet> nameOptionSetMap = new HashMap<>();
 
+        // Read option sets and options and put in maps
+        
         while ( reader.readRecord() )
         {
             String[] values = reader.getValues();
 
             if ( values != null && values.length > 0 )
             {
-                OptionSet object = new OptionSet();
-                setIdentifiableObject( object, values );
-                String option = getSafe( values, 3, null, 2000000 );
+                OptionSet optionSet = new OptionSet();
+                setIdentifiableObject( optionSet, values );
+                
+                Option option = new Option();
+                option.setName( getSafe( values, 3, null, 230 ) );
+                option.setUid( getSafe( values, 4, CodeGenerator.generateCode(), 11 ) );
+                option.setCode( getSafe( values, 5, null, 50 ) );
 
-                listMap.putValue( object, option );
+                if ( optionSet.getName() == null || option.getCode() == null )
+                {
+                    continue;
+                }
+                
+                nameOptionSetMap.put( optionSet.getName(), optionSet );
+                
+                nameOptionMap.putValue( optionSet.getName(), option );
+                
+                metaData.getOptions().add( option );
             }
         }
 
-        List<OptionSet> optionSets = new ArrayList<>();
-
-        for ( OptionSet optionSet : listMap.keySet() )
-        {
-            List<String> options = new ArrayList<>( listMap.get( optionSet ) );
-            List<Option> optionObj = new ArrayList<>();
-            for ( String opt : options )
-            {
-                Option option = new Option( opt, opt );
-                optionObj.add(option);
-            }
-            optionSet.setOptions( optionObj );
-            optionSets.add( optionSet );
-        }
+        // Read option sets from map and set in meta data
         
-        return optionSets;
+        for ( String optionSetName : nameOptionSetMap.keySet() )
+        {
+            OptionSet optionSet = nameOptionSetMap.get( optionSetName );
+            
+            List<Option> options = new ArrayList<>( nameOptionMap.get( optionSetName ) );
+            
+            optionSet.setOptions( options );
+            
+            metaData.getOptionSets().add( optionSet );
+        }
     }
 
     // -------------------------------------------------------------------------

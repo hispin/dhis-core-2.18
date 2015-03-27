@@ -25,6 +25,10 @@
       <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
       <td ><input type="text" id="name" name="name" value='$optionSet.name' class="{validate:{required:true,minlength:2}}" /></td>
     </tr>
+    <tr>
+      <td><label>$i18n.getString( "code" )</label></td>
+      <td ><input type="text" id="code" name="code" value='$!optionSet.code' class="{validate:{minlength:2}}" /></td>
+    </tr>
 	<tr>
 	  <td></td>
 	  <td colspan="2">

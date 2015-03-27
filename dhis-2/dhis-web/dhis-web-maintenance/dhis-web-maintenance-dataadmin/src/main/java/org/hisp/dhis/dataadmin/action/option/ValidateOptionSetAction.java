@@ -29,6 +29,7 @@ package org.hisp.dhis.dataadmin.action.option;
  */
 
 import com.opensymphony.xwork2.Action;
+
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
@@ -87,6 +88,13 @@ public class ValidateOptionSetAction
         return message;
     }
 
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -94,7 +102,7 @@ public class ValidateOptionSetAction
     @Override
     public String execute()
     {
-        if ( name != null )
+        if ( name != null && !name.trim().isEmpty() )
         {
             OptionSet match = optionService.getOptionSetByName( name );
 
@@ -104,6 +112,19 @@ public class ValidateOptionSetAction
 
                 return ERROR;
             }
+        }
+        
+
+        if ( code != null && !code.trim().isEmpty() )
+        {
+            OptionSet match = optionService.getOptionSetByCode( code );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "code_in_use" );
+
+                return ERROR;
+            }            
         }
 
         message = "ok";

@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -67,7 +68,7 @@ import com.opensymphony.xwork2.Action;
 public class MetaDataImportAction
     implements Action
 {
-    private static final Map<String, Class<?>> KEY_CLASS_MAP = new HashMap<String, Class<?>>() {{
+    private static final Map<String, Class<? extends IdentifiableObject>> KEY_CLASS_MAP = new HashMap<String, Class<? extends IdentifiableObject>>() {{
        put( "dataelement", DataElement.class );
        put( "dataelementgroup", DataElementGroup.class);
        put( "categoryoption", DataElementCategoryOption.class );

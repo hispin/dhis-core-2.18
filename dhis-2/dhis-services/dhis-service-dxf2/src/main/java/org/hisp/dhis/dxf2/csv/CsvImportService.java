@@ -31,6 +31,7 @@ package org.hisp.dhis.dxf2.csv;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 
 /**
@@ -38,6 +39,6 @@ import org.hisp.dhis.dxf2.metadata.MetaData;
  */
 public interface CsvImportService
 {
-    MetaData fromCsv( InputStream input, Class<?> clazz )
+    MetaData fromCsv( InputStream input, Class<? extends IdentifiableObject> clazz )
         throws IOException;
 }
