@@ -36,7 +36,7 @@ import java.util.List;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dxf2.common.ImportOptions;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.csv.CsvImportService;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.option.OptionService;
