@@ -110,6 +110,12 @@ public class DefaultOptionService
     }
 
     @Override
+    public OptionSet getOptionSetByCode( String code )
+    {
+        return i18n( i18nService, optionSetStore.getByCode( code ) );
+    }
+
+    @Override
     public void deleteOptionSet( OptionSet optionSet )
     {
         optionSetStore.delete( optionSet );

@@ -60,6 +60,13 @@ public class AddOptionSetAction
     {
         this.name = name;
     }
+    
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
 
     // -------------------------------------------------------------------------------------------------
     // Action implementation
@@ -70,6 +77,7 @@ public class AddOptionSetAction
         throws Exception
     {
         OptionSet optionSet = new OptionSet( name );
+        optionSet.setCode( code );
         optionSet.setVersion( 1 );
 
         optionService.saveOptionSet( optionSet );

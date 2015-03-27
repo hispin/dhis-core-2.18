@@ -60,8 +60,8 @@
           data-can-manage="$security.canManage( $option )"
           data-can-update="$security.canUpdate( $option )"
           data-can-delete="$security.canDelete( $option )">
-          <td>$encoder.htmlEncode( $!option.displayName )</td>
-          <td>$encoder.htmlEncode( $!option.code )</td>
+          <td>$!encoder.htmlEncode( $option.displayName )</td>
+          <td>$!encoder.htmlEncode( $option.code )</td>
       </tr>
       #end
       </tbody>

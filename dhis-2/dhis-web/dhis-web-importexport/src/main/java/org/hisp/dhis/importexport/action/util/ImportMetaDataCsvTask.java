@@ -33,6 +33,7 @@ import java.io.InputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.csv.CsvImportService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportService;
@@ -59,12 +60,12 @@ public class ImportMetaDataCsvTask
 
     private String userUid;
     
-    private Class<?> clazz;
+    private Class<? extends IdentifiableObject> clazz;
 
     public ImportMetaDataCsvTask( String userUid, ImportService importService, 
         CsvImportService csvImportService,
         ImportOptions importOptions, InputStream inputStream,
-        TaskId taskId, Class<?> clazz )
+        TaskId taskId, Class<? extends IdentifiableObject> clazz )
     {
         this.userUid = userUid;
         this.importService = importService;

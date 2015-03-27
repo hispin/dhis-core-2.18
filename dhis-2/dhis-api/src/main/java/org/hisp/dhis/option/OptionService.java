@@ -52,6 +52,8 @@ public interface OptionService
 
     OptionSet getOptionSetByName( String name );
 
+    OptionSet getOptionSetByCode( String code );
+
     void deleteOptionSet( OptionSet optionSet );
 
     Collection<OptionSet> getAllOptionSets();

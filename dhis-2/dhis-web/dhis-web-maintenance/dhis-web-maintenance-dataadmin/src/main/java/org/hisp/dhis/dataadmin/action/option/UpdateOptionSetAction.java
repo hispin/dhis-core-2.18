@@ -69,6 +69,13 @@ public class UpdateOptionSetAction
         this.name = name;
     }
 
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
     // -------------------------------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------------------------------
@@ -79,6 +86,7 @@ public class UpdateOptionSetAction
     {
         OptionSet optionSet = optionService.getOptionSet( id );
         optionSet.setName( name );
+        optionSet.setCode( code );
 
         optionService.updateOptionSet( optionSet );
 
