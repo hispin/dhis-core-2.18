@@ -3000,7 +3000,7 @@ Ext.onReady( function() {
 				var organisationUnits = (r.responseText ? Ext.decode(r.responseText).organisationUnits : r) || [],
                     ou = [],
                     ouc = [];
-
+                    
                 if (organisationUnits.length) {
                     for (var i = 0, org; i < organisationUnits.length; i++) {
                         org = organisationUnits[i];
@@ -3017,7 +3017,7 @@ Ext.onReady( function() {
                     init.user.ouc = ouc;
                 }
                 else {
-                    ns.alert('User is not assigned to any organisation units');
+                    alert('User is not assigned to any organisation units');
                 }
 
                 fn();

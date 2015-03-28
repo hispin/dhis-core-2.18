@@ -3895,7 +3895,7 @@ Ext.onReady(function() {
                     }
                 }
                 else {
-                    ns.alert('User is not assigned to any organisation units');
+                    alert('User is not assigned to any organisation units');
                 }
 
                 fn();
