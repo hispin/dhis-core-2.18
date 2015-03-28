@@ -6826,8 +6826,9 @@ Ext.onReady(function() {
                     init.user = init.user || {};
                     init.user.ou = ou;
                     init.user.ouc = ouc;
-                } else {
-                    gis.alert('User is not assigned to any organisation units');
+                }
+                else {
+                    alert('User is not assigned to any organisation units');
                 }
 
                 fn();

@@ -6816,7 +6816,8 @@ Ext.onReady(function() {
                     init.user = init.user || {};
                     init.user.ou = ou;
                     init.user.ouc = ouc;
-                } else {
+                }
+                else {
                     alert('User is not assigned to any organisation units');
                 }
 
