@@ -517,7 +517,7 @@ public class DefaultAnalyticsService
 
             if ( params.isShowHierarchy() )
             {
-                metaData.put( OU_NAME_HIERARCHY_KEY, getParentNameGraphMap( organisationUnits, roots, true ) );
+                metaData.put( OU_NAME_HIERARCHY_KEY, getParentNameGraphMap( organisationUnits, roots, true, params.getDisplayProperty() ) );
             }
 
             grid.setMetaData( metaData );
