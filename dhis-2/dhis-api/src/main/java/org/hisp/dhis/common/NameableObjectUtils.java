@@ -240,4 +240,29 @@ public class NameableObjectUtils
 
         return map;
     }
+    
+    /**
+     * Returns the property of the given object indicated by the given display
+     * property.
+     * 
+     * @param object the object to read the property from.
+     * @param displayProperty the display property to use.
+     * @return a property value.
+     */
+    public static <T extends NameableObject> String getProperty( T object, DisplayProperty displayProperty )
+    {
+        if ( object != null )
+        {
+            if ( DisplayProperty.SHORTNAME.equals( displayProperty ) )
+            {
+                return object.getDisplayShortName();
+            }
+            else // NAME
+            {
+                return object.getDisplayName();
+            }
+        }
+        
+        return null;
+    }
 }
