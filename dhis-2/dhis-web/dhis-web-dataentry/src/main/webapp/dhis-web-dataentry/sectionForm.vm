@@ -102,7 +102,7 @@
         <td><textarea name="entryfield" class="entryfield entryarea" id="${dataEntryId}" tabindex="${tabIndex}" #if( $greyedField || !$hasAccess ) disabled="disabled"#end></textarea></td>
     #else
         #if( $dataElement.optionSet )
-          <td><input name="entryoptionset" class="entryoptionset" id="${dataEntryId}" type="text" tabindex="${tabIndex}"#if( $greyedField || !$hasAccess ) disabled="disabled"#end></td>
+          <td><input name="entryoptionset" class="entryoptionset" id="${dataEntryId}" type="text" tabindex="${tabIndex}"#if( $greyedField || !$hasAccess ) disabled="disabled"#end><img class="commentlink" id="${commentId}"></td>
         #else
           <td><input name="entryfield" class="entryfield" id="${dataEntryId}" type="text" tabindex="${tabIndex}"#if( $greyedField || !$hasAccess ) disabled="disabled"#end></td>
         #end

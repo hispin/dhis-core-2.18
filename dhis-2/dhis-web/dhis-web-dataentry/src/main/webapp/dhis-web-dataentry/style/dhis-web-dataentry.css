@@ -160,6 +160,11 @@
   border-top: 1px solid #ddd;
 }
 
+.commentlink
+{
+  padding-left: 3px;
+}
+
 /* jQuery UI tab style overrides for data value history view */
 
 #historyTabs
