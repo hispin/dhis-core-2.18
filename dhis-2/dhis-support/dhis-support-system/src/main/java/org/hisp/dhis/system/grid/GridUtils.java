@@ -291,7 +291,7 @@ public class GridUtils
         
         for ( GridHeader header : grid.getVisibleHeaders() )
         {
-            sheet.addCell( new Label( columnIndex++, rowNumber, header.getName(), XLS_FORMAT_LABEL ) );
+            sheet.addCell( new Label( columnIndex++, rowNumber, header.getColumn(), XLS_FORMAT_LABEL ) );
         }
 
         rowNumber++;
@@ -333,7 +333,7 @@ public class GridUtils
         
         while ( headers.hasNext() )
         {
-            out.write( csvEncode( headers.next().getName() ).getBytes() );
+            out.write( csvEncode( headers.next().getColumn() ).getBytes() );
             
             if ( headers.hasNext() )
             {
