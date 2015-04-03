@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.analytics.AggregationType;
 import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.analytics.AnalyticsUtils;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.common.DisplayProperty;
 import org.hisp.dhis.common.Grid;
@@ -52,6 +53,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author Lars Helge Overland
@@ -63,7 +65,7 @@ public class AnalyticsController
 
     @Autowired
     private AnalyticsService analyticsService;
-
+    
     @Autowired
     private ContextUtils contextUtils;
 
@@ -280,6 +282,34 @@ public class AnalyticsController
         GridUtils.toJrxml( grid, null, response.getWriter() );
     }
 
+    @RequestMapping( value = RESOURCE_PATH + "/debug/sql", method = RequestMethod.GET, produces = { "text/html", "text/plain" } )
+    public @ResponseBody String getDebugSql(
+        @RequestParam Set<String> dimension,
+        @RequestParam( required = false ) Set<String> filter,
+        @RequestParam( required = false ) AggregationType aggregationType,
+        @RequestParam( required = false ) String measureCriteria,
+        @RequestParam( required = false ) boolean skipMeta,
+        @RequestParam( required = false ) boolean skipRounding,
+        @RequestParam( required = false ) boolean hierarchyMeta,
+        @RequestParam( required = false ) boolean ignoreLimit,
+        @RequestParam( required = false ) boolean tableLayout,
+        @RequestParam( required = false ) boolean hideEmptyRows,
+        @RequestParam( required = false ) boolean showHierarchy,
+        @RequestParam( required = false ) DisplayProperty displayProperty,
+        @RequestParam( required = false ) IdentifiableProperty outputIdScheme,
+        @RequestParam( required = false ) String approvalLevel,
+        @RequestParam( required = false ) String columns,
+        @RequestParam( required = false ) String rows,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        DataQueryParams params = analyticsService.getFromUrl( dimension, filter, aggregationType, measureCriteria, skipMeta, skipRounding, 
+            hierarchyMeta, ignoreLimit, hideEmptyRows, showHierarchy, displayProperty, outputIdScheme, approvalLevel, i18nManager.getI18nFormat() );
+
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_TEXT, CacheStrategy.NO_CACHE, "debug.sql", false );
+        return AnalyticsUtils.getDebugDataSql( params );
+    }
+    
     // -------------------------------------------------------------------------
     // Exception handlers
     // -------------------------------------------------------------------------
