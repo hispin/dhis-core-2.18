@@ -111,11 +111,11 @@ public class AnalyticsDataSetReportStore
         for ( Section section : dataSet.getSections() )
         {
             List<DataElement> dataElements = new ArrayList<>( section.getDataElements() );
-            List<DataElementCategory> categories = section.getCategoryCombo().getCategories();
+            List<DataElementCategory> categories = section.hasCategoryCombo() ? section.getCategoryCombo().getCategories() : null;
 
             FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
 
-            if ( dataElements.isEmpty() || categories.isEmpty() )
+            if ( dataElements.isEmpty() || categories == null || categories.isEmpty() )
             {
                 continue;
             }
