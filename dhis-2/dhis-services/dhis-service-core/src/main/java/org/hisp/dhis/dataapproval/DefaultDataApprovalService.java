@@ -47,6 +47,7 @@ import org.hisp.dhis.dataapproval.exceptions.DataMayNotBeUnapprovedException;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -87,6 +88,13 @@ public class DefaultDataApprovalService
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     private PeriodService periodService;
@@ -374,7 +382,7 @@ public class DefaultDataApprovalService
     {
         DataApprovalStatus status = getDataApprovalStatus( dataSet, period, organisationUnit, attributeOptionCombo );
 
-        status.setPermissions( makePermissionsEvaluator().getPermissions( status ) );
+        status.setPermissions( makePermissionsEvaluator().getPermissions( status, organisationUnit ) );
 
         return status;
     }
@@ -388,7 +396,7 @@ public class DefaultDataApprovalService
         
         for ( DataApprovalStatus status : statusList )
         {
-            status.setPermissions( permissionsEvaluator.getPermissions( status ) );
+            status.setPermissions( permissionsEvaluator.getPermissions( status, orgUnit ) );
         }
 
         return statusList;
@@ -472,7 +480,7 @@ public class DefaultDataApprovalService
 
             for ( DataApprovalStatus status : statuses )
             {
-                status.setPermissions( evaluator.getPermissions( status ) );
+                status.setPermissions( evaluator.getPermissions( status, da0.getOrganisationUnit() ) );
 
                 DataApproval da = status.getDataApproval();
 
@@ -511,6 +519,6 @@ public class DefaultDataApprovalService
     private DataApprovalPermissionsEvaluator makePermissionsEvaluator()
     {
         return DataApprovalPermissionsEvaluator.makePermissionsEvaluator(
-            currentUserService, systemSettingManager, dataApprovalLevelService );
+            currentUserService, organisationUnitService, systemSettingManager, dataApprovalLevelService );
     }
 }
