@@ -67,6 +67,12 @@ public class SqlViewController
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
 
+        if ( sqlView == null )
+        {
+            ContextUtils.notFoundResponse( response, "SQL view does not exist: " + uid );
+            return null;
+        }
+        
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ), SqlView.getCriteria( var ) );
 
         model.addAttribute( "model", grid );
@@ -84,6 +90,12 @@ public class SqlViewController
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
 
+        if ( sqlView == null )
+        {
+            ContextUtils.notFoundResponse( response, "SQL view does not exist: " + uid );
+            return;
+        }
+        
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ), SqlView.getCriteria( var ) );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING );
@@ -98,6 +110,12 @@ public class SqlViewController
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
 
+        if ( sqlView == null )
+        {
+            ContextUtils.notFoundResponse( response, "SQL view does not exist: " + uid );
+            return;
+        }
+        
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ), SqlView.getCriteria( var ) );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, "sqlview.csv", true );
@@ -112,6 +130,12 @@ public class SqlViewController
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
 
+        if ( sqlView == null )
+        {
+            ContextUtils.notFoundResponse( response, "SQL view does not exist: " + uid );
+            return;
+        }
+        
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ), SqlView.getCriteria( var ) );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "sqlview.xls", true );
@@ -126,6 +150,12 @@ public class SqlViewController
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
 
+        if ( sqlView == null )
+        {
+            ContextUtils.notFoundResponse( response, "SQL view does not exist: " + uid );
+            return;
+        }
+        
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ), SqlView.getCriteria( var ) );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
@@ -140,6 +170,12 @@ public class SqlViewController
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
 
+        if ( sqlView == null )
+        {
+            ContextUtils.notFoundResponse( response, "SQL view does not exist: " + uid );
+            return;
+        }
+        
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ), SqlView.getCriteria( var ) );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
@@ -154,6 +190,12 @@ public class SqlViewController
     {
         SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
 
+        if ( sqlView == null )
+        {
+            ContextUtils.notFoundResponse( response, "SQL view does not exist: " + uid );
+            return;
+        }
+        
         Grid grid = sqlViewService.getSqlViewGrid( sqlView, SqlView.getCriteria( criteria ), SqlView.getCriteria( var ) );
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, CacheStrategy.RESPECT_SYSTEM_SETTING );
