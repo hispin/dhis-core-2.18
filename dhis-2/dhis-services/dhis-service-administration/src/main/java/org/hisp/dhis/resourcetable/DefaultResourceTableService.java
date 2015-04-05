@@ -57,10 +57,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
-import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -112,20 +110,6 @@ public class DefaultResourceTableService
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
     }
 
     private PeriodService periodService;
@@ -302,7 +286,7 @@ public class DefaultResourceTableService
     @Transactional
     public void generateIndicatorGroupSetTable()
     {
-        List<IndicatorGroupSet> groupSets = new ArrayList<>( indicatorService.getAllIndicatorGroupSets() );
+        List<IndicatorGroupSet> groupSets = new ArrayList<>( idObjectManager.getAllNoAcl( IndicatorGroupSet.class ) );
 
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
 
@@ -369,7 +353,7 @@ public class DefaultResourceTableService
         // Create table
         // ---------------------------------------------------------------------
 
-        Collection<DataElement> dataElements = dataElementService.getAllDataElements();
+        List<DataElement> dataElements = new ArrayList<>( idObjectManager.getAllNoAcl( DataElement.class ) );
 
         resourceTableStore.createDataElementStructure();
 
