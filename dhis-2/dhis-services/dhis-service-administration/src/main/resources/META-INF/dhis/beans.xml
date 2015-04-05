@@ -14,8 +14,6 @@
     <property name="idObjectManager" ref="org.hisp.dhis.common.IdentifiableObjectManager" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
   </bean>
