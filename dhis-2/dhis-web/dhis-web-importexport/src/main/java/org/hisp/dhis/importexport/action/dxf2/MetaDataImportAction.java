@@ -145,6 +145,13 @@ public class MetaDataImportAction
         this.classKey = classKey;
     }
 
+    private boolean preheatCache = true;
+    
+    public void setPreheatCache( boolean preheatCache )
+    {
+        this.preheatCache = preheatCache;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -166,6 +173,7 @@ public class MetaDataImportAction
         ImportOptions importOptions = new ImportOptions();
         importOptions.setStrategy( strategy.toString() );
         importOptions.setDryRun( dryRun );
+        importOptions.setPreheatCache( preheatCache );
 
         String userId = user != null ? user.getUid() : null;
 
