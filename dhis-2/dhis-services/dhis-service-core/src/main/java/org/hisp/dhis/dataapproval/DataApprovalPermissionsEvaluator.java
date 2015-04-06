@@ -183,7 +183,7 @@ class DataApprovalPermissionsEvaluator
             mayUnapprove = true;
         }
 
-        if ( authorizedToAcceptAtLowerLevels && userLevel == dataLevel - 1 )
+        if ( authorizedToAcceptAtLowerLevels && ( userLevel == dataLevel - 1 || authorizedToApproveAtLowerLevels ) )
         {
             mayAccept =  s.isAcceptable();
             mayUnaccept = s.isUnacceptable();
