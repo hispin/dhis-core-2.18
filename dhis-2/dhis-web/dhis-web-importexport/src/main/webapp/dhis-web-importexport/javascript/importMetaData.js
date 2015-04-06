@@ -46,3 +46,8 @@ function displaySummary()
 	$( '#notificationDiv' ).hide();
 	$( '#importSummaryDiv' ).show( 'fast' ).load( 'getMetaDataImportSummary.action' );
 }
+
+function toggleOptions()
+{
+	$( ".moreOptions" ).toggle();
+}
