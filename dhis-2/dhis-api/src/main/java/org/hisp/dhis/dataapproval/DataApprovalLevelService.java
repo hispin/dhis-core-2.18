@@ -45,10 +45,15 @@ public interface DataApprovalLevelService
     String ID = DataApprovalLevelService.class.getName();
 
     /**
-     * Integer that can be used in place of approval level
+     * Constant that can be used in place of approval level
      * for data that has not been approved at any level.
      */
     public static final int APPROVAL_LEVEL_UNAPPROVED = 999;
+    
+    /**
+     * Constant representing the highest possible level of approval.
+     */
+    public static final int APPROVAL_LEVEL_HIGHEST = 0;
 
     /**
      * Gets the data approval level with the given id.
