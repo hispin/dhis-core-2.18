@@ -790,6 +790,8 @@ public class TableAlteror
         executeSql( "UPDATE attributevalue SET lastupdated=now() WHERE lastupdated IS NULL" );
         
         executeSql( "update dashboarditem set shape = 'normal' where shape is null" );
+        
+        executeSql( "update categoryoptioncombo set ignoreapproval = false where ignoreapproval is null" );
 
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeCompleteDataSetRegistrationsWithAttributeOptionCombo();

@@ -27,6 +27,8 @@
         foreign-key="fk_categoryoptioncombo_categoryoptionid" />
     </set>
 
+	<property name="ignoreApproval" column="ignoreapproval" />
+
     <join table="categorycombos_optioncombos">
       <key column="categoryoptioncomboid" />
       <many-to-one name="categoryCombo" column="categorycomboid" />
