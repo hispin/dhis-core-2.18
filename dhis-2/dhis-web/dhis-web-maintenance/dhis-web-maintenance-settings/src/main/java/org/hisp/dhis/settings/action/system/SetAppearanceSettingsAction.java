@@ -93,6 +93,13 @@ public class SetAppearanceSettingsAction
     {
         this.applicationFooter = applicationFooter;
     }
+    
+    private String applicationRightFooter;
+
+    public void setApplicationRightFooter( String applicationRightFooter )
+    {
+        this.applicationRightFooter = applicationRightFooter;
+    }
 
     private String flag;
 
@@ -168,6 +175,7 @@ public class SetAppearanceSettingsAction
         applicationTitle = StringUtils.trimToNull( applicationTitle );
         applicationNotification = StringUtils.trimToNull( applicationNotification );
         applicationFooter = StringUtils.trimToNull( applicationFooter );
+        applicationRightFooter = StringUtils.trimToNull( applicationRightFooter );
         flag = StringUtils.trimToNull( flag );
         startModule = StringUtils.trimToNull( startModule );
 
@@ -185,6 +193,7 @@ public class SetAppearanceSettingsAction
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_INTRO + localeSelect, applicationIntro );
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_NOTIFICATION + localeSelect, applicationNotification );
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_FOOTER + localeSelect, applicationFooter );
+        systemSettingManager.saveSystemSetting( KEY_APPLICATION_RIGHT_FOOTER + localeSelect, applicationRightFooter );
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
         systemSettingManager.saveSystemSetting( KEY_REQUIRE_ADD_TO_VIEW, requireAddToView );

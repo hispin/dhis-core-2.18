@@ -6,6 +6,7 @@
                 applicationIntro: getFieldValue( 'applicationIntro' ),
                 applicationNotification: getFieldValue( 'applicationNotification' ),
                 applicationFooter: getFieldValue( 'applicationFooter' ),
+                applicationRightFooter: getFieldValue( 'applicationRightFooter' ),
                 currentStyle: getFieldValue( 'currentStyle' ),
 				startModule: getFieldValue( 'startModule' ),
 				flag: getFieldValue( 'flag' ),
@@ -47,9 +48,13 @@
 
 <div class="setting"><textarea id="applicationNotification" name="applicationNotification">$!{keyApplicationNotification}</textarea></div>
 
-<div class="settingLabel">$i18n.getString( "application_footer" ) <span class="tipText">($i18n.getString( "allows_html" ))</span></div>
+<div class="settingLabel">$i18n.getString( "application_left_footer" ) <span class="tipText">($i18n.getString( "allows_html" ))</span></div>
 
 <div class="setting"><textarea id="applicationFooter" name="applicationFooter">$!{keyApplicationFooter}</textarea></div>
+
+<div class="settingLabel">$i18n.getString( "application_right_footer" ) <span class="tipText">($i18n.getString( "allows_html" ))</span></div>
+
+<div class="setting"><textarea id="applicationRightFooter" name="applicationRightFooter">$!{keyApplicationRightFooter}</textarea></div>
 
 <div class="settingLabel">$i18n.getString( "style" )</div>
 

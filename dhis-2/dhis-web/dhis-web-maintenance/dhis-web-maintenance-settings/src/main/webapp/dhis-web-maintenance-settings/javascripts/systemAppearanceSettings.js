@@ -6,5 +6,6 @@ function changeLocale()
 		$( '#applicationIntro' ).val( json.keyApplicationIntro );
 		$( '#applicationNotification' ).val( json.keyApplicationNotification );
 		$( '#applicationFooter' ).val( json.keyApplicationFooter );
+		$( '#applicationRightFooter' ).val( json.keyApplicationRightFooter );
 	} );	
 }
