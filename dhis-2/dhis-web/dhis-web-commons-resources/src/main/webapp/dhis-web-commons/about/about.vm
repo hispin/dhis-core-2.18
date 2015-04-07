@@ -27,3 +27,5 @@
   <dt>$i18n.getString( "cpu_cores" ):</dt><dd>$!info.cpuCores</dd>
   #end
 </dl>
+
+<div>$!{keyApplicationRightFooter}</div>
