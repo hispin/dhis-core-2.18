@@ -157,7 +157,7 @@ public class JdbcResourceTableStore
         }
         
         final String sql = "CREATE TABLE " + TABLE_NAME_CATEGORY_OPTION_COMBO_NAME + 
-            " ( categoryoptioncomboid INTEGER NOT NULL PRIMARY KEY, categoryoptioncomboname VARCHAR(250) )";
+            " ( categoryoptioncomboid INTEGER NOT NULL PRIMARY KEY, categoryoptioncomboname VARCHAR(250), approvallevel INTEGER )";
         
         log.info( "Create category option combo name table SQL: " + sql );
         

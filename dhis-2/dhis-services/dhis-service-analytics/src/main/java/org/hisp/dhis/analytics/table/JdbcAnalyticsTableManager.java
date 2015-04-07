@@ -29,6 +29,7 @@ package org.hisp.dhis.analytics.table;
  */
 
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
+import static org.hisp.dhis.dataapproval.DataApprovalLevelService.APPROVAL_LEVEL_UNAPPROVED;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +42,7 @@ import java.util.concurrent.Future;
 
 import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -221,6 +223,7 @@ public class JdbcAnalyticsTableManager
             "left join _dataelementstructure des on dv.dataelementid = des.dataelementid " +
             "inner join dataelement de on dv.dataelementid=de.dataelementid " +
             "inner join categoryoptioncombo co on dv.categoryoptioncomboid=co.categoryoptioncomboid " +
+            "inner join _categoryoptioncomboname aon on dv.attributeoptioncomboid=aon.categoryoptioncomboid " +
             "inner join period pe on dv.periodid=pe.periodid " +
             "inner join _periodstructure ps on dv.periodid=ps.periodid " +
             "inner join organisationunit ou on dv.sourceid=ou.organisationunitid " +
@@ -246,7 +249,7 @@ public class JdbcAnalyticsTableManager
     private String getApprovalSubquery()
     {
         String sql = "(" +
-            "select coalesce(des.datasetapprovallevel, min(dal.level)) " +
+            "select coalesce(des.datasetapprovallevel, aon.approvallevel, min(dal.level), " + APPROVAL_LEVEL_UNAPPROVED + ") " +
             "from dataapproval da " +
             "inner join dataapprovallevel dal on da.dataapprovallevelid = dal.dataapprovallevelid " +
             "where da.periodid = dv.periodid " +

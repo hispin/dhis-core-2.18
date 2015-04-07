@@ -204,12 +204,13 @@ public class DefaultResourceTableService
 
                 values.add( coc.getId() );
                 values.add( coc.getName() );
+                values.add( coc.isIgnoreApproval() ? APPROVAL_LEVEL_HIGHEST : null );
 
                 batchArgs.add( values.toArray() );
             }
         }
 
-        resourceTableStore.batchUpdate( 2, TABLE_NAME_CATEGORY_OPTION_COMBO_NAME, batchArgs );
+        resourceTableStore.batchUpdate( 3, TABLE_NAME_CATEGORY_OPTION_COMBO_NAME, batchArgs );
 
         log.info( "Category option combo name table generated" );
     }
