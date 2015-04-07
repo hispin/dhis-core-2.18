@@ -52,6 +52,7 @@ public interface SystemSettingManager
     final String KEY_APPLICATION_INTRO = "keyApplicationIntro";
     final String KEY_APPLICATION_NOTIFICATION = "keyApplicationNotification";
     final String KEY_APPLICATION_FOOTER = "keyApplicationFooter";
+    final String KEY_APPLICATION_RIGHT_FOOTER = "keyApplicationRightFooter";
     final String KEY_FLAG = "keyFlag";
     final String KEY_FLAG_IMAGE = "keyFlagImage";
     final String KEY_START_MODULE = "startModule";

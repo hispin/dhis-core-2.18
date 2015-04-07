@@ -131,16 +131,30 @@ a:hover
   position: absolute;
   bottom: 0;
   left: 0;
-  padding: 10px 0 9px 0;
+  padding: 8px 0 7px 0;
   font-size: 13px;
   border-top: 1px solid #416f9d;
   color: #6b90b8;
   width: 100%;
 }
 
-#poweredByLabel
+.innerFooterArea
 {
+  line-height: 26px;
+  display: inline-block;
+  vertical-align: middle;
+}  
+
+#leftFooterArea
+{
+  float: left;
   margin-left: 50px;
+}
+
+#rightFooterArea
+{
+  float: right;
+  margin-right: 50px;
 }
 
 #localeSelect
