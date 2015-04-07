@@ -28,7 +28,7 @@ package org.hisp.dhis.resourcetable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataapproval.DataApprovalLevelService.APPROVAL_LEVEL_UNAPPROVED;
+import static org.hisp.dhis.dataapproval.DataApprovalLevelService.APPROVAL_LEVEL_HIGHEST;
 import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_CATEGORY_OPTION_COMBO_NAME;
 import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_DATA_ELEMENT_STRUCTURE;
 import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_DATE_PERIOD_STRUCTURE;
@@ -370,13 +370,18 @@ public class DefaultResourceTableService
             final DataSet dataSet = dataElement.getDataSet();
             final PeriodType periodType = dataElement.getPeriodType();
 
+            // -----------------------------------------------------------------
+            // Use highest approval level if data set does not require approval,
+            // or null if approval is required.
+            // -----------------------------------------------------------------
+
             values.add( dataElement.getId() );
             values.add( dataElement.getUid() );
             values.add( dataElement.getName() );
             values.add( dataSet != null ? dataSet.getId() : null );
             values.add( dataSet != null ? dataSet.getUid() : null );
             values.add( dataSet != null ? dataSet.getName() : null );
-            values.add( dataSet != null && dataSet.isApproveData() ? APPROVAL_LEVEL_UNAPPROVED : 0 );
+            values.add( dataSet != null && dataSet.isApproveData() ? null : APPROVAL_LEVEL_HIGHEST );
             values.add( periodType != null ? periodType.getId() : null );
             values.add( periodType != null ? periodType.getName() : null );
 

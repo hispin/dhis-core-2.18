@@ -238,10 +238,15 @@ public class JdbcAnalyticsTableManager
         populateAndLog( sql, tableName + ", " + valueType );
     }
 
+    /**
+     * Returns sub-query for approval level. First looks for approval level in
+     * data element resource table which will indicate level 0 (highest) if approval
+     * is not required. Then looks for highest level in dataapproval table.
+     */
     private String getApprovalSubquery()
     {
         String sql = "(" +
-            "select coalesce(min(dal.level), des.datasetapprovallevel) " +
+            "select coalesce(des.datasetapprovallevel, min(dal.level)) " +
             "from dataapproval da " +
             "inner join dataapprovallevel dal on da.dataapprovallevelid = dal.dataapprovallevelid " +
             "where da.periodid = dv.periodid " +
