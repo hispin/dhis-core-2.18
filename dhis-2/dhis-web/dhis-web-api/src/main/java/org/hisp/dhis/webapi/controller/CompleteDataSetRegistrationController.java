@@ -422,8 +422,7 @@ public class CompleteDataSetRegistrationController
                 if ( orgUnit.getDataSets().contains( dataSet ) )
                 {
                     CompleteDataSetRegistration completeDataSetRegistration = registerCompleteDataSet( dataSet, period,
-                        organisationUnit,
-                        attributeOptionCombo, storedBy, completionDate );
+                        orgUnit, attributeOptionCombo, storedBy, completionDate );
 
                     if ( completeDataSetRegistration != null )
                         registrations.add( completeDataSetRegistration );
