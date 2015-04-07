@@ -378,7 +378,13 @@ public class HibernateGenericStore<T>
     {
         if ( IdentifiableObject.class.isInstance( object ) )
         {
-            ((BaseIdentifiableObject) object).setAutoFields();
+            BaseIdentifiableObject identifiableObject = (BaseIdentifiableObject) object;
+            identifiableObject.setAutoFields();
+
+            if ( identifiableObject.getUser() == null )
+            {
+                identifiableObject.setUser( currentUserService.getCurrentUser() );
+            }
         }
 
         if ( !Interpretation.class.isAssignableFrom( clazz ) && !isUpdateAllowed( object ) )
