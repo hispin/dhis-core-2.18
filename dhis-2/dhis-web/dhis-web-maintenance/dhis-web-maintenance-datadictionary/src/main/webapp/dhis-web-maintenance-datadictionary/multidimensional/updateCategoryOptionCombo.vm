@@ -28,6 +28,15 @@
 	  <td><label>$i18n.getString( "code" )</label></td>
 	  <td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $optionCombo.code )" /></td>
     </tr>
+    <tr>
+   		<td><label for="ignoreApproval ">$i18n.getString( "ignore_data_approval" )</label></td>
+   		<td>
+   			<select id="ignoreApproval" name="ignoreApproval">
+   				<option value="false">$i18n.getString( "no" )</option>
+   				<option value="true" #if( $!optionCombo.ignoreApproval ) selected="selected" #end>$i18n.getString( "yes" )</option>
+   			</select>
+        </td>
+    </tr>
 	<tr>
 		<td></td>
 		<td>
