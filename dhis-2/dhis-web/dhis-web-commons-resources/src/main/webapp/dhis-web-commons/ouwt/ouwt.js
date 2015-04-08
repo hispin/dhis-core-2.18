@@ -850,6 +850,7 @@ function Subtree() {
             var def = $.Deferred();
 
             subtree.ajaxGetChildren( parentId ).done(function( data ) {
+                $('#orgUnitTree').trigger('dhis2.ouwt.childrenLoaded', parentId);
                 def.resolveWith( window, [ data ] );
             });
 
