@@ -2447,7 +2447,7 @@ Ext.onReady( function() {
 					scope: this,
                     disableCaching: false,
 					success: function(r) {
-						legends = Ext.decode(r.responseText).legends;
+						legends = Ext.decode(r.responseText).mapLegends;
 
 						Ext.Array.sort(legends, function (a, b) {
 							return a.startValue - b.startValue;
