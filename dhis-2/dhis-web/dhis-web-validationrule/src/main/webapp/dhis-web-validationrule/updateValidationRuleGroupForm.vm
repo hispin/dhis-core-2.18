@@ -48,8 +48,8 @@
         <td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $validationRuleGroup.name )"></td>
     </tr>
     <tr>
-        <td><label for="description">$i18n.getString( "description" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $validationRuleGroup.description )"></td>
+        <td><label for="description">$i18n.getString( "description" )</label></td>
+        <td><textarea name="description">$!encoder.htmlEncode( $validationRuleGroup.description )</textarea>></td>
     </tr>
 
 </table>

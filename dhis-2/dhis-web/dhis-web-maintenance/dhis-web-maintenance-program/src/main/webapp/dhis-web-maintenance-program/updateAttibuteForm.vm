@@ -28,8 +28,8 @@
         <td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $attribute.code )"></label></td>
       </tr>      
       <tr>
-        <td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><textarea id="description" name="description" >$!encoder.htmlEncode( $attribute.description )</textarea></td>
+        <td><label for="description">$i18n.getString( "description" )</label></td>
+        <td><textarea id="description" name="description">$!encoder.htmlEncode( $attribute.description )</textarea></td>
       </tr>
       
     <tr>

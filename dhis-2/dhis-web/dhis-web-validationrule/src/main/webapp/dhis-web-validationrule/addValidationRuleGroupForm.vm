@@ -48,7 +48,7 @@
     </tr>
     <tr>
         <td><label for="description">$i18n.getString( "description" )</label></td>
-        <td><input type="text" id="description" name="description"></td>
+        <td><textarea name="description"></textarea></td>
     </tr>
 </table>
 

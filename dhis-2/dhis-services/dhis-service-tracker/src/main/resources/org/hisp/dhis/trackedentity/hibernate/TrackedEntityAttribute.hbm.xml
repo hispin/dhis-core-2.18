@@ -17,7 +17,7 @@
 
     <property name="shortName" column="shortname" not-null="false" unique="true" length="50" />
 
-    <property name="description" />
+    <property name="description" type="text"/>
 
     <property name="valueType" column="valuetype" not-null="true" />
 
