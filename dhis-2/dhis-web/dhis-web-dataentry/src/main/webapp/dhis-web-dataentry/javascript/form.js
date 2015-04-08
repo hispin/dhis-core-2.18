@@ -226,6 +226,12 @@ $( document ).ready( function()
         	dhis2.de.setMetaDataLoaded();
         	organisationUnitSelected( ids, names );
 
+          if( ids && ids[0] ) {
+              dhis2.de.fetchDataSets(ids[0]).done(function() {
+                  selection.responseReceived();
+              })
+          }
+
           $('#orgUnitTree').on('dhis2.ouwt.childrenLoaded', function(e, ou) {
             dhis2.de.fetchDataSets(ou).done(function() {
                 selection.responseReceived();
