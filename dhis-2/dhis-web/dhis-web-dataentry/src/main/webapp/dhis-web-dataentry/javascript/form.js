@@ -74,6 +74,9 @@ dhis2.de.storageManager = new StorageManager();
 // Indicates whether current form is multi org unit
 dhis2.de.multiOrganisationUnit = false;
 
+// List of parent for which we have fetched dataSet associations, used to optimize dhis2.de.fetchDataSets
+dhis2.de.fetchedChildren = [];
+
 // "organisationUnits" object inherited from ouwt.js
 
 // Constants
@@ -222,6 +225,12 @@ $( document ).ready( function()
         $.when( dhis2.de.getMultiOrgUnitSetting(), dhis2.de.loadMetaData(), dhis2.de.loadDataSetAssociations() ).done( function() {
         	dhis2.de.setMetaDataLoaded();
         	organisationUnitSelected( ids, names );
+
+          $('#orgUnitTree').on('dhis2.ouwt.childrenLoaded', function(e, ou) {
+            dhis2.de.fetchDataSets(ou).done(function() {
+                selection.responseReceived();
+            })
+          });
         } );
     } );
 } );
@@ -980,21 +989,26 @@ dhis2.de.fetchDataSets = function( ou )
 {
     var def = $.Deferred();
 
-    $.ajax({
-        type: 'GET',
-        url: '../api/organisationUnits/' + ou,
-        data: {
-            fields: 'id,dataSets[id],children[id,dataSets[id]]'
-        }
-    }).done(function(data) {
-        dhis2.de._updateDataSets(data);
+    if(dhis2.de.fetchedChildren.indexOf(ou) != -1 ) {
+        def.resolve();
+    } else {
+        $.ajax({
+            type: 'GET',
+            url: '../api/organisationUnits/' + ou,
+            data: {
+                fields: 'id,dataSets[id],children[id,dataSets[id]]'
+            }
+        }).done(function(data) {
+            dhis2.de._updateDataSets(data);
 
-        data.children.forEach(function( item ) {
-            dhis2.de._updateDataSets(item);
+            data.children.forEach(function( item ) {
+                dhis2.de._updateDataSets(item);
+            });
+
+            dhis2.de.fetchedChildren.push(ou);
+            def.resolve(data);
         });
-
-        def.resolve(data);
-    });
+    }
 
     return def.promise();
 };
