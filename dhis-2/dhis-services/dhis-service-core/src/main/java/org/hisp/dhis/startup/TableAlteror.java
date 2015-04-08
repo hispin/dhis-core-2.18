@@ -265,6 +265,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE expression ALTER expression TYPE text" );
         executeSql( "ALTER TABLE translation ALTER value TYPE text" );
         executeSql( "ALTER TABLE organisationunit ALTER comment TYPE text" );
+        executeSql( "ALTER TABLE program ALTER description TYPE text" );
+        executeSql( "ALTER TABLE trackedentityattribute ALTER description TYPE text" );
+        executeSql( "ALTER TABLE trackedentityattributegroup ALTER description TYPE text" );
 
         executeSql( "ALTER TABLE minmaxdataelement RENAME minvalue TO minimumvalue" );
         executeSql( "ALTER TABLE minmaxdataelement RENAME maxvalue TO maximumvalue" );
