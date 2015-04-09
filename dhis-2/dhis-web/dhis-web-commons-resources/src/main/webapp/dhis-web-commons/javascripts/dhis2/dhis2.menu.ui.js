@@ -1094,6 +1094,9 @@
                     function initialise() {
                         getSystemSettings()
                             .success(function(systemSettings) {
+
+                                saveToLocalStorage(systemSettings);
+
                                 requestUserStyle()
                                     .success(function (userStyleUrl) {
                                         var userStyleName = getStyleName(userStyleUrl);
@@ -1108,7 +1111,22 @@
                                     });
                             })
                             .error(function() {
-                                throw new Error('Unable to load systemSettings');
+                                var logo, title, link;
+
+                                //Unable to load system settings defaulting to base styles
+                                addUserStyleStylesheet(getStylesheetUrl());
+
+                                //Load values from localStorage if they are available
+                                if (islocalStorageSupported()) {
+                                    logo = localStorage.getItem('dhis2.menu.ui.headerBar.logo')
+                                    title = localStorage.getItem('dhis2.menu.ui.headerBar.title');
+                                    link = localStorage.getItem('dhis2.menu.ui.headerBar.link');
+                                }
+
+                                //Set values to local storage values or fallback to the defaults
+                                setHeaderLogo(logo);
+                                setHeaderTitle(title);
+                                setHeaderLink(link);
                             });
                     }
 
@@ -1127,7 +1145,6 @@
                             } else {
                                 ctrl.headerBar.logo = getStyleLogoUrl(defaultStyle);
                             }
-
                         }
                     }
 
@@ -1169,6 +1186,23 @@
                             .append('<link href="' + stylesheetUrl + '" type="text/css" rel="stylesheet" media="screen,print" />');
                     }
 
+                    function islocalStorageSupported() {
+                        try {
+                            localStorage.setItem('dhis2.menu.localstorage.test', 'dhis2.menu.localstorage.test');
+                            localStorage.removeItem('dhis2.menu.localstorage.test');
+                            return true;
+                        } catch(e) {
+                            return false;
+                        }
+                    }
+
+                    function saveToLocalStorage(systemSettings) {
+                        if (islocalStorageSupported()) {
+                            localStorage.setItem('dhis2.menu.ui.headerBar.logo', getStyleLogoUrl(defaultStyle))
+                            localStorage.setItem('dhis2.menu.ui.headerBar.title', systemSettings.applicationTitle);
+                            localStorage.setItem('dhis2.menu.ui.headerBar.link', systemSettings.startModule);
+                        }
+                    }
                 }
             });
 
