@@ -1071,6 +1071,7 @@
                             '<img class="header-logo" ng-src="{{headerBar.logo}}" id="headerBanner">',
                             '<span class="header-text" ng-bind="headerBar.title" id="headerText"></span>',
                         '</a>',
+                        '<div id="headerMessage" class="bold"></div>',
                         '<div d2-menu></div>',
                     '</div>'].join('')
                 };
