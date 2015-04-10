@@ -229,6 +229,24 @@ $( document ).ready( function()
     } );
 } );
 
+dhis2.de.shouldFetchDataSets = function( ids ) {
+    if( !dhis2.de.multiOrganisationUnitEnabled ) {
+        return false;
+    }
+
+    if( !$.isArray(ids) || ids.length == 0 ) {
+        return false;
+    }
+
+    var c = organisationUnits[ids[0]].c;
+
+    if( $.isArray(c) && c.length > 0 && dhis2.de.organisationUnitAssociationSetMap[c[0]] ) {
+        return false;
+    }
+
+    return true;
+};
+
 dhis2.de.getMultiOrgUnitSetting = function()
 {
   return $.ajax({
