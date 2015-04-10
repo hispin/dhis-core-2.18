@@ -193,7 +193,7 @@ function Selection()
     };
 
     this.setOrganisationUnits = function( ous ) {
-        organisationUnits = [];
+        organisationUnits = {};
         $.extend( organisationUnits, ous );
         ous = ous ? _.values( ous ) : [];
 
