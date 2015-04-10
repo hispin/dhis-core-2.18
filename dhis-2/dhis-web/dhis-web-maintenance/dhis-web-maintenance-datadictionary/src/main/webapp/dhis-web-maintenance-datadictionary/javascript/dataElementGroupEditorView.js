@@ -28,13 +28,13 @@ function loadAvailableDataElements()
         {
 			if( !checkSelectedDataElement( id ) )
 			{
-				list_1.append( '<option value="' + id + '">' + text + '</option>' );
+				list_1.append( '<option value="' + id + '" title="' + text + '">' + text + '</option>' );
 			}
 		}
 		
 		if ( text.toLowerCase().indexOf( filter_2.toLowerCase() ) != -1 )
         {
-			list_2.append( '<option value="' + id + '">' + text + '</option>' );
+			list_2.append( '<option value="' + id + '" title="' + text + '">' + text + '</option>' );
 		}
     }
 
@@ -83,8 +83,8 @@ function loadAvailableGroups()
 
         if ( text.toLowerCase().indexOf( filter_1.toLowerCase() ) != -1 )
         {
-            list_1.append( '<option value="' + id + '">' + text + '</option>' );
-            list_2.append( '<option value="' + id + '">' + text + '</option>' );
+            list_1.append( '<option value="' + id + '" title="' + text + '">' + text + '</option>' );
+            list_2.append( '<option value="' + id + '" title="' + text + '">' + text + '</option>' );
         }
     }
 
@@ -124,11 +124,11 @@ function getDataElementsByGroup()
             var text = item.name;
             if ( text.toLowerCase().indexOf( filter_1.toLowerCase() ) != -1 )
             {
-                list_1.append( '<option value="' + item.id + '">' + text + '</option>' );
+                list_1.append( '<option value="' + item.uid + '" title="' + text + '">' + text + '</option>' );
             }
             jQuery( "#view_1 #availableDataElements" ).children().each( function( k, it )
             {
-                if ( item.id == it.value )
+                if ( item.uid == it.value )
                 {
                     jQuery( it ).remove();
                 }
@@ -140,37 +140,57 @@ function getDataElementsByGroup()
 function showAddGroup()
 {
     jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'title', i18n_new );
+	jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'width', '350px' );
+	jQuery( '#addDataElementGroupForm #shortName' ).closest('tr').show();
+	jQuery( '#addDataElementGroupForm #code' ).closest('tr').show();
+			
     jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'buttons', [ {
         text : i18n_save,
         click : function()
         {
-            jQuery.postJSON( "validateDataElementGroup.action", {
-                name : function()
-                {
-                    return jQuery( '#addDataElementGroupForm #name' ).val();
-                }
-            }, function( json )
-            {
-                if ( json.response == 'success' )
-                {
-                    jQuery.postJSON( "addDataElementGroupEditor.action", {
-                        name : function()
-                        {
-                            return jQuery( '#addDataElementGroupForm #name' ).val();
-                        }
-                    }, function( json )
-                    {
-                        dataElementGroups[json.dataElementGroup.id] = json.dataElementGroup.name;
-                        loadAvailableGroups();
-                        loadAvailableDataElements();
-                        jQuery( "#view_1 #selectedDataElements" ).empty();
-                        jQuery( '#addDataElementGroupForm' ).dialog( 'close' );
-                    } );
-                } else
-                {
-                    markInvalid( "addDataElementGroupForm #name", json.message );
-                }
-            } );
+			if( jQuery( '#addDataElementGroupForm #name' ).val() == "" ){
+				markValid( "addDataElementGroupForm #shortName" );
+				markInvalid( "addDataElementGroupForm #name", i18n_this_field_is_required );
+			}
+			else if( jQuery( '#addDataElementGroupForm #shortName' ).val() == "" ){
+				markValid( "addDataElementGroupForm #name" );
+				markInvalid( "addDataElementGroupForm #shortName", i18n_this_field_is_required );
+			}
+			else
+			{
+				jQuery.postJSON( "validateDataElementGroup.action", {
+					name : jQuery( '#addDataElementGroupForm #name' ).val()
+					,shortName : jQuery( '#addDataElementGroupForm #shortName' ).val()
+					,code : jQuery( '#addDataElementGroupForm #code' ).val()
+				}, function( json )
+				{
+					if ( json.response == 'success' )
+					{
+						markValid( "addDataElementGroupForm #name" );				
+						markValid( "addDataElementGroupForm #shortName" );
+				
+						jQuery.postJSON( "addDataElementGroupEditor.action", {
+							name : jQuery( '#addDataElementGroupForm #name' ).val(),
+							shortName : jQuery( '#addDataElementGroupForm #shortName' ).val(),
+							code : jQuery( '#addDataElementGroupForm #code' ).val()
+						}, function( json )
+						{
+							var id = json.dataElementGroup.id;
+							dataElementGroups[id] = json.dataElementGroup.name;
+							dataElementGroupShortNames[id] = json.dataElementGroup.name;
+							dataElementGroupCodes[id] = json.dataElementGroup.shortName;
+							loadAvailableGroups();
+							jQuery( "#view_1 #selectedDataElements" ).empty();
+							$("#dataElementGroups option:contains('" + jQuery( '#addDataElementGroupForm #name' ).val() + "')").attr("selected",true);
+							loadAvailableDataElements();
+							jQuery( '#addDataElementGroupForm' ).dialog( 'close' );
+						} );
+					} else
+					{
+						markInvalid( "addDataElementGroupForm #name", json.message );
+					}
+				} );
+			}
         }
     } ] );
 
@@ -180,35 +200,45 @@ function showAddGroup()
 function showAddGroupView2()
 {
     jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'title', i18n_new );
+    jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'width', '350px' );
     jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'buttons', [ {
         text : i18n_save,
         click : function()
         {
-            jQuery.postJSON( "validateDataElementGroup.action", {
-                name : function()
-                {
-                    return jQuery( '#addDataElementGroupForm #name' ).val();
-                }
-            }, function( json )
-            {
-                if ( json.response == 'success' )
-                {
-                    jQuery.postJSON( "addDataElementGroupEditor.action", {
-                        name : function()
-                        {
-                            return jQuery( '#addDataElementGroupForm #name' ).val();
-                        }
-                    }, function( json )
-                    {
-                        dataElementGroups[json.dataElementGroup.id] = json.dataElementGroup.name;
-                        loadAvailableGroups();
-                        jQuery( '#addDataElementGroupForm' ).dialog( 'close' );
-                    } );
-                } else
-                {
-                    markInvalid( "addDataElementGroupForm #name", json.message );
-                }
-            } );
+			if( jQuery( '#addDataElementGroupForm #name' ).val() == "" ){
+				markValid( "addDataElementGroupForm #shortName" );
+				markInvalid( "addDataElementGroupForm #name", i18n_this_field_is_required );
+			}
+			else if( jQuery( '#addDataElementGroupForm #shortName' ).val() == "" ){
+				markValid( "addDataElementGroupForm #name" );
+				markInvalid( "addDataElementGroupForm #shortName", i18n_this_field_is_required );
+			}
+			else
+			{
+				jQuery.postJSON( "validateDataElementGroup.action", {
+					name : jQuery( '#addDataElementGroupForm #name' ).val(),
+					shortName : jQuery( '#addDataElementGroupForm #shortName' ).val(),
+					code : jQuery( '#addDataElementGroupForm #code' ).val()
+				}, function( json )
+				{
+					if ( json.response == 'success' )
+					{
+						jQuery.postJSON( "addDataElementGroupEditor.action", {
+							name : jQuery( '#addDataElementGroupForm #name' ).val(),
+							shortName : jQuery( '#addDataElementGroupForm #shortName' ).val(),
+							code : jQuery( '#addDataElementGroupForm #code' ).val()
+						}, function( json )
+						{
+							dataElementGroups[json.dataElementGroup.id] = json.dataElementGroup.name;
+							loadAvailableGroups();
+							jQuery( '#addDataElementGroupForm' ).dialog( 'close' );
+						} );
+					} else
+					{
+						markInvalid( "addDataElementGroupForm #name", json.message );
+					}
+				} );
+			}
         }
     } ] );
     jQuery( '#addDataElementGroupForm' ).dialog( 'open' );
@@ -218,90 +248,104 @@ function showUpdateGroup()
 {
     var id = jQuery( "#view_1 #dataElementGroups" ).val();
     var text = jQuery( "#view_1 #dataElementGroups option[value=" + id + "]" ).text();
+	
     jQuery( '#addDataElementGroupForm #name' ).val( text );
+    jQuery( '#addDataElementGroupForm #shortName' ).closest('tr').hide();
+    jQuery( '#addDataElementGroupForm #code' ).closest('tr').hide();
 
     jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'buttons', [ {
         text : i18n_save,
         click : function()
         {
-            jQuery.postJSON( "validateDataElementGroup.action", {
-                id : id,
-                name : function()
-                {
-                    return jQuery( '#addDataElementGroupForm #name' ).val();
-                }
-            }, function( json )
-            {
-                if ( json.response == 'success' )
-                {
-                    jQuery.postJSON( "renameDataElementGroupEditor.action", {
-                        name : function()
-                        {
-                            return jQuery( '#addDataElementGroupForm #name' ).val();
-                        },
-                        id : id
-                    }, function( json )
-                    {
-                        dataElementGroups[json.dataElementGroup.id] = json.dataElementGroup.name;
-                        loadAvailableGroups();
-                        jQuery( '#addDataElementGroupForm' ).dialog( 'close' );
-                        setHeaderDelayMessage( i18n_update_success );
-                    } );
-                } else
-                {
-                    markInvalid( "addDataElementGroupForm #name", json.message );
-                }
-            } );
+			if( jQuery( '#addDataElementGroupForm #name' ).val() == "" ){
+				markInvalid( "addDataElementGroupForm #name", i18n_this_field_is_required );
+			}
+			else
+			{
+				jQuery.postJSON( "validateDataElementGroup.action", {
+					id : id,
+					name :jQuery( '#addDataElementGroupForm #name' ).val()
+				}, function( json )
+				{
+					if ( json.response == 'success' )
+					{
+						markValid( "addDataElementGroupForm #name" );
+				
+						jQuery.postJSON( "renameDataElementGroupEditor.action", {
+							name : function()
+							{
+								return jQuery( '#addDataElementGroupForm #name' ).val();
+							},
+							id : id
+						}, function( json )
+						{
+							dataElementGroups[json.dataElementGroup.id] = json.dataElementGroup.name;
+							loadAvailableGroups();
+							jQuery( '#addDataElementGroupForm' ).dialog( 'close' );
+							setHeaderDelayMessage( i18n_update_success );
+						} );
+					} else
+					{
+						markInvalid( "addDataElementGroupForm #name", json.message );
+					}
+				} );
+			}
         }
     } ] );
 
     jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'title', i18n_rename );
+    jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'width', '350px' );
     jQuery( '#addDataElementGroupForm' ).dialog( 'open' );
 }
 
 function showUpdateGroup2()
 {
-    var id = jQuery( "#view_2 #availableGroups" ).val();
+    var id = jQuery( "#view_2 #availableGroups option:selected" ).val();
     var text = jQuery( "#view_2 #availableGroups option[value=" + id + "]" ).text();
     jQuery( '#addDataElementGroupForm #name' ).val( text );
 
+    jQuery( '#addDataElementGroupForm #shortName' ).closest('tr').hide();
+    jQuery( '#addDataElementGroupForm #code' ).closest('tr').hide();
+	
     jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'buttons', [ {
         text : i18n_save,
         click : function()
         {
-
-            jQuery.postJSON( "validateDataElementGroup.action", {
-                id : id,
-                name : function()
-                {
-                    return jQuery( '#addDataElementGroupForm #name' ).val();
-                }
-            }, function( json )
-            {
-                if ( json.response == 'success' )
-                {
-                    jQuery.postJSON( "renameDataElementGroupEditor.action", {
-                        name : function()
-                        {
-                            return jQuery( '#addDataElementGroupForm #name' ).val();
-                        },
-                        id : id
-                    }, function( json )
-                    {
-                        dataElementGroups[json.dataElementGroup.id] = json.dataElementGroup.name;
-                        loadAvailableGroups();
-                        jQuery( '#addDataElementGroupForm' ).dialog( 'close' );
-                        setHeaderDelayMessage( i18n_update_success );
-                    } );
-                } else
-                {
-                    markInvalid( "addDataElementGroupForm #name", json.message );
-                }
-            } );
+			if( jQuery( '#addDataElementGroupForm #name' ).val() == "" ){
+				markInvalid( "addDataElementGroupForm #name", i18n_this_field_is_required );
+			}
+			else
+			{
+				jQuery.postJSON( "validateDataElementGroup.action", {
+					id : id,
+					name : jQuery( '#addDataElementGroupForm #name' ).val()
+				}, function( json )
+				{
+					if ( json.response == 'success' )
+					{
+						markValid( "addDataElementGroupForm #name" );
+				
+						jQuery.postJSON( "renameDataElementGroupEditor.action", {
+							name :jQuery( '#addDataElementGroupForm #name' ).val(),
+							id : id
+						}, function( json )
+						{
+							dataElementGroups[json.dataElementGroup.id] = json.dataElementGroup.name;
+							loadAvailableGroups();
+							jQuery( '#addDataElementGroupForm' ).dialog( 'close' );
+							setHeaderDelayMessage( i18n_update_success );
+						} );
+					} else
+					{
+						markInvalid( "addDataElementGroupForm #name", json.message );
+					}
+				} );
+			}
         }
     } ] );
 
     jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'title', i18n_rename );
+    jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'width', '350px' );
     jQuery( '#addDataElementGroupForm' ).dialog( 'open' );
 }
 
@@ -318,6 +362,7 @@ function deleteDataElemenGroup()
             if ( json.response == 'success' )
             {
                 dataElementGroups.splice( id, 1 );
+				clearListById('view_1 #selectedDataElements');
                 loadAvailableGroups();
                 setHeaderDelayMessage( json.message );
             } else
@@ -354,9 +399,13 @@ function deleteDataElemenGroupView2()
 function updateGroupMembers()
 {
     var id = jQuery( "#view_1 #dataElementGroups" ).val();
+	var name = dataElementGroups[id];
+	var shortName = dataElementGroupShortNames[id];
+	var code = dataElementGroupCodes[id];
 
-    jQuery.getJSON( "updateDataElementGroupEditor.action?id=" + id + "&"
-            + toQueryString( '#view_1 #selectedDataElements', 'groupMembers' ), function( json )
+    jQuery.getJSON( "updateDataElementGroupEditor.action?id=" + id
+			+ "&name=" + name + "&shortName=" + shortName + "&code=" + code + "&"
+            + toQueryString( '#view_1 #selectedDataElements', 'deSelected' ), function( json )
     {
     	setHeaderDelayMessage( i18n_update_success );
     } );
@@ -390,7 +439,7 @@ function getAssignedDataElementGroups()
 	
         jQuery.each( json.dataElementGroups, function( i, item )
         {
-            list_2.append( '<option value="' + item.id + '">' + item.name + '</option>' );
+            list_2.append( '<option value="' + item.id + '" title="' + item.name + '">' + item.name + '</option>' );
 
             jQuery( "#view_2 #availableGroups" ).children().each( function( k, it )
             {
