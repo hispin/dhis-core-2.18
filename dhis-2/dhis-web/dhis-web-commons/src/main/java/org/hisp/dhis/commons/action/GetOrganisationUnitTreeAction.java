@@ -28,12 +28,7 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -43,10 +38,14 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.Version;
 import org.hisp.dhis.version.VersionService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 /**
- * @author mortenoh
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class GetOrganisationUnitTreeAction
     implements Action
@@ -236,7 +235,7 @@ public class GetOrganisationUnitTreeAction
         if ( !versionOnly && !rootOrganisationUnits.isEmpty() )
         {
             Integer offlineLevels = getOfflineOrganisationUnitLevels();
-            
+
             for ( OrganisationUnit unit : rootOrganisationUnits )
             {
                 organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId(), offlineLevels ) );
@@ -285,12 +284,9 @@ public class GetOrganisationUnitTreeAction
         {
             return null;
         }
-        
-        if ( offlineLevel != null )
-        {
-            return offlineLevel;
-        }
-        
-        return organisationUnitService.getOfflineOrganisationUnitLevels();
+
+        Integer level = offlineLevel != null ? offlineLevel : organisationUnitService.getOfflineOrganisationUnitLevels();
+
+        return level == 1 ? 2 : level;
     }
 }
