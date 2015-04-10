@@ -74,6 +74,9 @@ dhis2.de.storageManager = new StorageManager();
 // Indicates whether current form is multi org unit
 dhis2.de.multiOrganisationUnit = false;
 
+// Indicates whether multi org unit is enabled on instance
+dhis2.de.multiOrganisationUnitEnabled = false;
+
 // "organisationUnits" object inherited from ouwt.js
 
 // Constants
@@ -234,6 +237,7 @@ dhis2.de.getMultiOrgUnitSetting = function()
     async: false,
     type: 'GET',
     success: function( data ) {
+      dhis2.de.multiOrganisationUnitEnabled = data;
       selection.setIncludeChildren(data);
     }
   });
