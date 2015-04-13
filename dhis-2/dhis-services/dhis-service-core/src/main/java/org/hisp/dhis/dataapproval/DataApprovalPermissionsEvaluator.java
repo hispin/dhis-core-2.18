@@ -160,30 +160,32 @@ class DataApprovalPermissionsEvaluator
         }
 
         int userLevel = userApprovalLevel.getLevel();
-        int userOrgUnitLevel = userApprovalLevel.getOrgUnitLevel();
 
-        int dataLevel = ( da.getDataApprovalLevel() != null ? da.getDataApprovalLevel().getLevel() : maxApprovalLevel );
-        int dataOrgUnitLevel = ( da.getDataApprovalLevel() != null ? da.getDataApprovalLevel().getOrgUnitLevel() : 9999999 );
+        DataApprovalLevel dal = da.getDataApprovalLevel();
+        int dataLevel = ( dal != null ? dal.getLevel() : maxApprovalLevel );
+
+        boolean approvableAtNextHigherLevel = s.isApproved() && dal != null && dataLevel > 1;
+//            && dal.getOrgUnitLevel() == dataApprovalLevelService.getDataApprovalLevelByLevelNumber( dataLevel - 1 ).getOrgUnitLevel();
+
+        int approveLevel = approvableAtNextHigherLevel ? dataLevel - 1 : dataLevel; // Level (if any) at which data could next be approved.
 
         boolean mayApprove = false;
         boolean mayUnapprove = false;
         boolean mayAccept = false;
         boolean mayUnaccept = false;
 
-        if ( ( authorizedToApprove && userLevel == dataLevel ) || ( authorizedToApproveAtLowerLevels && userLevel < dataLevel ) )
+        if ( ( ( authorizedToApprove && userLevel == approveLevel ) || ( authorizedToApproveAtLowerLevels && userLevel < approveLevel ) )
+            && ( !s.isApproved() || ( approvableAtNextHigherLevel && ( s.isAccepted() || !acceptanceRequiredForApproval ) ) ) )
         {
-            mayApprove = s.isApprovable();
+            mayApprove = s.isApprovable() || approvableAtNextHigherLevel; // (If approved at one level, may approve for the next higher level.)
+        }
+
+        if ( ( authorizedToApprove && userLevel == dataLevel && !s.isAccepted() ) || ( authorizedToApproveAtLowerLevels && userLevel < dataLevel ) )
+        {
             mayUnapprove = s.isUnapprovable();
         }
 
-        if ( authorizedToApprove && userLevel == dataLevel - 1 && userOrgUnitLevel == dataOrgUnitLevel &&
-            ( s.isAccepted() || ( s.isApproved() && !acceptanceRequiredForApproval ) ) )
-        {
-            mayApprove = true;
-            mayUnapprove = true;
-        }
-
-        if ( authorizedToAcceptAtLowerLevels && ( userLevel == dataLevel - 1 || authorizedToApproveAtLowerLevels ) )
+        if ( authorizedToAcceptAtLowerLevels && ( userLevel == dataLevel - 1 || ( authorizedToApproveAtLowerLevels && userLevel < dataLevel ) ) )
         {
             mayAccept =  s.isAcceptable();
             mayUnaccept = s.isUnacceptable();
@@ -194,10 +196,11 @@ class DataApprovalPermissionsEvaluator
             }
         }
 
-        boolean mayReadData = mayApprove || mayUnapprove || mayAccept || mayUnaccept || userLevel == dataLevel ||
-                ( organisationUnitService.isInUserHierarchy( orgUnit ) && userLevel == dataLevel || ( authorizedToViewUnapprovedData || !hideUnapprovedData ) );
+        boolean mayReadData = mayApprove || mayUnapprove || mayAccept || mayUnaccept ||
+                ( organisationUnitService.isInUserHierarchy( da.getOrganisationUnit() ) && ( userLevel >= dataLevel || authorizedToViewUnapprovedData || !hideUnapprovedData ) );
 
         log.debug( "getPermissions orgUnit " + ( da.getOrganisationUnit() == null ? "(null)" : da.getOrganisationUnit().getName() )
+                + ( organisationUnitService.isInUserHierarchy( orgUnit ) ? "*" : "" )
                 + " combo " + da.getAttributeOptionCombo().getName() + " state " + s.name()
                 + " isApproved " + s.isApproved() + " isApprovable " + s.isApprovable() + " isUnapprovable " + s.isUnapprovable()
                 + " isAccepted " + s.isAccepted() + " isAcceptable " + s.isAcceptable() + " isUnacceptable " + s.isUnacceptable()
