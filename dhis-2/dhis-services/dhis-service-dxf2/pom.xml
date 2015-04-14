@@ -59,7 +59,21 @@
 	  <groupId>org.amplecode</groupId>
 	  <artifactId>staxwax</artifactId>
 	</dependency>
+	
+	<!--  CCEI -->
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-ccei-api</artifactId>
+	  <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-service-ccei</artifactId>
+	  <version>${project.version}</version>
+    </dependency>	
+	
   </dependencies>
+
 
   <properties>
     <rootDir>../../</rootDir>

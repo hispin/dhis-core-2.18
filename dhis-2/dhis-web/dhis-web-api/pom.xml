@@ -73,6 +73,23 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-api-mobile</artifactId>
     </dependency> <!-- remove this -->
+ 
+	<!--  CCEI -->
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-ccei-api</artifactId>
+	  <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-service-ccei</artifactId>
+	  <version>${project.version}</version>
+    </dependency> 
+ 
+ 
+ 
+ 
+ 
         
     <!-- Batik -->
 

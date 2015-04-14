@@ -28,12 +28,23 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.coldchain.equipment.Equipment;
+import org.hisp.dhis.coldchain.equipment.EquipmentStatus;
+import org.hisp.dhis.coldchain.equipment.EquipmentType;
+import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttribute;
+import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeGroup;
+import org.hisp.dhis.coldchain.model.Model;
+import org.hisp.dhis.coldchain.model.ModelType;
+import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
+import org.hisp.dhis.coldchain.model.ModelTypeAttributeGroup;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.NameableObject;
@@ -227,7 +238,27 @@ public class MetaData
     private List<TrackedEntityAttribute> trackedEntityAttributes = new ArrayList<>();
 
     private List<TrackedEntityAttributeGroup> trackedEntityAttributeGroups = new ArrayList<>();
+    
+    // CCEI
+    private List<Equipment> equipments = new ArrayList<Equipment>();
 
+    private List<EquipmentType> equipmentTypes = new ArrayList<EquipmentType>();
+
+    private List<EquipmentStatus> equipmentStatusSet = new ArrayList<EquipmentStatus>();
+
+    private List<EquipmentTypeAttribute> equipmentTypeAttributes = new ArrayList<EquipmentTypeAttribute>();
+
+    private List<EquipmentTypeAttributeGroup> equipmentTypeAttributeGroups = new ArrayList<EquipmentTypeAttributeGroup>();
+
+    private List<Model> models = new ArrayList<Model>();
+
+    private List<ModelTypeAttribute> modelTypeAttributes = new ArrayList<ModelTypeAttribute>();
+
+    private List<ModelTypeAttributeGroup> modelTypeAttributeGroups = new ArrayList<ModelTypeAttributeGroup>();
+
+    private List<ModelType> modelTypes = new ArrayList<ModelType>();
+    
+    
     public MetaData()
     {
     }
@@ -1024,12 +1055,139 @@ public class MetaData
         this.metaDataFilters = metaDataFilters;
     }
 
+    
+    // CCEI
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "equipments", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "equipment", namespace = DxfNamespaces.DXF_2_0 )
+    public List<Equipment> getEquipments()
+    {
+        return equipments;
+    }
+
+    public void setEquipments( List<Equipment> equipments )
+    {
+        this.equipments = equipments;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "equipmentTypes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "equipmentType", namespace = DxfNamespaces.DXF_2_0 )
+    public List<EquipmentType> getEquipmentTypes()
+    {
+        return equipmentTypes;
+    }
+
+    public void setEquipmentTypes( List<EquipmentType> equipmentTypes )
+    {
+        this.equipmentTypes = equipmentTypes;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "equipmentStatusSet", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "equipmentStatus", namespace = DxfNamespaces.DXF_2_0 )
+    public List<EquipmentStatus> getEquipmentStatusSet()
+    {
+        return equipmentStatusSet;
+    }
+
+    public void setEquipmentStatusSet( List<EquipmentStatus> equipmentStatusSet )
+    {
+        this.equipmentStatusSet = equipmentStatusSet;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "equipmentTypeAttributes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "equipmentTypeAttribute", namespace = DxfNamespaces.DXF_2_0 )
+    public List<EquipmentTypeAttribute> getEquipmentTypeAttributes()
+    {
+        return equipmentTypeAttributes;
+    }
+
+    public void setEquipmentTypeAttributes( List<EquipmentTypeAttribute> equipmentTypeAttributes )
+    {
+        this.equipmentTypeAttributes = equipmentTypeAttributes;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "equipmentTypeAttributeGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "equipmentTypeAttributeGroup", namespace = DxfNamespaces.DXF_2_0 )
+    public List<EquipmentTypeAttributeGroup> getEquipmentTypeAttributeGroups()
+    {
+        return equipmentTypeAttributeGroups;
+    }
+
+    public void setEquipmentTypeAttributeGroups( List<EquipmentTypeAttributeGroup> equipmentTypeAttributeGroups )
+    {
+        this.equipmentTypeAttributeGroups = equipmentTypeAttributeGroups;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "models", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "model", namespace = DxfNamespaces.DXF_2_0 )
+    public List<Model> getModels()
+    {
+        return models;
+    }
+
+    public void setModels( List<Model> models )
+    {
+        this.models = models;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "modelTypes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "modelType", namespace = DxfNamespaces.DXF_2_0 )
+    public List<ModelType> getModelTypes()
+    {
+        return modelTypes;
+    }
+
+    public void setModelTypes( List<ModelType> modelTypes )
+    {
+        this.modelTypes = modelTypes;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "modelTypeAttributes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "modelTypeAttribute", namespace = DxfNamespaces.DXF_2_0 )
+    public List<ModelTypeAttribute> getModelTypeAttributes()
+    {
+        return modelTypeAttributes;
+    }
+
+    public void setModelTypeAttributes( List<ModelTypeAttribute> modelTypeAttributes )
+    {
+        this.modelTypeAttributes = modelTypeAttributes;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "modelTypeAttributeGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "modelTypeAttributeGroup", namespace = DxfNamespaces.DXF_2_0 )
+    public List<ModelTypeAttributeGroup> getModelTypeAttributeGroups()
+    {
+        return modelTypeAttributeGroups;
+    }
+
+    public void setModelTypeAttributeGroups( List<ModelTypeAttributeGroup> modelTypeAttributeGroups )
+    {
+        this.modelTypeAttributeGroups = modelTypeAttributeGroups;
+    }
+    
+    
     @Override
     public String toString()
     {
         return "MetaData{" +
-            "created=" + created +
-            ", schemas=" + schemas +
+    
+            "created=" + created + ", equipments=" + equipments + ", equipmentTypes=" + equipmentTypes 
+            + ", equipmentTypeAttributes=" + equipmentTypeAttributes + ", equipmentTypeAttributeGroups="
+            + equipmentTypeAttributeGroups + ", models=" + models + ", modelTypes=" + modelTypes
+            + ", modelTypeAttributes=" + modelTypeAttributes + ", modelTypeAttributeGroups=" + modelTypeAttributeGroups
+            + ", equipmentStatusSet=" + equipmentStatusSet
+        
+            + ", schemas=" + schemas +
             ", attributes=" + attributes +
             ", documents=" + documents +
             ", constants=" + constants +
