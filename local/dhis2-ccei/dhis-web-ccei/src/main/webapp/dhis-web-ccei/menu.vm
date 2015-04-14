@@ -1,0 +1,17 @@
+
+<h2>$i18n.getString( "equipment_manager" )</h2>
+<ul>
+	<li><a href="clinicEquipments.action">$i18n.getString( "facility_equipments" )</a></li>
+	<li><a href="equipmentModels.action">$i18n.getString( "equipment_models" )</a></li>
+	<!-- <li><a href="vaccinesModels.action">$i18n.getString( "vaccines" )</a></li>	-->
+</ul>
+
+<h2>$i18n.getString( "ccem_reports" )</h2>
+<ul>
+	<li><a href="cceiReportsPage.action">$i18n.getString( "ccem_reports_page" )</a></li>
+</ul>
+
+<h2>$i18n.getString( "ccem_setup" )</h2>
+<ul>
+	<li><a href="../dhis-web-maintenance-ccei/index.action">$i18n.getString( "ccem_setup" )</a></li>
+</ul>

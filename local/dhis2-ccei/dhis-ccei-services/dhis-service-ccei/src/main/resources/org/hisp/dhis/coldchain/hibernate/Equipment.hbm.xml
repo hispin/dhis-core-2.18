@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+ "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
+ [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
+ >
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.coldchain.equipment.Equipment" table="equipment">
+
+    <id name="id" column="equipmentid">
+      <generator class="native" />
+    </id>
+
+	&identifiableProperties;
+
+    <property name="name" not-null="true" unique="true" length="300" />
+
+    <many-to-one name="equipmentType" class="org.hisp.dhis.coldchain.equipment.EquipmentType" column="equipmenttypeid"
+      not-null="true" foreign-key="fk_equipment_equipmenttypeid" />
+
+    <many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit"
+        column="organisationunitid" foreign-key="fk_equipment_organisationunitid" />
+
+    <many-to-one name="model" class="org.hisp.dhis.coldchain.model.Model" column="modelid"
+      not-null="false" foreign-key="fk_equipment_modelid" />
+
+    <property name="working" not-null="true" />
+    
+    <property name="registrationDate" column="registrationdate" />
+    
+    <property name="equipmentTrackingID" column="equipmenttrackingid" length="50" />
+    
+    <property name="cws" column="cws" length="200" />
+    
+	<set name="equipmentStatusUpdates" cascade="all-delete-orphan" inverse="true" >
+      <key column="equipmentid" />
+	  <one-to-many class="org.hisp.dhis.coldchain.equipment.EquipmentStatus" />
+    </set>
+	
+  </class>
+</hibernate-mapping>
