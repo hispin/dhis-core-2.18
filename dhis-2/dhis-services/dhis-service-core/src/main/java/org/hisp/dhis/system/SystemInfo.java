@@ -32,6 +32,7 @@ import java.util.Date;
 
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.system.database.DatabaseInfo;
+import org.springframework.beans.BeanUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -51,12 +52,18 @@ public class SystemInfo
 
     private String userAgent;
 
+    // -------------------------------------------------------------------------
+    // Volatile properties
+    // -------------------------------------------------------------------------
+
     private String calendar;
 
     private String dateFormat;
         
     private Date lastAnalyticsTableSuccess;
-    
+
+    private Date serverDate;
+
     // -------------------------------------------------------------------------
     // Stable properties
     // -------------------------------------------------------------------------
@@ -66,8 +73,6 @@ public class SystemInfo
     private String revision;
 
     private Date buildTime;
-
-    private Date serverDate;
 
     private String environmentVariable;
 
@@ -97,6 +102,13 @@ public class SystemInfo
 
     private String systemId;
 
+    public SystemInfo instance()
+    {
+        SystemInfo info = new SystemInfo();
+        BeanUtils.copyProperties( this, info );        
+        return info;
+    }
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -118,7 +130,7 @@ public class SystemInfo
         this.cpuCores = null;
         this.systemId = null;
     }
-
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
