@@ -104,6 +104,7 @@ public class GridUtils
     
     private static final String EMPTY = "";    
     private static final String XLS_SHEET_PREFIX = "Sheet ";
+    private static final int JXL_MAX_COLS = 256;
     
     private static final NodeFilter HTML_ROW_FILTER = new OrFilter( new TagNameFilter( "td" ), new TagNameFilter( "th" ) );    
     
@@ -271,6 +272,13 @@ public class GridUtils
             return;
         }
         
+        int cols = grid.getVisibleHeaders().size();
+        
+        if ( cols > JXL_MAX_COLS )
+        {
+            log.warn( "Grid will be truncated, no of columns is greater than JXL max limit: " + cols + "/" + JXL_MAX_COLS );
+        }
+        
         WritableSheet sheet = workbook.createSheet( sheetName, sheetNo );
 
         int rowNumber = 1;
@@ -311,6 +319,11 @@ public class GridUtils
                     String content = column != null ? String.valueOf( column ) : EMPTY;
                     
                     sheet.addCell( new Label( columnIndex++, rowNumber, content, XLS_FORMAT_TEXT ) );
+                }
+                
+                if ( columnIndex >= JXL_MAX_COLS )
+                {
+                    break;
                 }
             }
 
