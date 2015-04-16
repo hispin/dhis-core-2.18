@@ -30,8 +30,9 @@ package org.hisp.dhis.importexport.action.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dxf2.gml.GmlImportService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.dxf2.gml.GmlImportService;
+
 
 import org.hisp.dhis.scheduling.TaskId;
 
@@ -91,6 +92,8 @@ public class ImportMetaDataGmlTask
         catch ( IOException | TransformerException e )
         {
             log.error( "Unable to read GML data from input stream", e );
+
+            throw new RuntimeException( "Failed to parse GML input stream", e );
         }
     }
 }
