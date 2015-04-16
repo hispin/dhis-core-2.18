@@ -115,7 +115,6 @@ public class SystemInfo
 
     public void clearSensitiveInfo()
     {
-        this.revision = null;
         this.javaVersion = null;
         this.javaVendor = null;
         this.javaHome = null;
