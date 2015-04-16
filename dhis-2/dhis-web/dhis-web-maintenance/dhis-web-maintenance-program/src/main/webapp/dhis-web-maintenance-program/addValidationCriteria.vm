@@ -27,7 +27,7 @@
 							#if( $programAttribute.attribute.valueType!='trackerAssociate')
 								#set($opt="")
 								#foreach($option in $programAttribute.attribute.optionSet.options)
-									#set($opt=$opt + ';' + $option )
+									#set($opt=$opt + ';' + $option.code + ':' + $option.name )
 								#end 
 								<option valuetype='$programAttribute.attribute.valueType' value="$programAttribute.attribute.uid" opt="$opt">$programAttribute.attribute.displayName</option>
 							#end

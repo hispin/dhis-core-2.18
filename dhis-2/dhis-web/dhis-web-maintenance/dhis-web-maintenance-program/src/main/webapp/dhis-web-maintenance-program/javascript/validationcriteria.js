@@ -53,7 +53,8 @@ function showDivValue() {
 	var value = getFieldValue('value');
 	var property = jQuery('#property option:selected');
 	var type = property.attr('valueType');
-	var propertyName = property.val();
+	var propertyName = property.val();	
+	enable('operator');
 	
 	var valueField = "";
 	 if(type=='bool') {
@@ -74,9 +75,13 @@ function showDivValue() {
 		var opts = property.attr('opt').split(";");
 		valueField = "<select id='value' name='value' class=\"{validate:{required:true}}\" style=\"width:140px;\">";
 		for(var i=1;i<opts.length;i++){
-			valueField += "<option value=\"" + opts[i] + "\" >" + opts[i] + "</option>";
+			var opt = opts[i].split(":");
+			valueField += "<option value=\"" + opt[0] + "\" >" + opt[1] + "</option>";
 		}
 		valueField += "</select>";
+		
+		setFieldValue('operator','0');
+		disable('operator');
 	}
 	else if( type == "phoneNumber" ){
 		valueField = "<input id='value' name='value' class=\"{validate:{phone:true,required:true}}\" style=\"width:140px;\" />";
