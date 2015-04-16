@@ -239,7 +239,7 @@ public class DefaultValidationRuleService
 
         Collection<ValidationRule> rules = getValidationTypeRulesForDataElements( dataSet.getDataElements() );
                 
-        log.info( "Using validation rules: " + rules.size() );
+        log.debug( "Using validation rules: " + rules.size() );
         
         Collection<OrganisationUnit> sources = new HashSet<>();
         sources.add( source );
