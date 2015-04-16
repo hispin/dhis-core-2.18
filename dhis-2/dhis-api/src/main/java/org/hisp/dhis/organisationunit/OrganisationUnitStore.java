@@ -67,6 +67,14 @@ public interface OrganisationUnitStore
     Collection<OrganisationUnit> getByNames( Collection<String> names );
 
     /**
+     * Retrieves all OrganisationUnits matching the given codes.
+     *
+     * @param codes codes of the OrganisationUnits to return.
+     * @return all OrganisationUnits matching the given codes.
+     */
+    Collection<OrganisationUnit> getByCodes( Collection<String> codes );
+
+    /**
      * Returns all OrganisationUnits by status.
      *
      * @param active Get active or inactive

@@ -29,7 +29,11 @@ package org.hisp.dhis.dxf2.gml;
  */
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
+import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.dxf2.metadata.MetaData;
@@ -50,6 +54,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -73,6 +80,9 @@ public class DefaultGmlImportService
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
+
     // -------------------------------------------------------------------------
     // GmlImportService implementation
     // -------------------------------------------------------------------------
@@ -82,48 +92,43 @@ public class DefaultGmlImportService
         throws IOException, TransformerException
     {
         InputStream dxfStream = transformGml( inputStream );
-
         MetaData metaData = renderService.fromXml( dxfStream, MetaData.class );
-
         dxfStream.close();
 
-        Map<String, OrganisationUnit> namedMap = Maps.uniqueIndex( metaData.getOrganisationUnits(),
-            new Function<OrganisationUnit, String>()
-            {
-                @Override
-                public String apply( OrganisationUnit organisationUnit )
-                {
-                    return organisationUnit.getName();
-                }
-            }
-        );
+        Map<String, OrganisationUnit> uidMap  = Maps.newHashMap(), codeMap = Maps.newHashMap(), nameMap = Maps.newHashMap();
 
-        // Fetch persisted OrganisationUnits and merge imported GML properties
-        Collection<OrganisationUnit> persistedOrgUnits = organisationUnitService.getOrganisationUnitsByNames( namedMap.keySet() );
+        matchAndFilterOnIdentifiers( metaData.getOrganisationUnits(), uidMap, codeMap, nameMap );
 
-        for( OrganisationUnit persisted : persistedOrgUnits )
+        Map<String, OrganisationUnit> persistedUidMap  = getMatchingPersistedOrgUnits( uidMap.keySet(),  IdentifiableProperty.UID );
+        Map<String, OrganisationUnit> persistedCodeMap = getMatchingPersistedOrgUnits( codeMap.keySet(), IdentifiableProperty.CODE );
+        Map<String, OrganisationUnit> persistedNameMap = getMatchingPersistedOrgUnits( nameMap.keySet(), IdentifiableProperty.NAME );
+
+        Iterator<OrganisationUnit> persistedIterator = Iterators.concat( persistedUidMap.values().iterator(),
+            persistedCodeMap.values().iterator(), persistedNameMap.values().iterator() );
+
+        while ( persistedIterator.hasNext() )
         {
-            OrganisationUnit unit = namedMap.get( persisted.getName() );
+            OrganisationUnit persisted = persistedIterator.next(), imported = null;
 
-            if( unit == null || unit.getCoordinates() == null || unit.getFeatureType() == null )
+            if ( !Strings.isNullOrEmpty( persisted.getUid() ) && uidMap.containsKey( persisted.getUid() ) )
             {
-                continue;
+                imported = uidMap.get( persisted.getUid() );
+            }
+            else if ( !Strings.isNullOrEmpty( persisted.getCode() ) && codeMap.containsKey( persisted.getCode() ) )
+            {
+                imported = codeMap.get( persisted.getCode() );
+            }
+            else if ( !Strings.isNullOrEmpty( persisted.getName() ) && nameMap.containsKey( persisted.getName() ) )
+            {
+                imported = nameMap.get( persisted.getName() );
             }
 
-            String coordinates = unit.getCoordinates(),
-                   featureType = unit.getFeatureType();
-
-            unit.mergeWith( persisted );
-
-            unit.setCoordinates( coordinates );
-            unit.setFeatureType( featureType );
-
-            if( persisted.getParent() != null )
+            if ( imported == null || imported.getCoordinates() == null || imported.getFeatureType() == null )
             {
-                OrganisationUnit parent = new OrganisationUnit();
-                parent.setUid( persisted.getParent().getUid() );
-                unit.setParent( parent );
+                continue; // Failed to dereference a persisted entity for this org unit or geo data incomplete/missing, therefore ignore
             }
+
+            mergeNonGeoData( persisted, imported );
         }
 
         return metaData;
@@ -155,5 +160,66 @@ public class DefaultGmlImportService
         gml.getInputStream().close();
 
         return new ByteArrayInputStream( output.toByteArray() );
+    }
+
+    private void matchAndFilterOnIdentifiers( List<OrganisationUnit> sourceList, Map<String, OrganisationUnit> uidMap, Map<String,
+        OrganisationUnit> codeMap, Map<String, OrganisationUnit> nameMap )
+    {
+        for ( OrganisationUnit orgUnit : sourceList ) // Identifier Matching priority: uid, code, name
+        {
+            // Only matches if UID is actually in DB as an empty UID on input will be replaced by auto-generated value
+            if ( !Strings.isNullOrEmpty( orgUnit.getUid() ) && idObjectManager.exists( OrganisationUnit.class, orgUnit.getUid() ) )
+            {
+                uidMap.put( orgUnit.getUid(), orgUnit );
+            }
+            else if ( !Strings.isNullOrEmpty( orgUnit.getCode() ) )
+            {
+                codeMap.put( orgUnit.getCode(), orgUnit );
+            }
+            else if ( !Strings.isNullOrEmpty( orgUnit.getName() ) )
+            {
+                nameMap.put( orgUnit.getName(), orgUnit );
+            }
+        }
+    }
+
+    private Map<String, OrganisationUnit> getMatchingPersistedOrgUnits( Collection<String> identifiers, final IdentifiableProperty idProperty )
+    {
+        Collection<OrganisationUnit> orgUnits =
+            idProperty == IdentifiableProperty.UID ? organisationUnitService.getOrganisationUnitsByUid( identifiers ) :
+                idProperty == IdentifiableProperty.CODE ? organisationUnitService.getOrganisationUnitsByCodes( identifiers ) :
+                    idProperty == IdentifiableProperty.NAME ? organisationUnitService.getOrganisationUnitsByNames( identifiers ) :
+                        new HashSet<OrganisationUnit>();
+
+        return Maps.uniqueIndex( orgUnits,
+            new Function<OrganisationUnit, String>()
+            {
+                @Override
+                public String apply( OrganisationUnit organisationUnit )
+                {
+                    return idProperty == IdentifiableProperty.UID ? organisationUnit.getUid() :
+                        idProperty == IdentifiableProperty.CODE ? organisationUnit.getCode() :
+                            idProperty == IdentifiableProperty.NAME ? organisationUnit.getName() : null;
+                }
+            }
+        );
+    }
+
+    private void mergeNonGeoData( OrganisationUnit source, OrganisationUnit target )
+    {
+        String coordinates = target.getCoordinates(),
+            featureType = target.getFeatureType();
+
+        target.mergeWith( source );
+
+        target.setCoordinates( coordinates );
+        target.setFeatureType( featureType );
+
+        if ( source.getParent() != null )
+        {
+            OrganisationUnit parent = new OrganisationUnit();
+            parent.setUid( source.getParent().getUid() );
+            target.setParent( parent );
+        }
     }
 }

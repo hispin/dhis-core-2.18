@@ -88,7 +88,7 @@ public class ImportMetaDataGmlTask
         {
             gmlImportService.importGml( inputStream, userUid, importOptions, taskId );
         }
-        catch ( IOException | TransformerException e)
+        catch ( IOException | TransformerException e )
         {
             log.error( "Unable to read GML data from input stream", e );
         }

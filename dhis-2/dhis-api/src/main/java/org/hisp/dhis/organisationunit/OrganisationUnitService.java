@@ -208,6 +208,14 @@ public interface OrganisationUnitService
     Collection<OrganisationUnit> getOrganisationUnitsByNames( Collection<String> names );
 
     /**
+     * Returns all OrganisationUnits matching the given codes.
+     *
+     * @param codes codes of OrganisationUnits to return.
+     * @return the OrganisationUnits matching the given codes.
+     */
+    Collection<OrganisationUnit> getOrganisationUnitsByCodes( Collection<String> codes );
+
+    /**
      * Returns all root OrganisationUnits. A root OrganisationUnit is an
      * OrganisationUnit with no parent/the parent set to null.
      *

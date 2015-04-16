@@ -78,14 +78,27 @@
   </xsl:template>
 
   <xsl:template match="gml:featureMember">
-    <xsl:variable name="name" select=".//*[local-name()='Name' or local-name()='NAME' or local-name()='name']"/>
+    <xsl:variable name="uid"  select=".//*[local-name()='uid'  or local-name()='UID'  or local-name()='Uid']" />
+    <xsl:variable name="code" select=".//*[local-name()='code' or local-name()='CODE' or local-name()='Code']" />
+    <xsl:variable name="name" select=".//*[local-name()='name' or local-name()='NAME' or local-name()='Name']" />
     <organisationUnit>
-      <xsl:attribute name="name">
-        <xsl:value-of select="$name"/>
-      </xsl:attribute>
-      <xsl:attribute name="shortName">
-        <xsl:value-of select="substring($name,1,50)"/>
-      </xsl:attribute>
+      <xsl:choose> <!-- Priority is uid, code, name. First match in order excludes the others -->
+        <xsl:when test="$uid != ''">
+          <xsl:attribute name="id"> <!-- 'uid' is mapped to 'id' in dxf2 -->
+            <xsl:value-of select="$uid" />
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:when test="$code != ''">
+          <xsl:attribute name="code">
+            <xsl:value-of select="$code" />
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:when test="$name != ''">
+          <xsl:attribute name="name">
+            <xsl:value-of select="$name" />
+          </xsl:attribute>
+        </xsl:when>
+      </xsl:choose>
       <xsl:apply-templates select="./child::node()/child::node()/gml:Polygon|./child::node()/child::node()/gml:MultiPolygon|./child::node()/child::node()/gml:Point"/>
       <active>true</active>
     </organisationUnit>

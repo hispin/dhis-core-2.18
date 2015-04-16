@@ -271,9 +271,16 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getAllEqNameIgnoreCase( name );
     }
 
-    @Override public Collection<OrganisationUnit> getOrganisationUnitsByNames( Collection<String> names )
+    @Override
+    public Collection<OrganisationUnit> getOrganisationUnitsByNames( Collection<String> names )
     {
         return i18n( i18nService, organisationUnitStore.getByNames( names ) );
+    }
+
+    @Override
+    public Collection<OrganisationUnit> getOrganisationUnitsByCodes( Collection<String> codes )
+    {
+        return i18n( i18nService, organisationUnitStore.getByCodes( codes ) );
     }
 
     @Override
