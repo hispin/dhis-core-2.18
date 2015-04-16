@@ -177,6 +177,12 @@ public class DefaultAnalyticsTableService
         resourceTableService.generatePeriodTable();
         resourceTableService.generateDatePeriodTable();
         resourceTableService.generateDataElementCategoryOptionComboTable();
+        
+        if ( systemSettingManager.hideUnapprovedDataInAnalytics() )
+        {
+            resourceTableService.generateDataApprovalMinLevelTable();
+        }
+        
         resourceTableService.createAllSqlViews();
     }
     

@@ -207,6 +207,12 @@ public class DefaultSystemSettingManager
     }
 
     @Override
+    public boolean hideUnapprovedDataInAnalytics()
+    {
+        return (Boolean) getSystemSetting( SystemSettingManager.KEY_HIDE_UNAPPROVED_DATA_IN_ANALYTICS, false );
+    }
+
+    @Override
     public String googleAnalyticsUA()
     {
         return StringUtils.trimToNull( (String) getSystemSetting( KEY_GOOGLE_ANALYTICS_UA ) );

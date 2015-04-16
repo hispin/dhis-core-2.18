@@ -42,6 +42,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,6 +50,7 @@ import org.hisp.dhis.calendar.Calendar;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.CategoryOptionGroup;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
@@ -61,6 +63,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.DailyPeriodType;
@@ -124,6 +127,13 @@ public class DefaultResourceTableService
     public void setSqlViewService( SqlViewService sqlViewService )
     {
         this.sqlViewService = sqlViewService;
+    }
+
+    private DataApprovalLevelService dataApprovalLevelService;
+
+    public void setDataApprovalLevelService( DataApprovalLevelService dataApprovalLevelService )
+    {
+        this.dataApprovalLevelService = dataApprovalLevelService;
     }
 
     // -------------------------------------------------------------------------
@@ -506,6 +516,24 @@ public class DefaultResourceTableService
         resourceTableStore.createAndGenerateDataElementCategoryOptionCombo();
 
         log.info( "Data element category option combo table generated" );
+    }
+
+    // -------------------------------------------------------------------------
+    // DataApprovalMinLevelTable
+    // -------------------------------------------------------------------------
+
+    @Override
+    @Transactional
+    public void generateDataApprovalMinLevelTable()
+    {
+        Set<OrganisationUnitLevel> levels = dataApprovalLevelService.getOrganisationUnitApprovalLevels();
+        
+        if ( !levels.isEmpty() )
+        {
+            resourceTableStore.createAndPopulateDataApprovalMinLevel( levels );
+        
+            log.info( "Data approval min level table generated" );
+        }
     }
     
     // -------------------------------------------------------------------------

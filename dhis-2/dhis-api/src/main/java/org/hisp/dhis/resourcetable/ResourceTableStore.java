@@ -29,12 +29,14 @@ package org.hisp.dhis.resourcetable;
  */
 
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
 /**
  * @author Lars Helge Overland
@@ -49,6 +51,7 @@ public interface ResourceTableStore
     final String TABLE_NAME_PERIOD_STRUCTURE = "_periodstructure";
     final String TABLE_NAME_DATE_PERIOD_STRUCTURE = "_dateperiodstructure";
     final String TABLE_NAME_DATA_ELEMENT_CATEGORY_OPTION_COMBO = "_dataelementcategoryoptioncombo";
+    final String TABLE_NAME_DATA_APPROVAL_MIN_LEVEL = "_dataapprovalminlevel";
     
     /**
      * Performs a batch update.
@@ -130,5 +133,12 @@ public interface ResourceTableStore
     /**
      * Creates and generates table.
      */
-    public void createAndGenerateDataElementCategoryOptionCombo();
+    void createAndGenerateDataElementCategoryOptionCombo();
+    
+    /**
+     * Creates and populates data approval minimum level table.
+     * 
+     * @param levels the organisation unit levels part of approval levels.
+     */
+    void createAndPopulateDataApprovalMinLevel( Set<OrganisationUnitLevel> levels );
 }

@@ -29,6 +29,7 @@ package org.hisp.dhis.resourcetable.jdbc;
  */
 
 import java.util.List;
+import java.util.Set;
 
 import org.amplecode.quick.Statement;
 import org.apache.commons.logging.Log;
@@ -39,6 +40,7 @@ import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.resourcetable.ResourceTableStore;
 import org.hisp.dhis.resourcetable.statement.CreateCategoryOptionGroupSetTableStatement;
@@ -528,10 +530,10 @@ public class JdbcResourceTableStore
             "dataelementuid VARCHAR(11) NOT NULL, " +
             "categoryoptioncomboid INTEGER NOT NULL, " +
             "categoryoptioncombouid VARCHAR(11) NOT NULL)";
+
+        log.info( "Create data element category option combo SQL: " + create );
         
         jdbcTemplate.execute( create );
-        
-        log.info( "Create data element category option combo SQL: " + create );
         
         final String sql = 
             "insert into " + TABLE_NAME_DATA_ELEMENT_CATEGORY_OPTION_COMBO + 
@@ -552,5 +554,68 @@ public class JdbcResourceTableStore
         log.info( "Create data element category option combo index SQL: " + index );
 
         jdbcTemplate.execute( index );        
+    }
+
+    // -------------------------------------------------------------------------
+    // DataApprovalMinLevelTable
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void createAndPopulateDataApprovalMinLevel( Set<OrganisationUnitLevel> levels )
+    {
+        try
+        {
+            jdbcTemplate.execute( "drop table if exists " + TABLE_NAME_DATA_APPROVAL_MIN_LEVEL );            
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            // Do nothing, table does not exist
+        }
+        
+        final String create = "create table " + TABLE_NAME_DATA_APPROVAL_MIN_LEVEL + "(" +
+            "datasetid integer not null, " +
+            "periodid integer not null, " +
+            "organisationunitid integer not null, " +
+            "attributeoptioncomboid integer not null, " +
+            "minlevel integer not null);";
+
+        log.info( "Create data approval min level SQL: " + create );
+        
+        jdbcTemplate.execute( create );
+        
+        String sql = 
+            "insert into " + TABLE_NAME_DATA_APPROVAL_MIN_LEVEL + 
+            " (datasetid,periodid,organisationunitid,attributeoptioncomboid,minlevel) " +
+            "select da.datasetid, da.periodid, da.organisationunitid, da.attributeoptioncomboid, dal.level as minlevel " +
+            "from dataapproval da " +
+            "inner join dataapprovallevel dal on da.dataapprovallevelid=dal.dataapprovallevelid " +
+            "where not exists ( " +
+                "select 1 from dataapproval da2 " +
+                "inner join dataapprovallevel dal2 on da2.dataapprovallevelid=dal2.dataapprovallevelid " +
+                "inner join _orgunitstructure ous2 on da2.organisationunitid=ous2.organisationunitid " +
+                "where da.datasetid=da2.datasetid and da.periodid=da2.periodid and da.attributeoptioncomboid=da2.attributeoptioncomboid " +
+                "and dal2.level < dal.level " +
+                "and ( ";
+        
+        for ( OrganisationUnitLevel level : levels )
+        {
+            sql += "da.organisationunitid = ous2.idlevel" + level.getLevel() + " or ";
+        }
+        
+        sql = TextUtils.removeLastOr( sql ) + ") );";
+        
+        log.info( "Insert data approval min level SQL: " + sql );
+
+        jdbcTemplate.execute( sql );
+        
+        final String index = 
+            "create index in_dataapprovalminlevel_datasetid on _dataapprovalminlevel(datasetid);" +
+            "create index in_dataapprovalminlevel_periodid on _dataapprovalminlevel(periodid);" +
+            "create index in_dataapprovalminlevel_organisationunitid on _dataapprovalminlevel(organisationunitid);" +
+            "create index in_dataapprovalminlevel_attributeoptioncomboid on _dataapprovalminlevel(attributeoptioncomboid);";
+        
+        log.info( "Create data approval min level index SQL: " + index );
+        
+        jdbcTemplate.execute( index );
     }
 }

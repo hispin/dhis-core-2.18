@@ -96,6 +96,11 @@ public interface ResourceTableService
     void generateDataElementCategoryOptionComboTable();
     
     /**
+     * Generates a resource table for data approval aggregated to minimum level.
+     */
+    void generateDataApprovalMinLevelTable();
+    
+    /**
      * Create all SQL views.
      */
     void createAllSqlViews();
