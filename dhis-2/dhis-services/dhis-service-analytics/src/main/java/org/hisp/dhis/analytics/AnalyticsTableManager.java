@@ -74,7 +74,12 @@ public interface AnalyticsTableManager
      * Returns the temporary table name.
      */
     String getTempTableName();
-        
+    
+    /**
+     * Performs work before tables are being created.
+     */
+    void preCreateTables();
+    
     /**
      * Attempts to drop and then create analytics table.
      * 
