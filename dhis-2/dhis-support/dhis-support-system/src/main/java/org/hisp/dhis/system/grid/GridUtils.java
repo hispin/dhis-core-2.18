@@ -297,7 +297,9 @@ public class GridUtils
             rowNumber++;
         }
         
-        for ( GridHeader header : grid.getVisibleHeaders() )
+        List<GridHeader> headers = ListUtils.subList( grid.getVisibleHeaders(), 0, JXL_MAX_COLS );
+        
+        for ( GridHeader header : headers )
         {
             sheet.addCell( new Label( columnIndex++, rowNumber, header.getColumn(), XLS_FORMAT_LABEL ) );
         }
@@ -308,7 +310,9 @@ public class GridUtils
         {
             columnIndex = 0;
 
-            for ( Object column : row )
+            List<Object> colums = ListUtils.subList( row, 0, JXL_MAX_COLS );
+            
+            for ( Object column : colums )
             {
                 if ( column != null && MathUtils.isNumeric( String.valueOf( column ) ) )
                 {
@@ -319,11 +323,6 @@ public class GridUtils
                     String content = column != null ? String.valueOf( column ) : EMPTY;
                     
                     sheet.addCell( new Label( columnIndex++, rowNumber, content, XLS_FORMAT_TEXT ) );
-                }
-                
-                if ( columnIndex >= JXL_MAX_COLS )
-                {
-                    break;
                 }
             }
 
