@@ -182,8 +182,7 @@ public class DefaultAnalyticsTableService
         resourceTableService.generateDataElementTable();
         resourceTableService.generatePeriodTable();
         resourceTableService.generateDatePeriodTable();
-        resourceTableService.generateDataElementCategoryOptionComboTable();
-        
+        resourceTableService.generateDataElementCategoryOptionComboTable();        
         resourceTableService.createAllSqlViews();
     }
     

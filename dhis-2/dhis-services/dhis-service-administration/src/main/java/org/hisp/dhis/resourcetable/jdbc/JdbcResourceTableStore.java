@@ -586,7 +586,7 @@ public class JdbcResourceTableStore
         String sql = 
             "insert into " + TABLE_NAME_DATA_APPROVAL_MIN_LEVEL + 
             " (datasetid,periodid,organisationunitid,attributeoptioncomboid,minlevel) " +
-            "select da.datasetid, da.periodid, da.organisationunitid, da.attributeoptioncomboid, dal.level as minlevel " +
+            "select da.datasetid, da.periodid, da.organisationunitid, da.attributeoptioncomboid, min(dal.level) as minlevel " +
             "from dataapproval da " +
             "inner join dataapprovallevel dal on da.dataapprovallevelid=dal.dataapprovallevelid " +
             "where not exists ( " +
@@ -602,7 +602,8 @@ public class JdbcResourceTableStore
             sql += "da.organisationunitid = ous2.idlevel" + level.getLevel() + " or ";
         }
         
-        sql = TextUtils.removeLastOr( sql ) + ") );";
+        sql = TextUtils.removeLastOr( sql ) + ") ) " +
+            "group by da.datasetid, da.periodid, da.organisationunitid, da.attributeoptioncomboid;";
         
         log.info( "Insert data approval min level SQL: " + sql );
 
