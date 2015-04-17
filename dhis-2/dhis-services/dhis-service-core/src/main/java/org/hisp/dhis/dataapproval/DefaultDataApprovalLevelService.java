@@ -568,14 +568,14 @@ public class DefaultDataApprovalLevelService
         
         User user = currentUserService.getCurrentUser();
 
-        Collection<OrganisationUnit> dataViewOrgUnits = user.getDataViewOrganisationUnits();
+        Collection<OrganisationUnit> orgUnits = user.getDataViewOrganisationUnits();
 
-        if ( dataViewOrgUnits == null || dataViewOrgUnits.isEmpty() )
+        if ( orgUnits == null || orgUnits.isEmpty() )
         {
-            dataViewOrgUnits = organisationUnitService.getRootOrganisationUnits();
+            orgUnits = organisationUnitService.getRootOrganisationUnits();
         }
 
-        for ( OrganisationUnit orgUnit : dataViewOrgUnits )
+        for ( OrganisationUnit orgUnit : orgUnits )
         {
             map.put( orgUnit, approvalLevel.getLevel() );
         }
