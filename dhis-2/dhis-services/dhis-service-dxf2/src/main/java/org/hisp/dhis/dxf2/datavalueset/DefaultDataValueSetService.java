@@ -897,6 +897,7 @@ public class DefaultDataValueSetService
         summary.setDescription( "Import process completed successfully" );
 
         notifier.notify( id, INFO, "Import done", true ).addTaskSummary( id, summary );
+        log.info( "Data value import done, total: " + totalCount + ", import: " + importCount + ", update: " + updateCount );
 
         dataValueSet.close();
 
