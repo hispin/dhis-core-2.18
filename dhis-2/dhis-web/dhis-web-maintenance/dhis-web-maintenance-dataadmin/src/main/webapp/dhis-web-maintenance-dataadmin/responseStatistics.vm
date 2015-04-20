@@ -53,8 +53,32 @@
         <td>$objects.getValue( "USERGROUP" )</td>
     </tr>
     <tr>
+        <td>$i18n.getString( "pivot_tables" )</td>
+        <td>$objects.getValue( "REPORTTABLE" )</td>
+    </tr>
+    <tr>
+        <td>$i18n.getString( "charts" )</td>
+        <td>$objects.getValue( "CHART" )</td>
+    </tr>
+    <tr>
+        <td>$i18n.getString( "maps" )</td>
+        <td>$objects.getValue( "MAP" )</td>
+    </tr>
+    <tr>
+        <td>$i18n.getString( "dashboards" )</td>
+        <td>$objects.getValue( "DASHBOARD" )</td>
+    </tr>
+    <tr>
         <td>$i18n.getString( "data_values" )</td>
         <td>$objects.getValue( "DATAVALUE" )</td>
+    </tr>
+    <tr>
+        <td>$i18n.getString( "programs" )</td>
+        <td>$objects.getValue( "PROGRAM" )</td>
+    </tr>
+    <tr>
+        <td>$i18n.getString( "events" )</td>
+        <td>$objects.getValue( "PROGRAMSTAGEINSTANCE" )</td>
     </tr>
     <tr>
     	<td colspan="2" style="height:15px"></td>
