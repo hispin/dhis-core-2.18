@@ -16,7 +16,7 @@
 
     <property name="lastUpdated" />
 
-    <property name="value" />
+    <property name="value" type="text" />
 
     <many-to-one name="attribute" class="org.hisp.dhis.attribute.Attribute" column="attributeid"
       foreign-key="fk_attributevalue_attributeid" not-null="true" />
