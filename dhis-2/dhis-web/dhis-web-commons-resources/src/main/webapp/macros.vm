@@ -122,7 +122,7 @@ function clearFilter() {
 </tr>
 #end
 
-#macro( trTextInput $args )
+#macro( trStringInput $args )
 #if( "$!args.name" == "" )
 	#set( $name = $!args.id )
 #else
@@ -133,6 +133,21 @@ function clearFilter() {
 	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
 	<td>
 		<input type="text" id="$!args.id" name="$!name" value="$!args.value" class="{validate:{required:$args.mandatory,rangelength:[1,230]}}" />
+	</td>
+</tr>
+#end
+
+#macro( trTextInput $args )
+#if( "$!args.name" == "" )
+	#set( $name = $!args.id )
+#else
+	#set( $name = $!args.name )
+#end
+
+<tr>
+	<td style="width: 200px;"><label for="$!args.id">$!args.text #if($args.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em>#end</label></td>
+	<td>
+		<textarea id="$!args.id" name="$!name" class="{validate:{required:$args.mandatory}}">$!args.value</textarea>
 	</td>
 </tr>
 #end
@@ -268,7 +283,7 @@ jQuery.each(attributes, function(i, item) {
 
 	json.id = jqItem.attr("id").split("_")[1];
 
-	if( jqItem.is("input[type='text']") )
+	if( jqItem.is("input[type='text']") || jqItem.is("textarea") )
 	{
 		json.value = jqItem.val();
 	}
@@ -305,8 +320,10 @@ jQuery.each(attributes, function(i, item) {
 		#end
 
 		#if( $attribute.valueType == "string" )
+			#trStringInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )
+		#elseif( $attribute.valueType == "text" )
 			#trTextInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )
-		#elseif(  $attribute.valueType == "bool" )
+		#elseif( $attribute.valueType == "bool" )
 			#trBooleanSelectInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )	
 		#elseif( $attribute.valueType == "date" )
 			#trDateInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )	

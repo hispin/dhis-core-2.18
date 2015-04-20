@@ -69,6 +69,7 @@
 		<td>
 			<select id="valueType" name="valueType" style="width:20em">
 				<option value="string" #if( $attribute.valueType == 'string') selected="selected" #end>$i18n.getString( "text" )</option>
+				<option value="text" #if( $attribute.valueType == 'text') selected="selected" #end>$i18n.getString( "long_text" )</option>
 				<option value="bool" #if( $attribute.valueType == 'bool') selected="selected" #end>$i18n.getString( "yes_no" )</option>
 				<option value="date" #if( $attribute.valueType == 'date') selected="selected" #end>$i18n.getString( "date" )</option>
 				<option value="number" #if( $attribute.valueType == 'number') selected="selected" #end>$i18n.getString( "number" )</option>
