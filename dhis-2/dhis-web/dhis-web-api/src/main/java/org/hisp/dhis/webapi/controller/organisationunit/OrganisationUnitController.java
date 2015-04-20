@@ -193,6 +193,14 @@ public class OrganisationUnitController
             options.getOptions().put( "useWrapper", "true" );
             organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( uid ) );
         }
+        else if ( options.contains( "includeAncestors" ) )
+        {
+            options.getOptions().put( "useWrapper", "true" );
+            organisationUnits.add( organisationUnit );
+            List<OrganisationUnit> ancestors = organisationUnit.getAncestors();
+            Collections.reverse( ancestors );
+            organisationUnits.addAll( ancestors );
+        }
         else if ( options.contains( "level" ) )
         {
             options.getOptions().put( "useWrapper", "true" );
