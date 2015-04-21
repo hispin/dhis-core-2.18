@@ -289,6 +289,8 @@ public class TableAlteror
 
         executeSql( "DROP SEQUENCE period_periodid_seq" );
         
+        executeSql( "drop index index_patientdatavalue" );
+        
         updateProgramStageList();
         updateProgramAttributeList();
         
