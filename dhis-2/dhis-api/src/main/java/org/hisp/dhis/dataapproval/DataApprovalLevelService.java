@@ -110,7 +110,8 @@ public interface DataApprovalLevelService
     DataApprovalLevel getLowestDataApprovalLevel( OrganisationUnit orgUnit, DataElementCategoryOptionCombo attributeOptionCombo );
 
     /**
-     * Gets a list of all data approval levels.
+     * Gets a list of all data approval levels, ordered by level in ascending order,
+     * i.e. from 1 to n.
      *
      * @return list of all data approval levels, ordered from 1 to n.
      */

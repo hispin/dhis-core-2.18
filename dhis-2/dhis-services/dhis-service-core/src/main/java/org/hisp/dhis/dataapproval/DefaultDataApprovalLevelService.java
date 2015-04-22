@@ -682,8 +682,10 @@ public class DefaultDataApprovalLevelService
     {
         DataApprovalLevel userLevel = getUserApprovalLevel( orgUnit, user, approvalLevels );
 
+        int totalLevels = approvalLevels.size();
+        
         return userLevel == null ? 0 : 
-            userLevel.getLevel() == approvalLevels.size() ? APPROVAL_LEVEL_UNAPPROVED :
+            userLevel.getLevel() == totalLevels ? APPROVAL_LEVEL_UNAPPROVED :
             userLevel.getLevel() + 1;
     }
 
@@ -713,13 +715,13 @@ public class DefaultDataApprovalLevelService
      */
     private DataApprovalLevel getUserApprovalLevel( OrganisationUnit orgUnit, User user, List<DataApprovalLevel> approvalLevels )
     {
-        int orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+        int userOrgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
 
         DataApprovalLevel userLevel = null;
 
         for ( DataApprovalLevel level : approvalLevels )
         {
-            if ( level.getOrgUnitLevel() >= orgUnitLevel &&
+            if ( level.getOrgUnitLevel() >= userOrgUnitLevel &&
                 securityService.canRead( level ) &&
                 canReadCOGS( user, level.getCategoryOptionGroupSet() ) )
             {
