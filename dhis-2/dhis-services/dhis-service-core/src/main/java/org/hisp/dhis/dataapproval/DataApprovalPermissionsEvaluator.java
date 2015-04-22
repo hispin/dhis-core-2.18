@@ -197,10 +197,9 @@ class DataApprovalPermissionsEvaluator
         }
 
         boolean mayReadData = mayApprove || mayUnapprove || mayAccept || mayUnaccept ||
-                ( organisationUnitService.isInUserHierarchy( da.getOrganisationUnit() ) && ( userLevel >= dataLevel || authorizedToViewUnapprovedData || !hideUnapprovedData ) );
+                ( ( userLevel >= dataLevel || authorizedToViewUnapprovedData || !hideUnapprovedData ) && organisationUnitService.isInUserHierarchy( da.getOrganisationUnit() ) );
 
         log.debug( "getPermissions orgUnit " + ( da.getOrganisationUnit() == null ? "(null)" : da.getOrganisationUnit().getName() )
-                + ( organisationUnitService.isInUserHierarchy( orgUnit ) ? "*" : "" )
                 + " combo " + da.getAttributeOptionCombo().getName() + " state " + s.name()
                 + " isApproved " + s.isApproved() + " isApprovable " + s.isApprovable() + " isUnapprovable " + s.isUnapprovable()
                 + " isAccepted " + s.isAccepted() + " isAcceptable " + s.isAcceptable() + " isUnacceptable " + s.isUnacceptable()
