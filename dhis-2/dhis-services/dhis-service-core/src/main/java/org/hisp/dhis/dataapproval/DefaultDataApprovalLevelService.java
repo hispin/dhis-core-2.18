@@ -158,13 +158,11 @@ public class DefaultDataApprovalLevelService
 
         int levelAboveOrgUnitLevel = 0;
 
-        tracePrint( "getHighestDataApprovalLevel - data approval level count: " + getAllDataApprovalLevels().size() );
-
         List<DataApprovalLevel> userApprovalLevels = getUserDataApprovalLevels();
         
         for ( DataApprovalLevel level : userApprovalLevels )
         {
-            tracePrint( "getHighestDataApprovalLevel - data approval level: " + level.getName() );
+            log.debug( "Get highest data approval level: " + level.getName() );
 
             if ( level.getOrgUnitLevel() == orgUnitLevel )
             {
@@ -587,11 +585,6 @@ public class DefaultDataApprovalLevelService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private void tracePrint( String s ) // Temporary, for development
-    {
-        log.trace( s );
-    }
-
     /**
      * Swaps a data approval level with the next higher level.
      *
@@ -718,11 +711,6 @@ public class DefaultDataApprovalLevelService
 
         for ( DataApprovalLevel level : getAllDataApprovalLevels() )
         {
-            tracePrint("userApprovalLevel( " + orgUnit.getName() + "-" + orgUnitLevel + " ) approval level "
-                + level.getName() + " " + securityService.canRead( level )
-                + " COGS " + ( level.getCategoryOptionGroupSet() == null ? "(null)" : level.getCategoryOptionGroupSet().getName() )
-                + " canReadCOGS " + canReadCOGS( user, level.getCategoryOptionGroupSet() ) );
-
             if ( level.getOrgUnitLevel() >= orgUnitLevel
                 && securityService.canRead( level )
                 && canReadCOGS( user, level.getCategoryOptionGroupSet() ) )
