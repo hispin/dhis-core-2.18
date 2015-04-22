@@ -30,6 +30,7 @@ package org.hisp.dhis.dd.action.category;
 
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.apache.commons.lang3.StringUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -85,7 +86,7 @@ public class UpdateCategoryOptionComboAction
     public String execute()
     {
         DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( id );
-        optionCombo.setCode( code );
+        optionCombo.setCode( StringUtils.trimToNull( code ) );
         optionCombo.setIgnoreApproval( ignoreApproval );
 
         categoryService.updateDataElementCategoryOptionCombo( optionCombo );
