@@ -809,12 +809,12 @@ Ext.onReady( function() {
 
 				return function() {
 					if (!Ext.isObject(config)) {
-						console.log('Record: config is not an object: ' + config);
+						ns.alert('Record: config is not an object: ' + config, true);
 						return;
 					}
 
 					if (!Ext.isString(config.id)) {
-						alert('Record: id is not text: ' + config);
+						ns.alert('Record: id is not text: ' + config, true);
 						return;
 					}
 
@@ -988,19 +988,19 @@ Ext.onReady( function() {
 
 							// Indicators as filter
 							if (layout.filters[i].dimension === dimConf.indicator.objectName) {
-								web.message.alert(EV.i18n.indicators_cannot_be_specified_as_filter || 'Indicators cannot be specified as filter');
+								ns.alert(EV.i18n.indicators_cannot_be_specified_as_filter || 'Indicators cannot be specified as filter', true);
 								return;
 							}
 
 							// Categories as filter
 							if (layout.filters[i].dimension === dimConf.category.objectName) {
-								web.message.alert(EV.i18n.categories_cannot_be_specified_as_filter || 'Categories cannot be specified as filter');
+								ns.alert(EV.i18n.categories_cannot_be_specified_as_filter || 'Categories cannot be specified as filter', true);
 								return;
 							}
 
 							// Data sets as filter
 							if (layout.filters[i].dimension === dimConf.dataSet.objectName) {
-								web.message.alert(EV.i18n.data_sets_cannot_be_specified_as_filter || 'Data sets cannot be specified as filter');
+								ns.alert(EV.i18n.data_sets_cannot_be_specified_as_filter || 'Data sets cannot be specified as filter', true);
 								return;
 							}
 						}
@@ -1008,25 +1008,25 @@ Ext.onReady( function() {
 
 					// dc and in
 					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.indicator.objectName]) {
-						web.message.alert('Indicators and detailed data elements cannot be specified together');
+						ns.alert('Indicators and detailed data elements cannot be specified together', true);
 						return;
 					}
 
 					// dc and de
 					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.dataElement.objectName]) {
-						web.message.alert('Detailed data elements and totals cannot be specified together');
+						ns.alert('Detailed data elements and totals cannot be specified together', true);
 						return;
 					}
 
 					// dc and ds
 					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.dataSet.objectName]) {
-						web.message.alert('Data sets and detailed data elements cannot be specified together');
+						ns.alert('Data sets and detailed data elements cannot be specified together', true);
 						return;
 					}
 
 					// dc and co
 					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.category.objectName]) {
-						web.message.alert('Categories and detailed data elements cannot be specified together');
+						ns.alert('Categories and detailed data elements cannot be specified together', true);
 						return;
 					}
 
@@ -1054,7 +1054,7 @@ Ext.onReady( function() {
 
                     // period
                     if (!Ext.Array.contains(objectNames, 'pe') && !(config.startDate && config.endDate)) {
-                        alert('At least one fixed period, one relative period or start/end dates must be specified');
+                        ns.alert('At least one fixed period, one relative period or start/end dates must be specified');
                         return;
                     }
 
@@ -1064,7 +1064,7 @@ Ext.onReady( function() {
 
 					// column
 					if (!config.columns) {
-						alert('No series items selected');
+						ns.alert('No series items selected');
 						return;
 					}
 
@@ -1076,7 +1076,7 @@ Ext.onReady( function() {
 
 					// row
 					if (!config.rows) {
-						alert('No category items selected');
+						ns.alert('No category items selected');
 						return;
 					}
 
@@ -1112,7 +1112,7 @@ Ext.onReady( function() {
 
 					// properties
                     layout.showValues = Ext.isBoolean(config.showData) ? config.showData : (Ext.isBoolean(config.showValues) ? config.showValues : true);
-                    layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : (Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : true);
+                    layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : (Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : false);
                     layout.showTrendLine = Ext.isBoolean(config.regression) ? config.regression : (Ext.isBoolean(config.showTrendLine) ? config.showTrendLine : false);
                     layout.targetLineValue = Ext.isNumber(config.targetLineValue) ? config.targetLineValue : null;
                     layout.targetLineTitle = Ext.isString(config.targetLineLabel) && !Ext.isEmpty(config.targetLineLabel) ? config.targetLineLabel :
@@ -2525,13 +2525,6 @@ Ext.onReady( function() {
 				}
 			};
 
-			// message
-			web.message = {};
-
-			web.message.alert = function(message) {
-				console.log(message);
-			};
-
 			// analytics
 			web.analytics = {};
 
@@ -2617,7 +2610,7 @@ Ext.onReady( function() {
 
                 msg += '\n\n' + 'Hint: A good way to reduce the number of items is to use relative periods and level/group organisation unit selection modes.';
 
-                alert(msg);
+                ns.alert(msg);
 			};
 
 			// report
@@ -3401,7 +3394,8 @@ Ext.onReady( function() {
                         position = 'top',
                         padding = 0,
                         positions = ['top', 'right', 'bottom', 'left'],
-                        series = chartConfig.series;
+                        series = chartConfig.series,
+                        labelMarkerSize = xLayout.legendStyle ? xLayout.legendStyle.labelMarkerSize : null;
 
                     for (var i = 0, title; i < series.length; i++) {
                         title = series[i].title;
@@ -3456,7 +3450,7 @@ Ext.onReady( function() {
                         itemSpacing: 3,
                         labelFont: labelFont,
                         labelColor: labelColor,
-                        labelMarkerSize: xLayout.legendStyle.labelMarkerSize
+                        labelMarkerSize: labelMarkerSize
                     });
                 };
 
@@ -4847,7 +4841,18 @@ Ext.onReady( function() {
             init.skipMask = Ext.isBoolean(config.skipMask) ? config.skipMask : false;
             init.skipFade = Ext.isBoolean(config.skipFade) ? config.skipFade : false;
 
-            // alert
+            // alerts
+            ns.alert = function(text, isLog) {
+                if (isLog) {
+                    console.log(text);
+                }
+                else {
+                    if (text) {
+                        alert(text);
+                    }
+                }
+            };
+
             init.alert = function(text) {
                 var div = Ext.get(config.el);
 

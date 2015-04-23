@@ -546,6 +546,10 @@ Ext.onReady( function() {
 					layout.sortOrder = Ext.isNumber(config.sortOrder) ? config.sortOrder : 0;
 					layout.topLimit = Ext.isNumber(config.topLimit) ? config.topLimit : 0;
 
+                    if (Ext.isString(config.displayProperty)) {
+                        layout.displayProperty = config.displayProperty;
+                    }
+
 					if (!validateSpecialCases()) {
 						return;
 					}
@@ -1949,7 +1953,8 @@ Ext.onReady( function() {
                         'variance': 'VARIANCE',
                         'min': 'MIN',
                         'max': 'MAX'
-                    };
+                    },
+                    displayProperty = xLayout.displayProperty || init.userAccount.settings.keyAnalysisDisplayProperty || 'name';
 
 				for (var i = 0, dimName, items; i < axisDimensionNames.length; i++) {
 					dimName = axisDimensionNames[i];
@@ -2001,7 +2006,7 @@ Ext.onReady( function() {
                 }
 
                 // display property
-                paramString += '&displayProperty=' + init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
+                paramString += '&displayProperty=' + displayProperty.toUpperCase();
 
 				return paramString;
 			};

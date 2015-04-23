@@ -46,8 +46,8 @@
 				url: url,
 				el: 'chart2',
                 //type: 'pie',
-				columns: [{dimension: 'in', items: [{id: 'Uvn6LCg7dVU'}, {id: 'OdiHJayrsKo'}, {id: 'sB79w2hiLp8'}, {id: 'AUqdhY4mpvp'}]}],
-				rows: [{dimension: 'pe', items: [{id: 'LAST_6_MONTHS'}]}],
+				columns: [{dimension: 'in', items: [{id: 'Uvn6LCg7dVU'}]}],
+				rows: [{dimension: 'pe', items: [{id: '2012'}, {id: '2013'}, {id: '2014'}, {id: '2015'}]}],
                 filters: [{dimension: 'ou', items: [{id: 'USER_ORGUNIT'}]}],
                 domainAxisTitle: 'PERIODS',
                 rangeAxisTitle: 'PERCENT',
@@ -68,7 +68,9 @@
                 seriesStyle: {
                     labelFont: '10px sans-serif',
                     labelColor: 'black'
-                }
+                },
+                showValues: false,
+                hideEmptyRows: false
 			});
 		});
 	</script>

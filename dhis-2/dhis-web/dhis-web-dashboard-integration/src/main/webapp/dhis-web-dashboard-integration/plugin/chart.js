@@ -1150,7 +1150,7 @@ Ext.onReady(function() {
 
                     // properties
                     layout.showValues = Ext.isBoolean(config.showData) ? config.showData : (Ext.isBoolean(config.showValues) ? config.showValues : true);
-                    layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : (Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : true);
+                    layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : (Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : false);
                     layout.showTrendLine = Ext.isBoolean(config.regression) ? config.regression : (Ext.isBoolean(config.showTrendLine) ? config.showTrendLine : false);
                     layout.targetLineValue = Ext.isNumber(config.targetLineValue) ? config.targetLineValue : null;
                     layout.targetLineTitle = Ext.isString(config.targetLineLabel) && !Ext.isEmpty(config.targetLineLabel) ? config.targetLineLabel :
@@ -1174,6 +1174,10 @@ Ext.onReady(function() {
                     layout.title = Ext.isString(config.title) &&  !Ext.isEmpty(config.title) ? config.title : null;
 
                     layout.parentGraphMap = Ext.isObject(config.parentGraphMap) ? config.parentGraphMap : null;
+
+                    if (Ext.isString(config.displayProperty)) {
+                        layout.displayProperty = config.displayProperty;
+                    }
 
                     // style
                     if (Ext.isObject(config.domainAxisStyle)) {
@@ -2229,7 +2233,8 @@ Ext.onReady(function() {
                     paramString = '?',
                     addCategoryDimension = false,
                     map = xLayout.dimensionNameItemsMap,
-                    dx = dimConf.indicator.dimensionName;
+                    dx = dimConf.indicator.dimensionName,
+                    displayProperty = xLayout.displayProperty || init.userAccount.settings.keyAnalysisDisplayProperty || 'name';
 
                 for (var i = 0, dimName, items; i < axisDimensionNames.length; i++) {
                     dimName = axisDimensionNames[i];
@@ -2273,7 +2278,7 @@ Ext.onReady(function() {
                 }
 
                 // display property
-                paramString += '&displayProperty=' + init.userAccount.settings.keyAnalysisDisplayProperty.toUpperCase();
+                paramString += '&displayProperty=' + displayProperty.toUpperCase();
 
                 return paramString;
             };
@@ -3026,7 +3031,8 @@ Ext.onReady(function() {
                         position = 'top',
                         padding = 0,
                         positions = ['top', 'right', 'bottom', 'left'],
-                        series = chartConfig.series;
+                        series = chartConfig.series,
+                        labelMarkerSize = xLayout.legendStyle ? xLayout.legendStyle.labelMarkerSize : null;
 
                     for (var i = 0, title; i < series.length; i++) {
                         title = series[i].title;
@@ -3081,7 +3087,7 @@ Ext.onReady(function() {
                         itemSpacing: 3,
                         labelFont: labelFont,
                         labelColor: labelColor,
-                        labelMarkerSize: xLayout.legendStyle.labelMarkerSize
+                        labelMarkerSize: labelMarkerSize
                     });
                 };
 
