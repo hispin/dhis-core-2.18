@@ -33,6 +33,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Date;
 
@@ -41,7 +42,6 @@ import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class DateUtilsTest
 {
@@ -104,5 +104,16 @@ public class DateUtilsTest
         assertEquals( date1, DateUtils.max( date1, date5, date4 ) );
         
         assertNull( DateUtils.max( date4, date5, date6 ) );
+    }
+    
+    @Test
+    public void testGetPrettyInterval()
+    {
+        Date start = new DateTime( 2014, 5, 18, 15, 10, 5, 12 ).toDate();
+        Date end = new DateTime( 2014, 5, 19, 11, 45, 42, 56 ).toDate();
+        
+        String interval = DateUtils.getPrettyInterval( start, end );
+        
+        assertNotNull( interval );
     }
 }

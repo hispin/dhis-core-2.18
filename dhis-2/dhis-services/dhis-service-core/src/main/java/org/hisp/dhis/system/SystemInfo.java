@@ -59,10 +59,12 @@ public class SystemInfo
     private String calendar;
 
     private String dateFormat;
-        
-    private Date lastAnalyticsTableSuccess;
 
     private Date serverDate;
+    
+    private Date lastAnalyticsTableSuccess;
+    
+    private String intervalSinceLastAnalyticsTableSuccess;
 
     // -------------------------------------------------------------------------
     // Stable properties
@@ -184,6 +186,18 @@ public class SystemInfo
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Date getServerDate()
+    {
+        return serverDate;
+    }
+
+    public void setServerDate( Date serverDate )
+    {
+        this.serverDate = serverDate;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getLastAnalyticsTableSuccess()
     {
         return lastAnalyticsTableSuccess;
@@ -192,6 +206,18 @@ public class SystemInfo
     public void setLastAnalyticsTableSuccess( Date lastAnalyticsTableSuccess )
     {
         this.lastAnalyticsTableSuccess = lastAnalyticsTableSuccess;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getIntervalSinceLastAnalyticsTableSuccess()
+    {
+        return intervalSinceLastAnalyticsTableSuccess;
+    }
+
+    public void setIntervalSinceLastAnalyticsTableSuccess( String intervalSinceLastAnalyticsTableSuccess )
+    {
+        this.intervalSinceLastAnalyticsTableSuccess = intervalSinceLastAnalyticsTableSuccess;
     }
 
     @JsonProperty
@@ -228,18 +254,6 @@ public class SystemInfo
     public void setBuildTime( Date buildTime )
     {
         this.buildTime = buildTime;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Date getServerDate()
-    {
-        return serverDate;
-    }
-
-    public void setServerDate( Date serverDate )
-    {
-        this.serverDate = serverDate;
     }
 
     @JsonProperty

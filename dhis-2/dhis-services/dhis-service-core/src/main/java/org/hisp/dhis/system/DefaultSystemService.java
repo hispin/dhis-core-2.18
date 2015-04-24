@@ -47,6 +47,7 @@ import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -88,13 +89,21 @@ public class DefaultSystemService
         {
             systemInfo = getFixedSystemInfo();
         }
+
+        // ---------------------------------------------------------------------
+        // Set volatile properties
+        // ---------------------------------------------------------------------
+
+        Date lastAnalyticsTableSuccess = (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_ANALYTICS_TABLES_UPDATE );
+        Date now = new Date();
         
         SystemInfo info = systemInfo.instance();
         
         info.setCalendar( calendarService.getSystemCalendar().name() );
         info.setDateFormat( calendarService.getSystemDateFormat().getJs() );
-        info.setLastAnalyticsTableSuccess( (Date) systemSettingManager.getSystemSetting( KEY_LAST_SUCCESSFUL_ANALYTICS_TABLES_UPDATE ) );
         info.setServerDate( new Date() );
+        info.setLastAnalyticsTableSuccess( lastAnalyticsTableSuccess );
+        info.setIntervalSinceLastAnalyticsTableSuccess( DateUtils.getPrettyInterval( lastAnalyticsTableSuccess, now ) );
         
         return info;
     }

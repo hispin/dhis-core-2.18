@@ -28,13 +28,7 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Months;
+import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,7 +37,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 /**
  * @author Lars Helge Overland
@@ -63,15 +65,22 @@ public class DateUtils
         new SimpleDateFormat( "yyyy" )
     };
 
-    //TODO replace with FastDateParser, SimpleDateFormat is not thead-safe
+    private static final String SEP = ", ";
+    
+    public static final PeriodFormatter DAY_SECOND_FORMAT = new PeriodFormatterBuilder()
+        .appendDays().appendSuffix( " d" ).appendSeparator( SEP )
+        .appendHours().appendSuffix( " h" ).appendSeparator( SEP )
+        .appendMinutes().appendSuffix( " m" ).appendSeparator( SEP )
+        .appendSeconds().appendSuffix( " s" ).appendSeparator( SEP ).toFormatter();
+
+    //TODO replace with FastDateParser, SimpleDateFormat is not thread-safe
     
     public static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" );
     public static final SimpleDateFormat ACCESS_DATE_FORMAT = new SimpleDateFormat( "yyyy/MM/dd HH:mm:ss" );
     public static final SimpleDateFormat HTTP_DATE_FORMAT = new SimpleDateFormat( "EEE, dd MMM yyyy HH:mm:ss" );
 
-
     public static final double DAYS_IN_YEAR = 365.0;
-
+    
     private static final long MS_PER_DAY = 86400000;
     private static final long MS_PER_S = 1000;
 
@@ -566,6 +575,26 @@ public class DateUtils
         }
 
         return periods;
+    }
+    
+    /**
+     * Returns a pretty string representing the interval between the given
+     * start and end dates using a day, month, second format.
+     * 
+     * @param start the start date.
+     * @param end the end date.
+     * @return a string, or null if the given start or end date is null.
+     */
+    public static String getPrettyInterval( Date start, Date end )
+    {
+        if ( start == null || end == null )
+        {
+            return null;
+        }
+        
+        long diff = end.getTime() - start.getTime();
+        
+        return DAY_SECOND_FORMAT.print( new org.joda.time.Period( diff ) );
     }
 
     /**
