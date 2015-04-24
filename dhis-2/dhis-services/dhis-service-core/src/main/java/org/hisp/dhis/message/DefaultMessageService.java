@@ -282,7 +282,7 @@ public class DefaultMessageService
 
         MessageConversation mc = messageConversationStore.getByUid( uid );
 
-        if( mc == null )
+        if ( mc == null )
         {
             return null;
         }
