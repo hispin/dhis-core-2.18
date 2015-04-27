@@ -4032,6 +4032,57 @@ Ext.onReady( function() {
 		return;
     };
 
+	GIS.app.AboutWindow = function() {
+		var html = '',
+			window;
+
+		window = Ext.create('Ext.window.Window', {
+			title: GIS.i18n.about,
+			bodyStyle: 'background:#fff; padding:6px',
+			modal: true,
+            resizable: false,
+			hideOnBlur: true,
+			listeners: {
+				show: function(w) {
+					Ext.Ajax.request({
+						url: gis.init.contextPath + '/api/system/info.json',
+						success: function(r) {
+							var info = Ext.decode(r.responseText),
+								divStyle = 'padding:3px';
+
+							if (Ext.isObject(info)) {
+								html += '<div style="' + divStyle + '"><b>' + GIS.i18n.time_since_last_data_update + ': </b>' + info.intervalSinceLastAnalyticsTableSuccess + '</div>';
+								html += '<div style="' + divStyle + '"><b>' + GIS.i18n.version + ': </b>' + info.version + '</div>';
+								html += '<div style="' + divStyle + '"><b>' + GIS.i18n.revision + ': </b>' + info.revision + '</div>';
+								html += '<div style="' + divStyle + '"><b>' + GIS.i18n.build_time + ': </b>' + info.buildTime.slice(0,19).replace('T', ' ') + '</div>';
+                                html += '<div style="' + divStyle + '"><b>' + GIS.i18n.username + ': </b>' + gis.init.userAccount.username + '</div>';
+							}
+							else {
+								html += 'No system info found';
+							}
+
+							w.update(html);
+						},
+						failure: function(r) {
+							html += r.status + '\n' + r.statusText + '\n' + r.responseText;
+
+							w.update(html);
+						},
+                        callback: function() {
+                            gis.util.gui.window.setAnchorPosition(w, gis.viewport.aboutButton);
+
+                            //if (!w.hasHideOnBlurHandler) {
+                                //ns.core.web.window.addHideOnBlurHandler(w);
+                            //}
+                        }
+					});
+				}
+			}
+		});
+
+		return window;
+	};
+
 	GIS.app.LayerWidgetEvent = function(layer) {
 
 		// stores
@@ -8461,6 +8512,7 @@ Ext.onReady( function() {
 			eastRegion,
 			downloadButton,
 			shareButton,
+            aboutButton,
 			defaultButton,
 			layersPanel,
 			resizeButton,
@@ -8743,6 +8795,20 @@ Ext.onReady( function() {
 						shareButton.xableItems();
 					}
 				}
+			}
+		});
+
+		aboutButton = Ext.create('Ext.button.Button', {
+			text: GIS.i18n.about,
+            menu: {},
+			handler: function() {
+                if (viewport.aboutWindow && viewport.aboutWindow.destroy) {
+					viewport.aboutWindow.destroy();
+					viewport.aboutWindow = null;
+				}
+
+				viewport.aboutWindow = GIS.app.AboutWindow();
+				viewport.aboutWindow.show();
 			}
 		});
 
@@ -9072,6 +9138,8 @@ Ext.onReady( function() {
 						}
 					});
 
+                    a.push(aboutButton);
+
 					a.push({
 						xtype: 'button',
 						text: GIS.i18n.home,
@@ -9335,6 +9403,7 @@ Ext.onReady( function() {
 			centerRegion: centerRegion,
 			downloadButton: downloadButton,
 			shareButton: shareButton,
+            aboutButton: aboutButton,
 			layersPanel: layersPanel,
 			items: [
 				centerRegion,

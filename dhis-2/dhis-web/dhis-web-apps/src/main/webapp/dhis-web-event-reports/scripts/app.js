@@ -7,6 +7,7 @@ Ext.onReady( function() {
 		FavoriteWindow,
 		SharingWindow,
 		InterpretationWindow,
+        AboutWindow,
 
 		extendCore,
 		createViewport,
@@ -3204,6 +3205,59 @@ Ext.onReady( function() {
 		}
 
 		return;
+	};
+
+	AboutWindow = function() {
+		var html = '',
+			window;
+
+		window = Ext.create('Ext.window.Window', {
+			title: NS.i18n.about,
+			bodyStyle: 'background:#fff; padding:6px',
+			modal: true,
+            resizable: false,
+			hideOnBlur: true,
+			listeners: {
+				show: function(w) {
+					Ext.Ajax.request({
+						url: ns.core.init.contextPath + '/api/system/info.json',
+						success: function(r) {
+							var info = Ext.decode(r.responseText),
+								divStyle = 'padding:3px';
+
+							if (Ext.isObject(info)) {
+								html += '<div style="' + divStyle + '"><b>' + NS.i18n.time_since_last_data_update + ': </b>' + info.intervalSinceLastAnalyticsTableSuccess + '</div>';
+								html += '<div style="' + divStyle + '"><b>' + NS.i18n.version + ': </b>' + info.version + '</div>';
+								html += '<div style="' + divStyle + '"><b>' + NS.i18n.revision + ': </b>' + info.revision + '</div>';
+								html += '<div style="' + divStyle + '"><b>' + NS.i18n.build_time + ': </b>' + info.buildTime.slice(0,19).replace('T', ' ') + '</div>';
+                                html += '<div style="' + divStyle + '"><b>' + NS.i18n.username + ': </b>' + ns.core.init.userAccount.username + '</div>';
+							}
+							else {
+								html += 'No system info found';
+							}
+
+							w.update(html);
+						},
+						failure: function(r) {
+							html += r.status + '\n' + r.statusText + '\n' + r.responseText;
+
+							w.update(html);
+						},
+                        callback: function() {
+                            if (ns.app.aboutButton.rendered) {
+                                ns.core.web.window.setAnchorPosition(w, ns.app.aboutButton);
+
+                                if (!w.hasHideOnBlurHandler) {
+                                    ns.core.web.window.addHideOnBlurHandler(w);
+                                }
+                            }
+                        }
+					});					
+				}
+			}
+		});
+
+		return window;
 	};
 
 	LayerWidgetEvent = function(layer) {
@@ -6631,6 +6685,7 @@ Ext.onReady( function() {
             interpretationItem,
             pluginItem,
             shareButton,
+            aboutButton,
             statusBar,
             defaultButton,
             centerRegion,
@@ -7068,6 +7123,24 @@ Ext.onReady( function() {
 			}
 		});
 
+		aboutButton = Ext.create('Ext.button.Button', {
+			text: NS.i18n.about,
+            menu: {},
+			handler: function() {
+				if (ns.app.aboutWindow && ns.app.aboutWindow.destroy) {
+					ns.app.aboutWindow.destroy();
+				}
+
+				ns.app.aboutWindow = AboutWindow();
+				ns.app.aboutWindow.show();
+			},
+			listeners: {
+				added: function() {
+					ns.app.aboutButton = this;
+				}
+			}
+		});
+
         statusBar = Ext.create('Ext.ux.toolbar.StatusBar', {
             height: 27,
             listeners: {
@@ -7270,6 +7343,7 @@ Ext.onReady( function() {
 							}
 						}
 					},
+                    aboutButton,
 					{
 						xtype: 'button',
 						text: NS.i18n.home,
