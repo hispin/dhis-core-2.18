@@ -28,42 +28,52 @@ package org.hisp.dhis.dataset.comparator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Comparator;
+import java.util.Collections;
+import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.hisp.dhis.period.YearlyPeriodType;
+import org.junit.Test;
 
-/**
- * Sorts data sets according to the frequency order of their period type, ordered
- * from high to low collection frequency. A lower frequency order value implies 
- * higher data set collection frequency. Next, sorts by data set name.
- * 
- * @author Lars Helge Overland
- */
-public class DataSetFrequencyComparator
-    implements Comparator<DataSet>
+import com.google.common.collect.Lists;
+
+import static org.junit.Assert.*;
+
+public class DataSetFrequencyComparatorTest
 {
-    public static final DataSetFrequencyComparator INSTANCE = new DataSetFrequencyComparator();
-    
-    @Override
-    public int compare( DataSet d1, DataSet d2 )
+    @Test
+    public void testA()
     {
-        if ( d1 == null || d1.getPeriodType() == null )
-        {
-            return -1;
-        }
+        DataSet dsA = new DataSet( "DataSetA", new QuarterlyPeriodType() );
+        DataSet dsB = new DataSet( "DataSetB", new YearlyPeriodType() );
+        DataSet dsC = new DataSet( "DataSetC", new MonthlyPeriodType() );
+        DataSet dsD = new DataSet( "DataSetD", new QuarterlyPeriodType() );
         
-        if ( d2 == null || d2.getPeriodType() == null )
-        {
-            return 1;
-        }
+        List<DataSet> list = Lists.newArrayList( dsA, dsC, dsB, dsD );
         
-        int frequencyOrder = Integer.valueOf( d1.getPeriodType().getFrequencyOrder() ).compareTo( Integer.valueOf( d2.getPeriodType().getFrequencyOrder() ) );
+        Collections.sort( list, DataSetFrequencyComparator.INSTANCE );
         
-        if ( frequencyOrder != 0 )
-        {
-            return frequencyOrder;
-        }
+        assertEquals( dsC, list.get( 0 ) );
+        assertEquals( dsA, list.get( 1 ) );
+        assertEquals( dsD, list.get( 2 ) );
+        assertEquals( dsB, list.get( 3 ) );
+    }
+    
+    @Test
+    public void testB()
+    {
+        DataSet dsA = new DataSet( "EA: Expenditures Site Level", new QuarterlyPeriodType() );
+        DataSet dsB = new DataSet( "MER Results: Facility Based", new QuarterlyPeriodType() );
+        DataSet dsC = new DataSet( "MER Results: Facility Based - DoD ONLY", new QuarterlyPeriodType() );
         
-        return d1.compareTo( d2 );
+        List<DataSet> list = Lists.newArrayList( dsB, dsC, dsA );
+        
+        Collections.sort( list, DataSetFrequencyComparator.INSTANCE );
+        
+        assertEquals( dsA, list.get( 0 ) );
+        assertEquals( dsB, list.get( 1 ) );
+        assertEquals( dsC, list.get( 2 ) );
     }
 }
