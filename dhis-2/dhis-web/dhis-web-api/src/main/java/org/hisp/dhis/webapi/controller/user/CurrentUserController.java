@@ -744,4 +744,12 @@ public class CurrentUserController
         response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         renderService.toJson( response.getOutputStream(), approvalLevels );
     }
+
+    @RequestMapping( value = "/readDataApprovalLevels", produces = { "application/json", "text/*" } )
+    public void getReadApprovalLevels( HttpServletResponse response ) throws IOException
+    {
+        Map<OrganisationUnit, Integer> orgUnitApprovalLevelMap = approvalLevelService.getUserReadApprovalLevels();
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
+        renderService.toJson( response.getOutputStream(), orgUnitApprovalLevelMap );        
+    }
 }
