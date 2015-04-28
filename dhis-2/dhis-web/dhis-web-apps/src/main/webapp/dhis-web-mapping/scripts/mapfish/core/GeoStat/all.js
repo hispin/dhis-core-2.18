@@ -325,7 +325,7 @@ mapfish.GeoStat.Event = OpenLayers.Class(mapfish.GeoStat, {
     },
 
     updateLegend: function() {
-
+        return {};
     },
 
     CLASS_NAME: "mapfish.GeoStat.Event"
@@ -523,7 +523,7 @@ mapfish.GeoStat.Boundary = OpenLayers.Class(mapfish.GeoStat, {
     },
 
     updateLegend: function() {
-
+        return {};
     },
 
     CLASS_NAME: "mapfish.GeoStat.Boundary"

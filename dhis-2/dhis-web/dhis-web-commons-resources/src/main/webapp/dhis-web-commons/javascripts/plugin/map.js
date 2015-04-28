@@ -1583,12 +1583,14 @@ Ext.onReady(function() {
                     else if (!window) {
                         var layers = gis.util.map.getRenderedVectorLayers().reverse(),
                             html = '<div id="legendWrapper">';
-                            
-                        for (var i = 0, layer; i < layers.length; i++) {
-                            layer = layers[i];
 
-                            html += '<div style="font-size:10px; font-weight:bold">' + layer.name + '</div>' + layer.core.updateLegend().innerHTML + (i < layers.length - 1 ? '<div style="padding:5px"></div>' : '');
-                        }
+                        for (var i = 0, layer, innerHTML; i < layers.length; i++) {
+                            layer = layers[i];
+                            innerHTML = layer.core.updateLegend().innerHTML;
+
+                            if (innerHTML) {
+                                html += '<div style="font-size:10px; font-weight:bold">' + layer.name + '</div>' + innerHTML + (i < layers.length - 1 ? '<div style="padding:5px"></div>' : '');
+                            }
 
                         html += '</div>';
 
@@ -6087,7 +6089,7 @@ Ext.onReady(function() {
             },
 
             updateLegend: function() {
-
+                return {};
             },
 
             CLASS_NAME: "mapfish.GeoStat.Event"
@@ -6291,7 +6293,7 @@ Ext.onReady(function() {
             },
 
             updateLegend: function() {
-
+                return {};
             },
 
             CLASS_NAME: "mapfish.GeoStat.Boundary"
