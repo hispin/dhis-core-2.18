@@ -43,6 +43,7 @@ import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryDimension;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
@@ -486,8 +487,8 @@ public class DefaultDimensionService
                 else if ( CATEGORY.equals( type ) )
                 {
                     DataElementCategoryDimension categoryDimension = new DataElementCategoryDimension();
-                    categoryDimension.setDimension( categoryService.getDataElementCategory( dimensionId ) );
-                    categoryDimension.getItems().addAll( categoryService.getDataElementCategoryOptionsByUid( uids ) );
+                    categoryDimension.setDimension( identifiableObjectManager.get( DataElementCategory.class, dimensionId ) );
+                    categoryDimension.getItems().addAll( identifiableObjectManager.getByUidOrdered( DataElementCategoryOption.class, uids ) );
 
                     object.getCategoryDimensions().add( categoryDimension );
                 }
