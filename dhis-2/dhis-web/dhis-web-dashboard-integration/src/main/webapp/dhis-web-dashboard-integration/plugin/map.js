@@ -1591,6 +1591,7 @@ Ext.onReady(function() {
                             if (innerHTML) {
                                 html += '<div style="font-size:10px; font-weight:bold">' + layer.name + '</div>' + innerHTML + (i < layers.length - 1 ? '<div style="padding:5px"></div>' : '');
                             }
+                        }
 
                         html += '</div>';
 
