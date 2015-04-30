@@ -396,7 +396,7 @@ public class HibernateDataApprovalStore
             approvedAboveSubquery = "exists(select 1 from dataapproval da " +
                 "join dataapprovallevel dal on dal.dataapprovallevelid = da.dataapprovallevelid " +
                 "join _orgunitstructure ou on ou.organisationunitid = o.organisationunitid and ou.idlevel" + orgUnitLevelAbove + " = da.organisationunitid " +
-                "where da.periodid in (" + periodIds + ") and da.datasetid in (" + dataSetIds + ") and da.attributeoptioncomboid = cocco.categoryoptioncomboid) ";
+                "where da.periodid in (" + periodIds + ") and da.datasetid in (" + dataSetIds + ") and da.attributeoptioncomboid = cocco.categoryoptioncomboid)";
         }
 
         final String sql =
@@ -469,18 +469,18 @@ public class HibernateDataApprovalStore
             if ( ou != null )
             {
                 DataApproval da = new DataApproval( daLevel, dataSet, period, ou, optionCombo, accepted, null, null );
-    
+
                 DataApprovalState state = (
-                    statusLevel == null ?
-                        lowestApprovalLevelForOrgUnit == null ?
-                            orgUnitLevelAbove == 0 ?
-                                UNAPPROVABLE :
-                                UNAPPROVED_ABOVE :
-                            readyBelow ?
-                                UNAPPROVED_READY :
-                                UNAPPROVED_WAITING :
-                        approvedAbove ?
-                            APPROVED_ABOVE :
+                    approvedAbove ?
+                        APPROVED_ABOVE :
+                        statusLevel == null ?
+                            lowestApprovalLevelForOrgUnit == null ?
+                                orgUnitLevelAbove == 0 ?
+                                    UNAPPROVABLE :
+                                    UNAPPROVED_ABOVE :
+                                readyBelow ?
+                                    UNAPPROVED_READY :
+                                    UNAPPROVED_WAITING :
                             accepted ?
                                 ACCEPTED_HERE :
                                 APPROVED_HERE );

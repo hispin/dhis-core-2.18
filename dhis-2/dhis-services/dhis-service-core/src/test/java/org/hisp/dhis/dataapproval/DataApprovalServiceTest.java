@@ -696,7 +696,33 @@ public class DataApprovalServiceTest
         assertEquals( DataApprovalState.UNAPPROVABLE, dataApprovalService.getDataApprovalStatus( dataSetA, periodA, organisationUnitF, defaultCombo ).getState() );
     }
 
-//    @Test
+    @Test
+    public void testGetDataApprovalStateAbove() throws Exception
+    {
+        dataApprovalLevelService.addDataApprovalLevel( level3 );
+
+        Set<OrganisationUnit> units = asSet( organisationUnitA );
+
+        CurrentUserService currentUserService = new MockCurrentUserService( units, null, DataApproval.AUTH_APPROVE, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        setDependency( dataApprovalService, "currentUserService", currentUserService, CurrentUserService.class );
+        setDependency( dataApprovalLevelService, "currentUserService", currentUserService, CurrentUserService.class );
+
+        dataSetA.setApproveData( true );
+
+        organisationUnitC.addDataSet( dataSetA );
+        organisationUnitD.addDataSet( dataSetA );
+
+        Date date = new Date();
+
+        // Approved for organisation unit C
+        DataApproval dataApprovalC = new DataApproval( level3, dataSetA, periodA, organisationUnitC, defaultCombo, NOT_ACCEPTED, date, userA );
+        dataApprovalService.approveData( asList( dataApprovalC ) );
+
+        assertEquals( DataApprovalState.APPROVED_HERE, dataApprovalService.getDataApprovalStatus( dataSetA, periodA, organisationUnitC, defaultCombo ).getState() );
+        assertEquals( DataApprovalState.APPROVED_ABOVE, dataApprovalService.getDataApprovalStatus( dataSetA, periodA, organisationUnitD, defaultCombo ).getState() );
+    }
+
+    @Test
     public void testGetDataApprovalStateWithMultipleChildren() throws Exception
     {
         dataApprovalLevelService.addDataApprovalLevel( level1 );
