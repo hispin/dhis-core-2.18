@@ -29,6 +29,7 @@ package org.hisp.dhis.dataanalysis;
  */
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -94,7 +95,7 @@ public class MinMaxOutlierAnalysisService
 
     @Override
     public Collection<DeflatedDataValue> analyse( Collection<OrganisationUnit> organisationUnits,
-        Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
+        Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor, Date from )
     {
         Set<DataElement> elements = new HashSet<>( dataElements );
         
@@ -114,7 +115,7 @@ public class MinMaxOutlierAnalysisService
     
     @Override
     public void generateMinMaxValues( Collection<OrganisationUnit> organisationUnits,
-        Collection<DataElement> dataElements, Double stdDevFactor )
+        Collection<DataElement> dataElements, Double stdDevFactor, Date from )
     {
         log.info( "Starting min-max value generation, no of data elements: " + dataElements.size() + ", no of org units: " + organisationUnits.size() );
 
@@ -134,9 +135,9 @@ public class MinMaxOutlierAnalysisService
 
                 for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
                 {
-                    Map<Integer, Double> standardDeviations = dataAnalysisStore.getStandardDeviation( dataElement, categoryOptionCombo, orgUnitIds );
+                    Map<Integer, Double> standardDeviations = dataAnalysisStore.getStandardDeviation( dataElement, categoryOptionCombo, orgUnitIds, from );
                     
-                    Map<Integer, Double> averages = dataAnalysisStore.getAverage( dataElement, categoryOptionCombo, standardDeviations.keySet() );
+                    Map<Integer, Double> averages = dataAnalysisStore.getAverage( dataElement, categoryOptionCombo, standardDeviations.keySet(), from );
                     
                     for ( Integer unit : averages.keySet() )
                     {

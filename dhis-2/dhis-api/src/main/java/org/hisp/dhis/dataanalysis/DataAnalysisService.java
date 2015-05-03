@@ -29,6 +29,7 @@ package org.hisp.dhis.dataanalysis;
  */
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
@@ -45,5 +46,5 @@ public interface DataAnalysisService
     final int MAX_OUTLIERS = 500;
     
     Collection<DeflatedDataValue> analyse( Collection<OrganisationUnit> organisationUnits, Collection<DataElement> dataElements,
-        Collection<Period> periods, Double stdDevFactor );
+        Collection<Period> periods, Double stdDevFactor, Date from );
 }

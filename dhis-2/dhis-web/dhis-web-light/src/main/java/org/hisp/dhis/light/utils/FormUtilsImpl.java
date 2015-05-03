@@ -56,6 +56,7 @@ import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.validation.ValidationResult;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -154,11 +155,13 @@ public class FormUtilsImpl
         Double factor = (Double) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_FACTOR_OF_DEVIATION,
             2.0 );
 
+        Date from = new DateTime( period.getStartDate() ).minusYears( 2 ).toDate();
+        
         Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.analyse(
-            ListUtils.getCollection( organisationUnit ), dataElements, ListUtils.getCollection( period ), factor );
+            ListUtils.getCollection( organisationUnit ), dataElements, ListUtils.getCollection( period ), factor, from );
 
         Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.analyse(
-            ListUtils.getCollection( organisationUnit ), dataElements, ListUtils.getCollection( period ), null );
+            ListUtils.getCollection( organisationUnit ), dataElements, ListUtils.getCollection( period ), null, from );
 
         Collection<DeflatedDataValue> deflatedDataValues = CollectionUtils.union( stdDevs, minMaxs );
 

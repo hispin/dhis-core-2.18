@@ -35,6 +35,7 @@ import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.objectmapper.DeflatedDataValueNameMinMaxRowMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.PaginatedList;
 import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -88,7 +90,7 @@ public class JdbcDataAnalysisStore
     // -------------------------------------------------------------------------
 
     @Override
-    public Map<Integer, Double> getStandardDeviation( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits )
+    public Map<Integer, Double> getStandardDeviation( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits, Date from )
     {
         Map<Integer, Double> map = new HashMap<>();
         
@@ -99,10 +101,13 @@ public class JdbcDataAnalysisStore
         
         final String sql = 
             "select ou.organisationunitid, " +
-              "(select stddev_pop( cast( value as " + statementBuilder.getDoubleColumnType() + " ) ) " +
-              "from datavalue where dataelementid = " + dataElement.getId() + " " +
-              "and categoryoptioncomboid = " + categoryOptionCombo.getId() + " " +
-              "and sourceid = ou.organisationunitid) as deviation " +
+              "(select stddev_pop( cast( dv.value as " + statementBuilder.getDoubleColumnType() + " ) ) " +
+              "from datavalue dv " +
+              "inner join period pe on dv.periodid = pe.periodid " +
+              "where dv.dataelementid = " + dataElement.getId() + " " +
+              "and dv.categoryoptioncomboid = " + categoryOptionCombo.getId() + " " +
+              "and pe.startdate >= '" + DateUtils.getMediumDateString( from ) + "' " +
+              "and dv.sourceid = ou.organisationunitid) as deviation " +
             "from organisationunit ou " +
             "where ou.organisationunitid in (" + getCommaDelimitedString( organisationUnits ) + ")";
         
@@ -122,7 +127,7 @@ public class JdbcDataAnalysisStore
     }
     
     @Override
-    public Map<Integer, Double> getAverage( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits )
+    public Map<Integer, Double> getAverage( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits, Date from )
     {
         Map<Integer, Double> map = new HashMap<>();
         
@@ -133,10 +138,13 @@ public class JdbcDataAnalysisStore
         
         final String sql = 
             "select ou.organisationunitid, " +
-                "(select avg( cast( value as " + statementBuilder.getDoubleColumnType() + " ) ) " +
-                "from datavalue where dataelementid = " + dataElement.getId() + " " +
-                "and categoryoptioncomboid = " + categoryOptionCombo.getId() + " " +
-                "and sourceid = ou.organisationunitid) as average " +
+                "(select avg( cast( dv.value as " + statementBuilder.getDoubleColumnType() + " ) ) " +
+                "from datavalue dv " +
+                "inner join period pe on dv.periodid = pe.periodid " +
+                "where dv.dataelementid = " + dataElement.getId() + " " +
+                "and dv.categoryoptioncomboid = " + categoryOptionCombo.getId() + " " +
+                "and pe.startdate >= '" + DateUtils.getMediumDateString( from ) + "' " +
+                "and dv.sourceid = ou.organisationunitid) as average " +
             "from organisationunit ou " +
             "where ou.organisationunitid in (" + getCommaDelimitedString( organisationUnits ) + ")";
         

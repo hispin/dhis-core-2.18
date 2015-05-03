@@ -30,6 +30,7 @@ package org.hisp.dhis.dataanalysis;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -70,12 +71,12 @@ public class StdDevOutlierAnalysisService
 
     @Override
     public final Collection<DeflatedDataValue> analyse( Collection<OrganisationUnit> organisationUnits,
-        Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
+        Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor, Date from )
     {
+        log.info( "Starting std dev analysis, no of org units: " + organisationUnits.size() + ", factor: " + stdDevFactor + ", from: " + from );
+        
         Set<Integer> units = new HashSet<>( ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );
 
-        log.info( "Starting std dev analysis, no of org units: " + organisationUnits.size() + ", factor: " + stdDevFactor );
-        
         Collection<DeflatedDataValue> outlierCollection = new ArrayList<>();
 
         loop : for ( DataElement dataElement : dataElements )
@@ -89,9 +90,9 @@ public class StdDevOutlierAnalysisService
 
                 for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
                 {
-                    Map<Integer, Double> standardDeviations = dataAnalysisStore.getStandardDeviation( dataElement, categoryOptionCombo, units );
+                    Map<Integer, Double> standardDeviations = dataAnalysisStore.getStandardDeviation( dataElement, categoryOptionCombo, units, from );
                     
-                    Map<Integer, Double> averages = dataAnalysisStore.getAverage( dataElement, categoryOptionCombo, standardDeviations.keySet() );
+                    Map<Integer, Double> averages = dataAnalysisStore.getAverage( dataElement, categoryOptionCombo, standardDeviations.keySet(), from );
                     
                     Map<Integer, Integer> lowBoundMap = new HashMap<>();
                     Map<Integer, Integer> highBoundMap = new HashMap<>();
@@ -118,7 +119,7 @@ public class StdDevOutlierAnalysisService
                 }
             }
         }
-
+        
         return outlierCollection;
     }
 }

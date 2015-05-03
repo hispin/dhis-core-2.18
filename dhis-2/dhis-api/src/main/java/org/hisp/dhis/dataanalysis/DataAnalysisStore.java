@@ -29,6 +29,7 @@ package org.hisp.dhis.dataanalysis;
  */
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -51,10 +52,11 @@ public interface DataAnalysisStore
      * 
      * @param dataElement the DataElement.
      * @param categoryOptionCombo the DataElementCategoryOptionCombo.
-     * @param organisationUnit the OrganisationUnit.
+     * @param organisationUnits the set of OrganisationUnit identifiers.
+     * @param from the from date for which to include data values.
      * @return a mapping between organisation unit identifier and its standard deviation.
      */
-    Map<Integer, Double> getStandardDeviation( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits );
+    Map<Integer, Double> getStandardDeviation( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits, Date from );
     
     /**
      * Calculates the average of the DataValues registered for the given
@@ -62,10 +64,11 @@ public interface DataAnalysisStore
      * 
      * @param dataElement the DataElement.
      * @param categoryOptionCombo the DataElementCategoryOptionCombo.
-     * @param organisationUnit the OrganisationUnit.
+     * @param organisationUnits the set of OrganisationUnit identifiers.
+     * @param from the from date for which to include data values.
      * @return a mapping between organisation unit identifier and its average data value.
      */
-    Map<Integer, Double> getAverage( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits );
+    Map<Integer, Double> getAverage( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Set<Integer> organisationUnits, Date from );
     
     /**
      * Generates a collection of data value violations of min-max predefined values.

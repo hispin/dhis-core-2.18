@@ -31,6 +31,7 @@ package org.hisp.dhis.dataanalysis;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -94,6 +95,8 @@ public class DataAnalysisStoreTest
     private Period periodH;
     private Period periodI;
     private Period periodJ;
+    
+    private Date from = getDate( 1998, 1, 1 );
 
     private OrganisationUnit organisationUnitA;
     private OrganisationUnit organisationUnitB;
@@ -157,8 +160,8 @@ public class DataAnalysisStoreTest
         dataValueService.addDataValue( createDataValue( dataElementA, periodI, organisationUnitA, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementA, periodJ, organisationUnitA, "15", categoryOptionCombo ) );
         
-        assertEquals( 15.26, dataAnalysisStore.getStandardDeviation( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitA.getId() ), DELTA );
-        assertNull( dataAnalysisStore.getStandardDeviation( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitB.getId() ) );
+        assertEquals( 15.26, dataAnalysisStore.getStandardDeviation( dataElementA, categoryOptionCombo, organisationUnits, from ).get( organisationUnitA.getId() ), DELTA );
+        assertNull( dataAnalysisStore.getStandardDeviation( dataElementA, categoryOptionCombo, organisationUnits, from ).get( organisationUnitB.getId() ) );
     }
 
     @Test
@@ -175,7 +178,7 @@ public class DataAnalysisStoreTest
         dataValueService.addDataValue( createDataValue( dataElementA, periodI, organisationUnitA, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementA, periodJ, organisationUnitA, "15", categoryOptionCombo ) );
         
-        assertEquals( 12.78, dataAnalysisStore.getAverage( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitA.getId() ), DELTA );
-        assertNull( dataAnalysisStore.getAverage( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitB.getId() ) );
+        assertEquals( 12.78, dataAnalysisStore.getAverage( dataElementA, categoryOptionCombo, organisationUnits, from ).get( organisationUnitA.getId() ), DELTA );
+        assertNull( dataAnalysisStore.getAverage( dataElementA, categoryOptionCombo, organisationUnits, from ).get( organisationUnitB.getId() ) );
     }
 }

@@ -33,6 +33,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -123,6 +124,8 @@ public class StdDevOutlierAnalysisServiceTest
 
     private Period periodJ;
 
+    private Date from = getDate( 1998, 1, 1 );
+
     private OrganisationUnit organisationUnitA;
 
     // ----------------------------------------------------------------------
@@ -202,7 +205,7 @@ public class StdDevOutlierAnalysisServiceTest
         periods.add( periodE );
 
         Collection<DeflatedDataValue> values = stdDevOutlierAnalysisService.analyse(
-            ListUtils.getCollection( organisationUnitA ), dataElementsA, periods, stdDevFactor );
+            ListUtils.getCollection( organisationUnitA ), dataElementsA, periods, stdDevFactor, from );
 
         double lowerBound = -34.51 * stdDevFactor;
         double upperBound = 34.51 * stdDevFactor;

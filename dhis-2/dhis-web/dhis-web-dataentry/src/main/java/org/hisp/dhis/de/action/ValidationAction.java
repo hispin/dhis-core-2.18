@@ -32,6 +32,7 @@ import static org.hisp.dhis.system.util.ListUtils.getCollection;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -53,6 +54,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationResult;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.hisp.dhis.webapi.utils.InputUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -231,10 +233,12 @@ public class ValidationAction
 
         Collections.sort( organisationUnits, IdentifiableObjectNameComparator.INSTANCE );
 
+        Date from = new DateTime( period.getStartDate() ).minusYears( 2 ).toDate();
+        
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {
             List<DeflatedDataValue> values = new ArrayList<>( minMaxOutlierAnalysisService.analyse( getCollection( organisationUnit ),
-                dataSet.getDataElements(), getCollection( period ), null ) );
+                dataSet.getDataElements(), getCollection( period ), null, from ) );
 
             if ( !values.isEmpty() )
             {

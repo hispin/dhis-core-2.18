@@ -29,6 +29,7 @@ package org.hisp.dhis.validationrule.action.dataanalysis;
  */
 
 import com.opensymphony.xwork2.Action;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.ServiceProvider;
@@ -43,10 +44,13 @@ import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.util.SessionUtils;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -139,9 +143,9 @@ public class GetAnalysisAction
         this.fromDate = fromDate.trim();
     }
 
-    private Collection<String> dataSets;
+    private List<String> dataSets = new ArrayList<>();
 
-    public void setDataSets( Collection<String> dataSets )
+    public void setDataSets( List<String> dataSets )
     {
         this.dataSets = dataSets;
     }
@@ -185,35 +189,36 @@ public class GetAnalysisAction
     @Override
     public String execute()
     {
-        Set<DataElement> dataElements = new HashSet<>();
-        Collection<Period> periods = null;
         OrganisationUnit unit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
-        Collection<OrganisationUnit> orgUnits = null;
 
-        // TODO filter periods with data element period type
-
-        if ( fromDate != null && toDate != null && dataSets != null && unit != null )
+        if ( fromDate == null || toDate == null || dataSets == null || unit == null )
         {
-            orgUnits = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
-
-            periods = periodService.getPeriodsBetweenDates( format.parseDate( fromDate ), format.parseDate( toDate ) );
-
-            for ( String uid : dataSets )
-            {
-                dataElements.addAll( dataSetService.getDataSet( uid ).getDataElements() );
-            }
-
-            log.info( "From date: " + fromDate + ", To date: " + toDate + ", Organisation unit: " + unit
-                + ", Std dev: " + standardDeviation + ", Key: " + key );
-
-            log.info( "Nr of data elements: " + dataElements.size() + " Nr of periods: " + periods.size() );
+            return ERROR;
         }
+        
+        Collection<OrganisationUnit> orgUnits = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
+
+        Collection<Period> periods = periodService.getPeriodsBetweenDates( format.parseDate( fromDate ), format.parseDate( toDate ) );
+
+        Set<DataElement> dataElements = new HashSet<>();
+        
+        for ( String uid : dataSets )
+        {
+            dataElements.addAll( dataSetService.getDataSet( uid ).getDataElements() );
+        }
+
+        Date from = new DateTime( fromDate ).minusYears( 2 ).toDate();
+        
+        log.info( "From date: " + fromDate + ", To date: " + toDate + ", Organisation unit: " + unit
+            + ", Std dev: " + standardDeviation + ", Key: " + key );
+
+        log.info( "Nr of data elements: " + dataElements.size() + " Nr of periods: " + periods.size() );
 
         DataAnalysisService service = serviceProvider.provide( key );
 
         if ( service != null )
         {
-            dataValues = service.analyse( orgUnits, dataElements, periods, standardDeviation );
+            dataValues = service.analyse( orgUnits, dataElements, periods, standardDeviation, from );
 
             maxExceeded = dataValues.size() > DataAnalysisService.MAX_OUTLIERS;
         }

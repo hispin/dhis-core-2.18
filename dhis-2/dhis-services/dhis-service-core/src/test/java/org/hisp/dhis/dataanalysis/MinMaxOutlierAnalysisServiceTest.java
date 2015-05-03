@@ -32,6 +32,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -116,6 +117,8 @@ public class MinMaxOutlierAnalysisServiceTest
     private Period periodI;
     private Period periodJ;
 
+    private Date from = getDate( 1998, 1, 1 );
+
     private OrganisationUnit organisationUnitA;
 
     private MinMaxDataElement minMaxDataElement;
@@ -195,7 +198,7 @@ public class MinMaxOutlierAnalysisServiceTest
         periods.add( periodA );
         periods.add( periodE );
 
-        Collection<DeflatedDataValue> result = minMaxOutlierAnalysisService.analyse( ListUtils.getCollection( organisationUnitA ), dataElementsA, periods, null );
+        Collection<DeflatedDataValue> result = minMaxOutlierAnalysisService.analyse( ListUtils.getCollection( organisationUnitA ), dataElementsA, periods, null, from );
 
         assertEquals( 2, result.size() );
     }
