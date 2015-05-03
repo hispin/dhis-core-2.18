@@ -151,7 +151,7 @@ public class DefaultAnalyticsSecurityManager
                 
                 params.setDataApprovalLevels( approvalLevels );
                 
-                log.info( "User: " + user.getUsername() + " constrained by data approval levels: " + approvalLevels.values() );
+                log.debug( "User: " + user.getUsername() + " constrained by data approval levels: " + approvalLevels.values() );
             }
         }
     }
@@ -197,7 +197,7 @@ public class DefaultAnalyticsSecurityManager
         
         params.getFilters().add( constraint );
 
-        log.info( "User: " + user.getUsername() + " constrained by data view organisation units" );        
+        log.debug( "User: " + user.getUsername() + " constrained by data view organisation units" );        
     }
     
     private void applyUserConstraints( DataQueryParams params )
