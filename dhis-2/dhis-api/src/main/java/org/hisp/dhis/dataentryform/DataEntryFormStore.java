@@ -31,7 +31,10 @@ package org.hisp.dhis.dataentryform;
 import java.util.Collection;
 import java.util.List;
 
+import org.hisp.dhis.common.GenericStore;
+
 public interface DataEntryFormStore
+    extends GenericStore<DataEntryForm>
 {
     String ID = DataEntryFormStore.class.getName();
 
@@ -40,49 +43,12 @@ public interface DataEntryFormStore
     // -------------------------------------------------------------------------
 
     /**
-     * Adds a DataEntryForm.
-     * 
-     * @param dataEntryForm The DataEntryForm to add.
-     * @return The generated unique identifier for this DataEntryForm.
-     */
-    int addDataEntryForm( DataEntryForm dataEntryForm );
-
-    /**
-     * Updates a DataEntryForm.
-     * 
-     * @param dataEntryForm The DataEntryForm to update.
-     */
-    void updateDataEntryForm( DataEntryForm dataEntryForm );
-
-    /**
-     * Deletes a DataEntryForm.
-     * 
-     * @param dataEntryForm The DataEntryForm to delete.
-     */
-    void deleteDataEntryForm( DataEntryForm dataEntryForm );
-
-    /**
-     * Get a DataEntryForm
-     * 
-     * @param id The unique identifier for the DataEntryForm to get.
-     * @return The DataEntryForm with the given id or null if it does not exist.
-     */
-    DataEntryForm getDataEntryForm( int id );
-
-    /**
      * Returns a DataEntryForm with the given name.
      * 
      * @param name The name.
      * @return A DataEntryForm with the given name.
      */
     DataEntryForm getDataEntryFormByName( String name );
-
-    /**
-     * Get all DataEntryForms.
-     * 
-     * @return A collection containing all DataEntryForms.
-     */
-    Collection<DataEntryForm> getAllDataEntryForms();
     
     Collection<DataEntryForm> listDistinctDataEntryFormByProgramStageIds( List<Integer> programStageIds );
     

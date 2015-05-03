@@ -47,7 +47,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Bharath
- * @version $Id$
  */
 public class DataEntryFormStoreTest
     extends DhisSpringTest
@@ -83,9 +82,9 @@ public class DataEntryFormStoreTest
 
         DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A" );
 
-        int dataEntryFormAid = dataEntryFormStore.addDataEntryForm(dataEntryFormA );
+        int dataEntryFormAid = dataEntryFormStore.save(dataEntryFormA );
 
-        dataEntryFormA = dataEntryFormStore.getDataEntryForm( dataEntryFormAid );
+        dataEntryFormA = dataEntryFormStore.get( dataEntryFormAid );
 
         assertEquals( dataEntryFormAid, dataEntryFormA.getId() );
         assertEquals( "DataEntryForm-A", dataEntryFormA.getName() );
@@ -97,17 +96,17 @@ public class DataEntryFormStoreTest
 
         DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A" );
 
-        int id = dataEntryFormStore.addDataEntryForm( dataEntryForm );
+        int id = dataEntryFormStore.save( dataEntryForm );
 
-        dataEntryForm = dataEntryFormStore.getDataEntryForm( id );
+        dataEntryForm = dataEntryFormStore.get( id );
 
         assertEquals( "DataEntryForm-A", dataEntryForm.getName() );
 
         dataEntryForm.setName( "DataEntryForm-X" );
 
-        dataEntryFormStore.updateDataEntryForm( dataEntryForm );
+        dataEntryFormStore.update( dataEntryForm );
 
-        dataEntryForm = dataEntryFormStore.getDataEntryForm( id );
+        dataEntryForm = dataEntryFormStore.get( id );
 
         assertEquals( dataEntryForm.getName(), "DataEntryForm-X" );
     }
@@ -118,15 +117,15 @@ public class DataEntryFormStoreTest
 
         DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A" );
 
-        int id = dataEntryFormStore.addDataEntryForm( dataEntryForm );
+        int id = dataEntryFormStore.save( dataEntryForm );
 
-        dataEntryForm = dataEntryFormStore.getDataEntryForm( id );
+        dataEntryForm = dataEntryFormStore.get( id );
 
-        assertNotNull( dataEntryFormStore.getDataEntryForm( id ) );
+        assertNotNull( dataEntryFormStore.get( id ) );
 
-        dataEntryFormStore.deleteDataEntryForm( dataEntryFormStore.getDataEntryForm( id ) );
+        dataEntryFormStore.delete( dataEntryFormStore.get( id ) );
 
-        assertNull( dataEntryFormStore.getDataEntryForm( id ) );
+        assertNull( dataEntryFormStore.get( id ) );
     }
 
     @Test
@@ -136,9 +135,9 @@ public class DataEntryFormStoreTest
 
         DataEntryForm dataEntryForm = new DataEntryForm( "DataEntryForm-A" );
 
-        int id = dataEntryFormStore.addDataEntryForm( dataEntryForm );
+        int id = dataEntryFormStore.save( dataEntryForm );
 
-        dataEntryForm = dataEntryFormStore.getDataEntryForm( id );
+        dataEntryForm = dataEntryFormStore.get( id );
 
         assertEquals( dataEntryFormStore.getDataEntryFormByName( "DataEntryForm-A" ), dataEntryForm );
         assertNull( dataEntryFormStore.getDataEntryFormByName( "DataEntryForm-X" ) );
@@ -151,10 +150,10 @@ public class DataEntryFormStoreTest
         DataEntryForm dataEntryFormA = new DataEntryForm( "DataEntryForm-A" );
         DataEntryForm dataEntryFormB = new DataEntryForm( "DataEntryForm-B" );
 
-        dataEntryFormStore.addDataEntryForm( dataEntryFormA );
-        dataEntryFormStore.addDataEntryForm( dataEntryFormB );
+        dataEntryFormStore.save( dataEntryFormA );
+        dataEntryFormStore.save( dataEntryFormB );
 
-        Collection<DataEntryForm> dataEntryForms = dataEntryFormStore.getAllDataEntryForms();
+        Collection<DataEntryForm> dataEntryForms = dataEntryFormStore.getAll();
 
         assertEquals( dataEntryForms.size(), 2 );
         assertTrue( dataEntryForms.contains( dataEntryFormA ) );

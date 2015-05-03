@@ -112,25 +112,30 @@ public class DefaultDataEntryFormService
     @Override
     public int addDataEntryForm( DataEntryForm dataEntryForm )
     {
-        return dataEntryFormStore.addDataEntryForm( dataEntryForm );
+        if ( dataEntryForm != null )
+        {
+            dataEntryForm.setFormat( DataEntryForm.CURRENT_FORMAT );
+        }
+        
+        return dataEntryFormStore.save( dataEntryForm );
     }
 
     @Override
     public void updateDataEntryForm( DataEntryForm dataEntryForm )
     {
-        dataEntryFormStore.updateDataEntryForm( dataEntryForm );
+        dataEntryFormStore.update( dataEntryForm );
     }
 
     @Override
     public void deleteDataEntryForm( DataEntryForm dataEntryForm )
     {
-        dataEntryFormStore.deleteDataEntryForm( dataEntryForm );
+        dataEntryFormStore.delete( dataEntryForm );
     }
 
     @Override
     public DataEntryForm getDataEntryForm( int id )
     {
-        return dataEntryFormStore.getDataEntryForm( id );
+        return dataEntryFormStore.get( id );
     }
 
     @Override
@@ -142,7 +147,7 @@ public class DefaultDataEntryFormService
     @Override
     public Collection<DataEntryForm> getAllDataEntryForms()
     {
-        return dataEntryFormStore.getAllDataEntryForms();
+        return dataEntryFormStore.getAll();
     }
 
     @Override

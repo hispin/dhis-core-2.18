@@ -33,12 +33,12 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormStore;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.program.ProgramStage;
 
 /**
@@ -46,59 +46,12 @@ import org.hisp.dhis.program.ProgramStage;
  * @version $Id$
  */
 public class HibernateDataEntryFormStore
+    extends HibernateGenericStore<DataEntryForm>
     implements DataEntryFormStore
 {
-    // ------------------------------------------------------------------------
-    // Dependencies
-    // ------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-
-    // ------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // DataEntryFormStore implementation
-    // ------------------------------------------------------------------------
-
-    @Override
-    public int addDataEntryForm( DataEntryForm dataEntryForm )
-    {
-        if ( dataEntryForm != null )
-        {
-            dataEntryForm.setFormat( DataEntryForm.CURRENT_FORMAT );
-        }
-        
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( dataEntryForm );
-    }
-
-    @Override
-    public void updateDataEntryForm( DataEntryForm dataEntryForm )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.update( dataEntryForm );
-    }
-
-    @Override
-    public void deleteDataEntryForm( DataEntryForm dataEntryForm )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( dataEntryForm );
-    }
-
-    @Override
-    public DataEntryForm getDataEntryForm( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (DataEntryForm) session.get( DataEntryForm.class, id );
-    }
+    // -------------------------------------------------------------------------
 
     @Override
     public DataEntryForm getDataEntryFormByName( String name )
@@ -119,17 +72,6 @@ public class HibernateDataEntryFormStore
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
 
         return (DataEntryForm) criteria.uniqueResult();
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<DataEntryForm> getAllDataEntryForms()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataEntryForm.class );
-
-        return criteria.list();
     }
 
     @Override
