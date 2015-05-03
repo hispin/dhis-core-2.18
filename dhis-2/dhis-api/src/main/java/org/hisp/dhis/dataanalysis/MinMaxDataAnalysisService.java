@@ -38,5 +38,5 @@ public interface MinMaxDataAnalysisService
     extends DataAnalysisService
 {    
     void generateMinMaxValues( Collection<OrganisationUnit> organisationUnits,
-        Collection<DataElement> dataElements, Double stdDevFactor, Date from );
+        Collection<DataElement> dataElements, Double stdDevFactor );
 }

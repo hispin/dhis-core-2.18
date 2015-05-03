@@ -51,6 +51,7 @@ import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.MathUtils;
+import org.joda.time.DateTime;
 
 import static org.hisp.dhis.dataelement.DataElement.*;
 
@@ -115,12 +116,14 @@ public class MinMaxOutlierAnalysisService
     
     @Override
     public void generateMinMaxValues( Collection<OrganisationUnit> organisationUnits,
-        Collection<DataElement> dataElements, Double stdDevFactor, Date from )
+        Collection<DataElement> dataElements, Double stdDevFactor )
     {
         log.info( "Starting min-max value generation, no of data elements: " + dataElements.size() + ", no of org units: " + organisationUnits.size() );
 
         Set<Integer> orgUnitIds = new HashSet<>( ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );
 
+        Date from = new DateTime( 1, 1, 1, 1, 1 ).toDate();
+        
         minMaxDataElementService.removeMinMaxDataElements( dataElements, organisationUnits );
 
         log.debug( "Deleted existing min-max values" );
