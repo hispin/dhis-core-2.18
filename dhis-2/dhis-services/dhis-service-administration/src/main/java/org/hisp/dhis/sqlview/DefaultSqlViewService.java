@@ -164,6 +164,7 @@ public class DefaultSqlViewService
     {
         Grid grid = new ListGrid();
         grid.setTitle( sqlView.getName() );
+        grid.setSubtitle( sqlView.getDescription() );
 
         validateSqlView( sqlView, criteria, variables );
         
