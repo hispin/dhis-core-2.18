@@ -333,7 +333,7 @@ public class UpdateUserAction
         // Update User
         // ---------------------------------------------------------------------
 
-        if ( rawPassword != null )
+        if ( StringUtils.isNotEmpty( rawPassword ) )
         {
             userService.encodeAndSetPassword( userCredentials, rawPassword );
         }
