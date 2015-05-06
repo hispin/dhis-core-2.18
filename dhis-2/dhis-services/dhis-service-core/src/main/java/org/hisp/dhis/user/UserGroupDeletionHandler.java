@@ -30,6 +30,7 @@ package org.hisp.dhis.user;
 
 import java.util.Set;
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -44,12 +45,8 @@ public class UserGroupDeletionHandler
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserGroupService userGroupService;
-    
-    public void setUserGroupService( UserGroupService userGroupService )
-    {
-        this.userGroupService = userGroupService;
-    }
+    @Autowired
+    private IdentifiableObjectManager idObjectManager;
     
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -72,7 +69,7 @@ public class UserGroupDeletionHandler
         for ( UserGroup group : userGroups )
         {
             group.getMembers().remove( user );
-            userGroupService.updateUserGroup( group );
+            idObjectManager.updateNoAcl( group );
         }
     }
     
@@ -82,5 +79,17 @@ public class UserGroupDeletionHandler
         int count = jdbcTemplate.queryForObject( "select count(*) from usergroupaccess where usergroupid=" + group.getId(), Integer.class );
         
         return count == 0 ? null : "";
+    }
+
+    @Override
+    public void deleteUserGroup( UserGroup userGroup )
+    {
+        Set<UserGroup> userGroups = userGroup.getManagedByGroups();
+        
+        for ( UserGroup group : userGroups )
+        {
+            group.getManagedGroups().remove( userGroup );
+            idObjectManager.updateNoAcl( group );
+        }
     }
 }
