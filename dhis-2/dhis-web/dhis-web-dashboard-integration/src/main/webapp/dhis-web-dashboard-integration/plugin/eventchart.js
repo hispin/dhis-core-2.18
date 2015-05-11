@@ -1277,7 +1277,7 @@ Ext.onReady( function() {
                 return maxLength;
             };
 
-			support.prototype.array.sort = function(array, direction, key) {
+			support.prototype.array.sort = function(array, direction, key, emptyFirst) {
 				// supports [number], [string], [{key: number}], [{key: string}], [[string]], [[number]]
 
 				if (!support.prototype.array.getLength(array)) {
@@ -1318,11 +1318,29 @@ Ext.onReady( function() {
 						return direction === 'DESC' ? b - a : a - b;
 					}
 
+                    else if (a === undefined || a === null) {
+                        return emptyFirst ? -1 : 1;
+                    }
+
+                    else if (b === undefined || b === null) {
+                        return emptyFirst ? 1 : -1;
+                    }
+
 					return -1;
 				});
 
 				return array;
 			};
+
+            support.prototype.array.deleteObjectKey = function(array, key) {
+                if (!(Ext.isArray(array) && Ext.isDefined(key))) {
+                    return;
+                }
+
+                for (var i = 0; i < array.length; i++) {
+                    delete array[i][key];
+                }
+            };
 
             support.prototype.array.uniqueByProperty = function(array, property) {
                 var names = [],
@@ -2773,9 +2791,19 @@ Ext.onReady( function() {
 
                     // sort order
                     if (xLayout.sortOrder) {
-                        var sortingKey = isStacked ? dataTotalKey : failSafeColumnIds[0];
+                        var valueKey = isStacked ? dataTotalKey : failSafeColumnIds[0],
+                            sortKey = 'sorting_' + "sdklfjlsdkfjsdflk";
 
-                        support.prototype.array.sort(data, xLayout.sortOrder === -1 ? 'ASC' : 'DESC', sortingKey);
+                        // create sort key
+                        for (var ii = 0, rec; ii < data.length; ii++) {
+                            rec = data[ii];
+                            rec[sortKey] = rec[valueKey] === '0.0' ? null : rec[valueKey];
+                        }
+
+                        support.prototype.array.sort(data, xLayout.sortOrder === -1 ? 'ASC' : 'DESC', sortKey, (xLayout.sortOrder === -1));
+
+                        // remove sort key
+                        support.prototype.array.deleteObjectKey(data, sortKey);
                     }
 
                     // trend lines

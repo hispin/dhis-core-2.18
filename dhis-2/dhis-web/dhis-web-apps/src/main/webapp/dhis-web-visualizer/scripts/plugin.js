@@ -1315,19 +1315,25 @@ Ext.onReady(function() {
                 return maxLength;
             };
 
-			support.prototype.array.sort = function(array, direction, key) {
-				// accepts [number], [string], [{prop: number}], [{prop: string}]
+			support.prototype.array.sort = function(array, direction, key, emptyFirst) {
+				// supports [number], [string], [{key: number}], [{key: string}], [[string]], [[number]]
 
 				if (!support.prototype.array.getLength(array)) {
 					return;
 				}
 
-				key = key || 'name';
+				key = !!key || Ext.isNumber(key) ? key : 'name';
 
 				array.sort( function(a, b) {
 
 					// if object, get the property values
-					if (Ext.isObject(a) && Ext.isObject(b) && key) {
+					if (Ext.isObject(a) && Ext.isObject(b)) {
+						a = a[key];
+						b = b[key];
+					}
+
+					// if array, get from the right index
+					if (Ext.isArray(a) && Ext.isArray(b)) {
 						a = a[key];
 						b = b[key];
 					}
@@ -1350,11 +1356,29 @@ Ext.onReady(function() {
 						return direction === 'DESC' ? b - a : a - b;
 					}
 
-					return 0;
+                    else if (a === undefined || a === null) {
+                        return emptyFirst ? -1 : 1;
+                    }
+
+                    else if (b === undefined || b === null) {
+                        return emptyFirst ? 1 : -1;
+                    }
+
+					return -1;
 				});
 
 				return array;
 			};
+
+            support.prototype.array.deleteObjectKey = function(array, key) {
+                if (!(Ext.isArray(array) && Ext.isDefined(key))) {
+                    return;
+                }
+
+                for (var i = 0; i < array.length; i++) {
+                    delete array[i][key];
+                }
+            };
 
 				// object
 			support.prototype.object = {};
@@ -2411,9 +2435,19 @@ Ext.onReady(function() {
 
                     // sort order
                     if (xLayout.sortOrder) {
-                        var sortingKey = isStacked ? dataTotalKey : failSafeColumnIds[0];
+                        var valueKey = isStacked ? dataTotalKey : failSafeColumnIds[0],
+                            sortKey = 'sorting_' + "sdklfjlsdkfjsdflk";
 
-                        support.prototype.array.sort(data, xLayout.sortOrder === -1 ? 'ASC' : 'DESC', sortingKey);
+                        // create sort key
+                        for (var ii = 0, rec; ii < data.length; ii++) {
+                            rec = data[ii];
+                            rec[sortKey] = rec[valueKey] === '0.0' ? null : rec[valueKey];
+                        }
+
+                        support.prototype.array.sort(data, xLayout.sortOrder === -1 ? 'ASC' : 'DESC', sortKey, (xLayout.sortOrder === -1));
+
+                        // remove sort key
+                        support.prototype.array.deleteObjectKey(data, sortKey);
                     }
 
                     // trend lines
