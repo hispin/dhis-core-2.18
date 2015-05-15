@@ -202,6 +202,7 @@ public class HibernateGenericStore<T>
         Disjunction disjunction = Restrictions.disjunction();
 
         disjunction.add( Restrictions.like( "c.publicAccess", access ) );
+        disjunction.add( Restrictions.isNull( "c.publicAccess" ) );
         disjunction.add( Restrictions.isNull( "c.user.id" ) );
         disjunction.add( Restrictions.eq( "c.user.id", user.getId() ) );
 
