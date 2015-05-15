@@ -150,6 +150,7 @@ public class DefaultAclService implements AclService
         if ( haveOverrideAuthority( user )
             || UserGroup.class.isAssignableFrom( object.getClass() )
             || object.getUser() == null
+            || object.getPublicAccess() == null
             || user.equals( object.getUser() )
             || AccessStringHelper.canRead( object.getPublicAccess() ) )
         {
