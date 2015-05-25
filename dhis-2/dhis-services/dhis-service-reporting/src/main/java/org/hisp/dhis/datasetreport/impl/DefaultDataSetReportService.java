@@ -323,7 +323,7 @@ public class DefaultDataSetReportService
 
                 String value = "<span class=\"val\" data-de=\"" + dataElementId + "\" data-co=\"" + optionComboId + "\">" + format.formatValue( dataValue ) + "</span>";
                 
-                inputMatcher.appendReplacement( buffer, value );
+                inputMatcher.appendReplacement( buffer, Matcher.quoteReplacement( value ) );
             }
             else if ( dataElementTotalMatcher.find() && dataElementTotalMatcher.groupCount() > 0 )
             {
@@ -331,7 +331,7 @@ public class DefaultDataSetReportService
                 
                 Object dataValue = dataValues.get( dataElementId );
 
-                inputMatcher.appendReplacement( buffer, format.formatValue( dataValue ) );
+                inputMatcher.appendReplacement( buffer, Matcher.quoteReplacement( format.formatValue( dataValue ) ) );
             }
             else if ( indicatorMatcher.find() && indicatorMatcher.groupCount() > 0 )
             {
@@ -339,7 +339,7 @@ public class DefaultDataSetReportService
 
                 Object indicatorValue = indicatorValues.get( indicatorId );
 
-                inputMatcher.appendReplacement( buffer, format.formatValue( indicatorValue ) );
+                inputMatcher.appendReplacement( buffer, Matcher.quoteReplacement( format.formatValue( indicatorValue ) ) );
             }
         }
 

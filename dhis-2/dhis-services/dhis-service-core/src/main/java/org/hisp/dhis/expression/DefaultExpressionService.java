@@ -550,7 +550,7 @@ public class DefaultExpressionService
                 throw new IllegalArgumentException( "Identifier does not reference a category option combo: " + coc );
             }
             
-            matcher.appendReplacement( sb, DataElementOperand.getPrettyName( dataElement, categoryOptionCombo ) );
+            matcher.appendReplacement( sb, Matcher.quoteReplacement( DataElementOperand.getPrettyName( dataElement, categoryOptionCombo ) ) );
         }
         
         expression = appendTail( matcher, sb );
@@ -573,7 +573,7 @@ public class DefaultExpressionService
                 throw new IllegalArgumentException( "Identifier does not reference a constant: " + co );
             }
             
-            matcher.appendReplacement( sb, constant.getDisplayName() );
+            matcher.appendReplacement( sb, Matcher.quoteReplacement( constant.getDisplayName() ) );
         }
 
         expression = appendTail( matcher, sb );
@@ -596,7 +596,7 @@ public class DefaultExpressionService
                 throw new IllegalArgumentException( "Identifier does not reference an organisation unit group: " + oug );
             }
             
-            matcher.appendReplacement( sb, group.getDisplayName() );
+            matcher.appendReplacement( sb, Matcher.quoteReplacement( group.getDisplayName() ) );
         }
 
         expression = appendTail( matcher, sb );
@@ -731,7 +731,7 @@ public class DefaultExpressionService
                 }
 
                 replace.deleteCharAt( replace.length() - 1 ).append( PAR_CLOSE );
-                matcher.appendReplacement( sb, replace.toString() );
+                matcher.appendReplacement( sb, Matcher.quoteReplacement( replace.toString() ) );
             }
         }
 
@@ -767,7 +767,7 @@ public class DefaultExpressionService
                 }
 
                 replace.deleteCharAt( replace.length() - 1 ).append( PAR_CLOSE );
-                matcher.appendReplacement( sb, replace.toString() );
+                matcher.appendReplacement( sb, Matcher.quoteReplacement( replace.toString() ) );
             }
         }
 
@@ -798,7 +798,7 @@ public class DefaultExpressionService
             
             String replacement = constant != null ? String.valueOf( constant.getValue() ) : NULL_REPLACEMENT; 
             
-            matcher.appendReplacement( sb, replacement );
+            matcher.appendReplacement( sb, Matcher.quoteReplacement( replacement ) );
         }
 
         expression = appendTail( matcher, sb );
@@ -892,7 +892,7 @@ public class DefaultExpressionService
 
             String replacement = value != null ? String.valueOf( value ) : NULL_REPLACEMENT;
             
-            matcher.appendReplacement( sb, replacement );
+            matcher.appendReplacement( sb, Matcher.quoteReplacement( replacement ) );
         }
         
         if ( SKIP_IF_ALL_VALUES_MISSING.equals( missingValueStrategy ) && matchCount > 0 && valueCount == 0 )
