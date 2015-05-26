@@ -29,8 +29,7 @@ package org.hisp.dhis.period;
  */
 
 import org.hisp.dhis.calendar.DateTimeUnit;
-
-import java.util.Calendar;
+import org.joda.time.DateTimeConstants;
 
 /**
  * PeriodType for six-monthly Periods aligned to a financial year starting in
@@ -49,7 +48,7 @@ public class SixMonthlyAprilPeriodType
 
     private static final String ISO_FORMAT = "yyyyAprilSn";
 
-    private static final int BASE_MONTH = Calendar.APRIL;
+    private static final int BASE_MONTH = DateTimeConstants.APRIL;
 
     /**
      * The name of the SixMonthlyPeriodType, which is "SixMonthly".

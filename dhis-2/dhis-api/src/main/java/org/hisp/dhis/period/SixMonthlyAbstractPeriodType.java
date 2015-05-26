@@ -62,29 +62,26 @@ public abstract class SixMonthlyAbstractPeriodType
     // -------------------------------------------------------------------------
 
     @Override
-    public Period createPeriod( DateTimeUnit dateTimeUnit, Calendar calendar )
+    public Period createPeriod( DateTimeUnit dateTimeUnit, org.hisp.dhis.calendar.Calendar calendar )
     {
-        int year = calendar.monthsInYear() * dateTimeUnit.getYear();
-        int yearMonth = year + dateTimeUnit.getMonth() - getBaseMonth() - 1;
-
-        // TODO how should we handle years with odd number of months? (Ethiopian)
-        
-        int months = (((yearMonth % 12) / 6) * 6) + getBaseMonth();
-        
         DateTimeUnit start = new DateTimeUnit( dateTimeUnit );
+        
+        int baseMonth = getBaseMonth();
+        
+        int year = start.getMonth() < baseMonth ? ( start.getYear() - 1 ) : start.getYear();
+        int month = start.getMonth() >= baseMonth && start.getMonth() < ( baseMonth + 6 ) ? baseMonth : ( baseMonth + 6 );
+        
+        start.setYear( year );
+        start.setMonth( month );
         start.setDay( 1 );
-        start.setMonth( 1 );
-        start = calendar.plusMonths( start, months );
-        start.setDayOfWeek( calendar.weekday( start ) );
-
+        
         DateTimeUnit end = new DateTimeUnit( start );
         end = calendar.plusMonths( end, 5 );
         end.setDay( calendar.daysInMonth( end.getYear(), end.getMonth() ) );
-        end.setDayOfWeek( calendar.weekday( end ) );
 
         return toIsoPeriod( start, end, calendar );
     }
-
+    
     @Override
     public int getFrequencyOrder()
     {
@@ -127,7 +124,7 @@ public abstract class SixMonthlyAbstractPeriodType
 
         List<Period> periods = Lists.newArrayList();
 
-        if ( dateTimeUnit.getMonth() == (getBaseMonth() + 1) )
+        if ( dateTimeUnit.getMonth() == getBaseMonth() )
         {
             periods.add( period );
             periods.add( getNextPeriod( period ) );

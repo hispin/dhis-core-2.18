@@ -29,8 +29,7 @@ package org.hisp.dhis.period;
  */
 
 import org.hisp.dhis.calendar.DateTimeUnit;
-
-import java.util.Calendar;
+import org.joda.time.DateTimeConstants;
 
 /**
  * PeriodType for six-monthly Periods. A valid six-monthly Period has startDate
@@ -50,7 +49,7 @@ public class SixMonthlyPeriodType
 
     private static final String ISO_FORMAT = "yyyySn";
 
-    private static final int BASE_MONTH = Calendar.JANUARY;
+    private static final int BASE_MONTH = DateTimeConstants.JANUARY;
 
     /**
      * The name of the SixMonthlyPeriodType, which is "SixMonthly".
