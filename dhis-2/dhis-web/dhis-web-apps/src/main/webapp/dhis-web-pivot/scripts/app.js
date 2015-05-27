@@ -514,6 +514,7 @@ Ext.onReady( function() {
 			showDimensionLabels,
 			hideEmptyRows,
             aggregationType,
+            dataApprovalLevel,
 			showHierarchy,
 			digitGroupSeparator,
 			displayDensity,
@@ -589,6 +590,37 @@ Ext.onReady( function() {
 					{id: 'min', text: NS.i18n.min},
 					{id: 'max', text: NS.i18n.max}
 				]
+			})
+		});
+
+		dataApprovalLevel = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'ns-combo',
+			style: 'margin-bottom:' + comboBottomMargin + 'px',
+			width: comboboxWidth,
+			labelWidth: 130,
+			fieldLabel: NS.i18n.approval_level,
+			labelStyle: 'color:#333',
+			queryMode: 'local',
+			valueField: 'id',
+			displayField: 'name',
+			editable: false,
+			hidden: !(ns.core.init.systemInfo.hideUnapprovedDataInAnalytics && ns.core.init.user.viewUnapprovedData),
+			value: 'DEFAULT',
+			store: Ext.create('Ext.data.Store', {
+				fields: ['id', 'name'],
+				data: function() {
+					var data = [{id: 'DEFAULT', name: NS.i18n.show_all_data}],
+						levels = ns.core.init.dataApprovalLevels;
+
+					for (var i = 0; i < levels.length; i++) {
+						data.push({
+							id: levels[i].id,
+							name: 'Data approved at ' + levels[i].name
+						});
+					}
+
+					return data;
+				}()
 			})
 		});
 
@@ -754,7 +786,8 @@ Ext.onReady( function() {
                 showRowSubTotals,
                 showDimensionLabels,
 				hideEmptyRows,
-                aggregationType
+                aggregationType,
+                dataApprovalLevel
 			]
 		};
 
@@ -809,6 +842,7 @@ Ext.onReady( function() {
                     showDimensionLabels: showDimensionLabels.getValue(),
 					hideEmptyRows: hideEmptyRows.getValue(),
                     aggregationType: aggregationType.getValue(),
+                    dataApprovalLevel: {id: dataApprovalLevel.getValue()},
 					showHierarchy: showHierarchy.getValue(),
 					displayDensity: displayDensity.getValue(),
 					fontSize: fontSize.getValue(),
@@ -831,6 +865,7 @@ Ext.onReady( function() {
 				showDimensionLabels.setValue(Ext.isBoolean(layout.showDimensionLabels) ? layout.showDimensionLabels : true);
 				hideEmptyRows.setValue(Ext.isBoolean(layout.hideEmptyRows) ? layout.hideEmptyRows : false);
                 aggregationType.setValue(Ext.isString(layout.aggregationType) ? layout.aggregationType : 'default');
+				dataApprovalLevel.setValue(Ext.isObject(layout.dataApprovalLevel) && Ext.isString(layout.dataApprovalLevel.id) ? layout.dataApprovalLevel.id : 'DEFAULT');
 				showHierarchy.setValue(Ext.isBoolean(layout.showHierarchy) ? layout.showHierarchy : false);
 				displayDensity.setValue(Ext.isString(layout.displayDensity) ? layout.displayDensity : 'normal');
 				fontSize.setValue(Ext.isString(layout.fontSize) ? layout.fontSize : 'normal');
@@ -946,6 +981,7 @@ Ext.onReady( function() {
                     w.showDimensionLabels = showDimensionLabels;
 					w.hideEmptyRows = hideEmptyRows;
                     w.aggregationType = aggregationType;
+                    w.dataApprovalLevel = dataApprovalLevel;
 					w.showHierarchy = showHierarchy;
 					w.displayDensity = displayDensity;
 					w.fontSize = fontSize;
@@ -6841,6 +6877,16 @@ Ext.onReady( function() {
                                             }
                                         });
 
+                                        // authorization
+                                        requests.push({
+                                            url: init.contextPath + '/api/me/authorization/F_VIEW_UNAPPROVED_DATA',
+                                            success: function(r) {
+												init.user = init.user || {};
+                                                init.user.viewUnapprovedData = (r.responseText === 'true');
+                                                fn();
+                                            }
+                                        });
+
                                         // root nodes
                                         requests.push({
                                             url: contextPath + '/api/organisationUnits.json?userDataViewFallback=true&paging=false&fields=id,' + namePropertyUrl + ',children[id,' + namePropertyUrl + ']',
@@ -6909,6 +6955,15 @@ Ext.onReady( function() {
                                             url: contextPath + '/api/dimensions.json?links=false&paging=false',
                                             success: function(r) {
                                                 init.dimensions = Ext.decode(r.responseText).dimensions || [];
+                                                fn();
+                                            }
+                                        });
+
+                                        // approval levels
+                                        requests.push({
+                                            url: contextPath + '/api/dataApprovalLevels.json?fields=id,name&paging=false',
+                                            success: function(r) {
+                                                init.dataApprovalLevels = Ext.decode(r.responseText).dataApprovalLevels || [];
                                                 fn();
                                             }
                                         });
