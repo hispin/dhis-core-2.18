@@ -598,7 +598,7 @@ Ext.onReady( function() {
 			style: 'margin-bottom:' + comboBottomMargin + 'px',
 			width: comboboxWidth,
 			labelWidth: 130,
-			fieldLabel: NS.i18n.approval_level,
+			fieldLabel: NS.i18n.data_approved_at_level,
 			labelStyle: 'color:#333',
 			queryMode: 'local',
 			valueField: 'id',
