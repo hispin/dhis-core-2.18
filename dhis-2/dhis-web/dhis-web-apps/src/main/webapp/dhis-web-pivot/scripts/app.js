@@ -6775,12 +6775,13 @@ Ext.onReady( function() {
 
                         // date, calendar
                         Ext.Ajax.request({
-                            url: init.contextPath + '/api/systemSettings.json?key=keyCalendar&key=keyDateFormat&key=keyAnalysisRelativePeriod',
+                            url: init.contextPath + '/api/systemSettings.json?key=keyCalendar&key=keyDateFormat&key=keyAnalysisRelativePeriod&key=keyHideUnapprovedDataInAnalytics',
                             success: function(r) {
                                 var systemSettings = Ext.decode(r.responseText);
                                 init.systemInfo.dateFormat = Ext.isString(systemSettings.keyDateFormat) ? systemSettings.keyDateFormat.toLowerCase() : 'yyyy-mm-dd';
                                 init.systemInfo.calendar = systemSettings.keyCalendar;
                                 init.systemInfo.analysisRelativePeriod = systemSettings.keyAnalysisRelativePeriod || 'LAST_12_MONTHS';
+                                init.systemInfo.hideUnapprovedDataInAnalytics = systemSettings.keyHideUnapprovedDataInAnalytics;
 
                                 // user-account
                                 Ext.Ajax.request({
