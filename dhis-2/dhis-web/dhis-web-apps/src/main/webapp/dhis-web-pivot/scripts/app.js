@@ -615,7 +615,7 @@ Ext.onReady( function() {
 					for (var i = 0; i < levels.length; i++) {
 						data.push({
 							id: levels[i].id,
-							name: 'Data approved at ' + levels[i].name
+							name: levels[i].name
 						});
 					}
 
