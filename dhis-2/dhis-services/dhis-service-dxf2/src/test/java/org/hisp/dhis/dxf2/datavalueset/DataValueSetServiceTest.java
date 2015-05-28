@@ -273,6 +273,25 @@ public class DataValueSetServiceTest
         
         assertImportDataValues( summary );
     }
+
+    @Test
+    public void testImportDataValuesXmlWithCodePreheatCacheFalseB()
+        throws Exception
+    {
+        in = new ClassPathResource( "datavalueset/dataValueSetBcode.xml" ).getInputStream();
+        
+        ImportOptions options = new ImportOptions( CODE, CODE, CODE, false, false, NEW_AND_UPDATES, false );
+        ImportSummary summary = dataValueSetService.saveDataValueSet( in, options );
+
+        assertEquals( 0, summary.getConflicts().size() );
+        assertEquals( 12, summary.getImportCount().getImported() );
+        assertEquals( 0, summary.getImportCount().getUpdated() );
+        assertEquals( 0, summary.getImportCount().getDeleted() );
+        assertEquals( 0, summary.getImportCount().getIgnored() );
+        assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
+        
+        assertImportDataValues( summary );
+    }
     
     @Test
     public void testImportDataValuesCsv()

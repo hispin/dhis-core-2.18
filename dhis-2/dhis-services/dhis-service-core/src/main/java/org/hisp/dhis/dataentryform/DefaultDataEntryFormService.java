@@ -230,7 +230,7 @@ public class DefaultDataEntryFormService
 
                 String optionComboId = identifierMatcher.group( 2 );
 
-                DataElementCategoryOptionCombo categoryOptionCombo = optionComboMap.get( optionComboId, optionComboCallabel.setUid( optionComboId ) );
+                DataElementCategoryOptionCombo categoryOptionCombo = optionComboMap.get( optionComboId, optionComboCallabel.setId( optionComboId ) );
 
                 String optionComboName = categoryOptionCombo != null ? escapeHtml( categoryOptionCombo.getName() ) : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
 
@@ -333,7 +333,7 @@ public class DefaultDataEntryFormService
                     return i18n.getString( "dataelement_with_id" ) + ": " + dataElementId + " " + i18n.getString( "does_not_exist" );
                 }
 
-                DataElementCategoryOptionCombo categoryOptionCombo = optionComboMap.get( optionComboId, optionComboCallabel.setUid( optionComboId ) );
+                DataElementCategoryOptionCombo categoryOptionCombo = optionComboMap.get( optionComboId, optionComboCallabel.setId( optionComboId ) );
 
                 if ( categoryOptionCombo == null )
                 {

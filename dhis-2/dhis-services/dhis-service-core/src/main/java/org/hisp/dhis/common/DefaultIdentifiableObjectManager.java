@@ -798,7 +798,7 @@ public class DefaultIdentifiableObjectManager
 
         if ( id != null )
         {
-            if ( IdentifiableProperty.ID.equals( property ) )
+            if ( property == null || IdentifiableProperty.ID.equals( property ) )
             {
                 if ( Integer.valueOf( id ) > 0 )
                 {
@@ -821,9 +821,11 @@ public class DefaultIdentifiableObjectManager
             {
                 return store.getByName( id );
             }
+            
+            throw new IllegalArgumentException( "Invalid identifiable property / class combination: " + property );
         }
 
-        throw new IllegalArgumentException( String.valueOf( property ) );
+        return null;
     }
 
     @Override

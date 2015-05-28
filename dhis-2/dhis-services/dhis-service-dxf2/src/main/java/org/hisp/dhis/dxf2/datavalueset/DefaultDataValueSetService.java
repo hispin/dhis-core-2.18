@@ -645,9 +645,9 @@ public class DefaultDataValueSetService
         }
         
         IdentifiableObjectCallable<DataElement> dataElementCallable = new IdentifiableObjectCallable<>( 
-            identifiableObjectManager, DataElement.class, null );
+            identifiableObjectManager, DataElement.class, dataElementIdScheme, null );
         IdentifiableObjectCallable<OrganisationUnit> orgUnitCallable = new IdentifiableObjectCallable<>( 
-            identifiableObjectManager, OrganisationUnit.class, trimToNull( dataValueSet.getOrgUnit() ) );
+            identifiableObjectManager, OrganisationUnit.class, orgUnitIdScheme, trimToNull( dataValueSet.getOrgUnit() ) );
         
         //----------------------------------------------------------------------
         // Get outer meta-data
@@ -731,10 +731,10 @@ public class DefaultDataValueSetService
 
             totalCount++;
 
-            DataElement dataElement = dataElementMap.get( trimToNull( dataValue.getDataElement() ), dataElementCallable.setUid( trimToNull( dataValue.getDataElement() ) ) );
+            DataElement dataElement = dataElementMap.get( trimToNull( dataValue.getDataElement() ), dataElementCallable.setId( trimToNull( dataValue.getDataElement() ) ) );
             Period period = outerPeriod != null ? outerPeriod : PeriodType.getPeriodFromIsoString( trimToNull( dataValue.getPeriod() ) );
             OrganisationUnit orgUnit = outerOrgUnit != null ? outerOrgUnit : 
-                orgUnitMap.get( trimToNull( dataValue.getOrgUnit() ), orgUnitCallable.setUid( trimToNull( dataValue.getOrgUnit() ) ) );
+                orgUnitMap.get( trimToNull( dataValue.getOrgUnit() ), orgUnitCallable.setId( trimToNull( dataValue.getOrgUnit() ) ) );
             DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboMap.get( trimToNull( dataValue.getCategoryOptionCombo() ) );
             DataElementCategoryOptionCombo attrOptionCombo = outerAttrOptionCombo != null ? outerAttrOptionCombo : 
                 categoryOptionComboMap.get( trimToNull( dataValue.getAttributeOptionCombo() ) );
