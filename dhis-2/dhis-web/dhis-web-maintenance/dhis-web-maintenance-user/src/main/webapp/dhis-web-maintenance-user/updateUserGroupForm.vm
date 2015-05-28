@@ -11,7 +11,7 @@
             'rules': getValidationRules( 'userGroup' )
         } );
         
-		checkValueIsExist("name", "validateUserGroup.action", { id: userGroupId });
+		checkValueIsExist("name", "validateUserGroup.action", { id: $group.id });
         
         $( '#usersAvailable' ).selected( {
             url: '../api/users.json',
