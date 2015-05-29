@@ -284,10 +284,10 @@ public class DataValueSetServiceTest
         ImportSummary summary = dataValueSetService.saveDataValueSet( in, options );
 
         assertEquals( 0, summary.getConflicts().size() );
-        assertEquals( 12, summary.getImportCount().getImported() );
-        assertEquals( 0, summary.getImportCount().getUpdated() );
-        assertEquals( 0, summary.getImportCount().getDeleted() );
-        assertEquals( 0, summary.getImportCount().getIgnored() );
+        assertEquals( 12, summary.getDataValueCount().getImported() );
+        assertEquals( 0, summary.getDataValueCount().getUpdated() );
+        assertEquals( 0, summary.getDataValueCount().getDeleted() );
+        assertEquals( 0, summary.getDataValueCount().getIgnored() );
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
         
         assertImportDataValues( summary );
