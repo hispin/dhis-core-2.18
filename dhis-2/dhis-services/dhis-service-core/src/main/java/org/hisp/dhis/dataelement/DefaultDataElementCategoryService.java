@@ -42,6 +42,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.GenericDimensionalObjectStore;
+import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
+import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -107,6 +110,13 @@ public class DefaultDataElementCategoryService
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
+    }
+    
+    private IdentifiableObjectManager idObjectManager;
+
+    public void setIdObjectManager( IdentifiableObjectManager idObjectManager )
+    {
+        this.idObjectManager = idObjectManager;
     }
 
     private I18nService i18nService;
@@ -549,8 +559,7 @@ public class DefaultDataElementCategoryService
     }
 
     @Override
-    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo(
-        DataElementCategoryOptionCombo categoryOptionCombo )
+    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
     {
         for ( DataElementCategoryOptionCombo dcoc : getAllDataElementCategoryOptionCombos() )
         {
@@ -821,6 +830,27 @@ public class DefaultDataElementCategoryService
         return categoryOptionComboStore.getCountLikeName( name );
     }
 
+    @Override
+    public DataElementCategoryOptionCombo getDataElementCategoryOptionComboAcl( IdentifiableProperty property, String id )
+    {
+        DataElementCategoryOptionCombo coc = idObjectManager.getObject( DataElementCategoryOptionCombo.class, property, id );
+        
+        return canReadDataElementCategoryOptionCombo( coc ) ? coc : null;
+    }
+        
+    private boolean canReadDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
+    {
+        if ( categoryOptionCombo == null )
+        {
+            return false;
+        }
+        
+        List<DataElementCategoryOption> options = categoryOptionStore.getByUid( 
+            IdentifiableObjectUtils.getUids( categoryOptionCombo.getCategoryOptions() ) );
+        
+        return options.size() == categoryOptionCombo.getCategoryOptions().size();
+    }
+    
     // -------------------------------------------------------------------------
     // CategoryOptionGroup
     // -------------------------------------------------------------------------
@@ -998,5 +1028,4 @@ public class DefaultDataElementCategoryService
     {
         return categoryOptionGroupSetStore.getCountLikeName( name );
     }
-
 }

@@ -87,6 +87,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.system.callable.CategoryOptionComboAclCallable;
 import org.hisp.dhis.system.callable.IdentifiableObjectCallable;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.CachingMap;
@@ -627,7 +628,7 @@ public class DefaultDataValueSetService
 
         CachingMap<String, DataElement> dataElementMap = new CachingMap<>();
         CachingMap<String, OrganisationUnit> orgUnitMap = new CachingMap<>();
-        Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, idScheme );
+        CachingMap<String, DataElementCategoryOptionCombo> optionComboMap = new CachingMap<>();
         Map<String, Period> periodMap = new HashMap<>();
 
         //----------------------------------------------------------------------
@@ -645,6 +646,8 @@ public class DefaultDataValueSetService
             identifiableObjectManager, DataElement.class, dataElementIdScheme, null );
         IdentifiableObjectCallable<OrganisationUnit> orgUnitCallable = new IdentifiableObjectCallable<>( 
             identifiableObjectManager, OrganisationUnit.class, orgUnitIdScheme, trimToNull( dataValueSet.getOrgUnit() ) );
+        IdentifiableObjectCallable<DataElementCategoryOptionCombo> optionComboCallable = new CategoryOptionComboAclCallable( 
+            categoryService, idScheme, null );
         
         //----------------------------------------------------------------------
         // Get outer meta-data
@@ -660,8 +663,8 @@ public class DefaultDataValueSetService
 
         DataElementCategoryOptionCombo fallbackCategoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
-        DataElementCategoryOptionCombo outerAttrOptionCombo = 
-            dataValueSet.getAttributeOptionCombo() != null ? categoryOptionComboMap.get( dataValueSet.getAttributeOptionCombo() ) : null;
+        DataElementCategoryOptionCombo outerAttrOptionCombo = dataValueSet.getAttributeOptionCombo() != null ? 
+            optionComboMap.get( trimToNull( dataValueSet.getAttributeOptionCombo() ), optionComboCallable.setId( trimToNull( dataValueSet.getAttributeOptionCombo() ) ) ) : null;
 
         // ---------------------------------------------------------------------
         // Validation
@@ -732,9 +735,10 @@ public class DefaultDataValueSetService
             Period period = outerPeriod != null ? outerPeriod : PeriodType.getPeriodFromIsoString( trimToNull( dataValue.getPeriod() ) );
             OrganisationUnit orgUnit = outerOrgUnit != null ? outerOrgUnit : 
                 orgUnitMap.get( trimToNull( dataValue.getOrgUnit() ), orgUnitCallable.setId( trimToNull( dataValue.getOrgUnit() ) ) );
-            DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboMap.get( trimToNull( dataValue.getCategoryOptionCombo() ) );
-            DataElementCategoryOptionCombo attrOptionCombo = outerAttrOptionCombo != null ? outerAttrOptionCombo : 
-                categoryOptionComboMap.get( trimToNull( dataValue.getAttributeOptionCombo() ) );
+            DataElementCategoryOptionCombo categoryOptionCombo = optionComboMap.get( trimToNull( dataValue.getCategoryOptionCombo() ), 
+                optionComboCallable.setId( trimToNull( dataValue.getCategoryOptionCombo() ) ) );
+            DataElementCategoryOptionCombo attrOptionCombo = outerAttrOptionCombo != null ? outerAttrOptionCombo :
+                optionComboMap.get( trimToNull( dataValue.getAttributeOptionCombo() ), optionComboCallable.setId( trimToNull( dataValue.getAttributeOptionCombo() ) ) );
 
             // -----------------------------------------------------------------
             // Validation

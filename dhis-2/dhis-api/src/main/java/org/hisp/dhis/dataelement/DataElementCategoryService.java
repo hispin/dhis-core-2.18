@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
 /**
@@ -493,7 +494,17 @@ public interface DataElementCategoryService
      * combos.
      */
     void updateAllOptionCombos();
-
+    
+    /**
+     * Returns the category option combo with the given uid. Respects access control
+     * by only returning objects which all category options are accessible.
+     * 
+     * @param property the property.
+     * @param id the id.
+     * @return a category option combo.
+     */
+    DataElementCategoryOptionCombo getDataElementCategoryOptionComboAcl( IdentifiableProperty property, String id );
+    
     /**
      * Populates all transient properties on each Operand in the given
      * collection.

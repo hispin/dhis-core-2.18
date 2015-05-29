@@ -28,54 +28,35 @@ package org.hisp.dhis.system.callable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.IdentifiableProperty;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 /**
  * @author Lars Helge Overland
  */
-public class IdentifiableObjectCallable<T extends IdentifiableObject>
-    implements Callable<T>
+public class CategoryOptionComboAclCallable
+    extends IdentifiableObjectCallable<DataElementCategoryOptionCombo>
 {
-    protected IdentifiableObjectManager manager;
-    protected Class<T> clazz;
-    protected IdentifiableProperty property;
-    protected String id;
+    private DataElementCategoryService categoryService;
     
-    public IdentifiableObjectCallable( IdentifiableObjectManager manager, Class<T> clazz, String id )
+    public CategoryOptionComboAclCallable( DataElementCategoryService categoryService, IdentifiableProperty property, String id )
     {
-        this.manager = manager;
-        this.clazz = clazz;
-        this.id = id;
+        super( null, DataElementCategoryOptionCombo.class, property, id );
+        this.categoryService = categoryService;
     }
 
-    public IdentifiableObjectCallable( IdentifiableObjectManager manager, Class<T> clazz, IdentifiableProperty property, String id )
-    {
-        this.manager = manager;
-        this.clazz = clazz;
-        this.property = property;
-        this.id = id;
-    }
-    
     @Override
-    public T call()
+    public DataElementCategoryOptionCombo call()
         throws ExecutionException
     {
-        if ( property == null )
-        {
-            return manager.get( clazz, id );
-        }
-        else
-        {
-            return manager.getObject( clazz, property, id );
-        }
+        return categoryService.getDataElementCategoryOptionComboAcl( property, id );
     }
-    
-    public IdentifiableObjectCallable<T> setId( String id )
+
+    @Override
+    public CategoryOptionComboAclCallable setId( String id )
     {
         this.id = id;
         return this;
