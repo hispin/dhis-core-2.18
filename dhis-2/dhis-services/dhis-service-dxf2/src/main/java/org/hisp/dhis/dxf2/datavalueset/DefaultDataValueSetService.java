@@ -42,7 +42,6 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +88,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.callable.CategoryOptionComboAclCallable;
 import org.hisp.dhis.system.callable.IdentifiableObjectCallable;
+import org.hisp.dhis.system.callable.PeriodCallable;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.CachingMap;
 import org.hisp.dhis.system.util.DateUtils;
@@ -629,7 +629,7 @@ public class DefaultDataValueSetService
         CachingMap<String, DataElement> dataElementMap = new CachingMap<>();
         CachingMap<String, OrganisationUnit> orgUnitMap = new CachingMap<>();
         CachingMap<String, DataElementCategoryOptionCombo> optionComboMap = new CachingMap<>();
-        Map<String, Period> periodMap = new HashMap<>();
+        CachingMap<String, Period> periodMap = new CachingMap<>();
 
         //----------------------------------------------------------------------
         // Load meta-data maps
@@ -648,6 +648,8 @@ public class DefaultDataValueSetService
             identifiableObjectManager, OrganisationUnit.class, orgUnitIdScheme, trimToNull( dataValueSet.getOrgUnit() ) );
         IdentifiableObjectCallable<DataElementCategoryOptionCombo> optionComboCallable = new CategoryOptionComboAclCallable( 
             categoryService, idScheme, null );
+        IdentifiableObjectCallable<Period> periodCallable = new PeriodCallable( 
+            periodService, null, trimToNull( dataValueSet.getPeriod() ) );
         
         //----------------------------------------------------------------------
         // Get outer meta-data
@@ -657,7 +659,7 @@ public class DefaultDataValueSetService
         
         Date completeDate = getDefaultDate( dataValueSet.getCompleteDate() );
 
-        Period outerPeriod = PeriodType.getPeriodFromIsoString( trimToNull( dataValueSet.getPeriod() ) );
+        Period outerPeriod = periodMap.get( trimToNull( dataValueSet.getPeriod() ), periodCallable );
 
         OrganisationUnit outerOrgUnit = orgUnitMap.get( trimToNull( dataValueSet.getOrgUnit() ), orgUnitCallable );
 
@@ -732,7 +734,8 @@ public class DefaultDataValueSetService
             totalCount++;
 
             DataElement dataElement = dataElementMap.get( trimToNull( dataValue.getDataElement() ), dataElementCallable.setId( trimToNull( dataValue.getDataElement() ) ) );
-            Period period = outerPeriod != null ? outerPeriod : PeriodType.getPeriodFromIsoString( trimToNull( dataValue.getPeriod() ) );
+            Period period = outerPeriod != null ? outerPeriod : 
+                periodMap.get( trimToNull( dataValue.getPeriod() ), periodCallable.setId( trimToNull( dataValue.getPeriod() ) ) );
             OrganisationUnit orgUnit = outerOrgUnit != null ? outerOrgUnit : 
                 orgUnitMap.get( trimToNull( dataValue.getOrgUnit() ), orgUnitCallable.setId( trimToNull( dataValue.getOrgUnit() ) ) );
             DataElementCategoryOptionCombo categoryOptionCombo = optionComboMap.get( trimToNull( dataValue.getCategoryOptionCombo() ), 
@@ -803,16 +806,6 @@ public class DefaultDataValueSetService
             {
                 summary.getConflicts().add( new ImportConflict( "Comment", i18n.getString( commentValid ) ) );
                 continue;
-            }
-
-            if ( periodMap.containsKey( dataValue.getPeriod() ) )
-            {
-                period = periodMap.get( dataValue.getPeriod() );
-            }
-            else
-            {
-                period = periodService.reloadPeriod( period );
-                periodMap.put( dataValue.getPeriod(), period );
             }
 
             internalValue.setDataElement( dataElement );

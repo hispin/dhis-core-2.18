@@ -760,29 +760,7 @@ public class DefaultOrganisationUnitService
     {
         User user = currentUserService.getCurrentUser();
         
-        if ( user == null )
-        {
-            return false;
-        }
-        
-        Set<OrganisationUnit> userRootUnits = user.getOrganisationUnits();
-        
-        if ( userRootUnits == null )
-        {
-            return false;
-        }
-        
-        while ( organisationUnit != null )
-        {
-            if ( userRootUnits.contains( organisationUnit ) )
-            {
-                return true;
-            }
-            
-            organisationUnit = organisationUnit.getParent();
-        }
-        
-        return false;
+        return user != null ? user.isInUserHierarchy( organisationUnit ) : false;
     }
 
     // -------------------------------------------------------------------------

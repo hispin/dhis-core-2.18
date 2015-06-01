@@ -240,6 +240,33 @@ public class User
         return IdentifiableObjectUtils.join( organisationUnits );
     }
 
+    /**
+     * Indicates whether the given organisation unit is part of the hierarchy
+     * of the organisation units of this user.
+     * 
+     * @param organisationUnit the organisation unit.
+     * @return true if the given organisation unit is part of the hierarchy.
+     */
+    public boolean isInUserHierarchy( OrganisationUnit organisationUnit )
+    {
+        if ( organisationUnits == null )
+        {
+            return false;
+        }
+        
+        while ( organisationUnit != null )
+        {
+            if ( organisationUnits.contains( organisationUnit ) )
+            {
+                return true;
+            }
+            
+            organisationUnit = organisationUnit.getParent();
+        }
+        
+        return false;
+    }
+    
     public String getUsername()
     {
         return userCredentials != null ? userCredentials.getUsername() : null;
