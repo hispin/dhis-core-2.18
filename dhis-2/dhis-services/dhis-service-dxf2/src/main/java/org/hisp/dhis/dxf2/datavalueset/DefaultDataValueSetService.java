@@ -46,6 +46,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
@@ -145,9 +146,16 @@ public class DefaultDataValueSetService
     @Autowired
     private Notifier notifier;
 
+    // Set methods for test purposes
+    
     public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
     {
-        this.batchHandlerFactory = batchHandlerFactory; // Test purpose
+        this.batchHandlerFactory = batchHandlerFactory;
+    }
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     //--------------------------------------------------------------------------
@@ -630,6 +638,7 @@ public class DefaultDataValueSetService
         CachingMap<String, OrganisationUnit> orgUnitMap = new CachingMap<>();
         CachingMap<String, DataElementCategoryOptionCombo> optionComboMap = new CachingMap<>();
         CachingMap<String, Period> periodMap = new CachingMap<>();
+        CachingMap<String, Boolean> orgUnitInHierarchyMap = new CachingMap<>();
 
         //----------------------------------------------------------------------
         // Load meta-data maps
@@ -708,8 +717,9 @@ public class DefaultDataValueSetService
             summary.setDataSetComplete( Boolean.FALSE.toString() );
         }
 
-        String currentUser = currentUserService.getCurrentUsername();
-
+        final String currentUser = currentUserService.getCurrentUsername();
+        final Set<OrganisationUnit> currentOrgUnits = currentUserService.getCurrentUserOrganisationUnits();
+        
         BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class ).init();
 
         int importCount = 0;
@@ -733,10 +743,10 @@ public class DefaultDataValueSetService
 
             totalCount++;
 
-            DataElement dataElement = dataElementMap.get( trimToNull( dataValue.getDataElement() ), dataElementCallable.setId( trimToNull( dataValue.getDataElement() ) ) );
-            Period period = outerPeriod != null ? outerPeriod : 
+            final DataElement dataElement = dataElementMap.get( trimToNull( dataValue.getDataElement() ), dataElementCallable.setId( trimToNull( dataValue.getDataElement() ) ) );
+            final Period period = outerPeriod != null ? outerPeriod : 
                 periodMap.get( trimToNull( dataValue.getPeriod() ), periodCallable.setId( trimToNull( dataValue.getPeriod() ) ) );
-            OrganisationUnit orgUnit = outerOrgUnit != null ? outerOrgUnit : 
+            final OrganisationUnit orgUnit = outerOrgUnit != null ? outerOrgUnit : 
                 orgUnitMap.get( trimToNull( dataValue.getOrgUnit() ), orgUnitCallable.setId( trimToNull( dataValue.getOrgUnit() ) ) );
             DataElementCategoryOptionCombo categoryOptionCombo = optionComboMap.get( trimToNull( dataValue.getCategoryOptionCombo() ), 
                 optionComboCallable.setId( trimToNull( dataValue.getCategoryOptionCombo() ) ) );
@@ -785,6 +795,20 @@ public class DefaultDataValueSetService
             if ( attrOptionCombo == null )
             {
                 attrOptionCombo = fallbackCategoryOptionCombo;
+            }
+            
+            boolean inUserHierarchy = orgUnitInHierarchyMap.get( orgUnit.getUid(), new Callable<Boolean>()
+            {
+                public Boolean call() throws Exception
+                {
+                    return organisationUnitService.isInUserHierarchy( orgUnit.getUid(), currentOrgUnits );
+                }
+            } );
+            
+            if ( !inUserHierarchy )
+            {
+                summary.getConflicts().add( new ImportConflict( dataValue.getOrgUnit(), "Organisation unit not in hierarchy of current user: " + currentUser ) );
+                continue;
             }
 
             if ( dataValue.getValue() == null && dataValue.getComment() == null )

@@ -41,6 +41,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.user.User;
@@ -981,7 +982,8 @@ public class OrganisationUnitServiceTest
         organisationUnitService.addOrganisationUnit( ouG );
 
         User user = createUser( 'A' );
-        user.setOrganisationUnits( Sets.newHashSet( ouB ) );
+        Set<OrganisationUnit> organisationUnits = Sets.newHashSet( ouB );
+        user.setOrganisationUnits( organisationUnits );
 
         assertTrue( user.isInUserHierarchy( ouB ) );
         assertTrue( user.isInUserHierarchy( ouD ) );
@@ -991,5 +993,14 @@ public class OrganisationUnitServiceTest
         assertFalse( user.isInUserHierarchy( ouC ) );
         assertFalse( user.isInUserHierarchy( ouF ) );
         assertFalse( user.isInUserHierarchy( ouG ) );
+        
+        assertTrue( organisationUnitService.isInUserHierarchy( ouB.getUid(), organisationUnits ) );
+        assertTrue( organisationUnitService.isInUserHierarchy( ouD.getUid(), organisationUnits ) );
+        assertTrue( organisationUnitService.isInUserHierarchy( ouE.getUid(), organisationUnits ) );
+
+        assertFalse( organisationUnitService.isInUserHierarchy( ouA.getUid(), organisationUnits ) );
+        assertFalse( organisationUnitService.isInUserHierarchy( ouC.getUid(), organisationUnits ) );
+        assertFalse( organisationUnitService.isInUserHierarchy( ouF.getUid(), organisationUnits ) );
+        assertFalse( organisationUnitService.isInUserHierarchy( ouG.getUid(), organisationUnits ) );        
     }
 }

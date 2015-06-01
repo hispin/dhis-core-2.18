@@ -28,6 +28,9 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Set;
+
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * This interface defined methods for getting access to the currently logged in
@@ -52,6 +55,12 @@ public interface CurrentUserService
      *         access admin is active, null is returned.
      */
     User getCurrentUser();
+    
+    /**
+     * @return the data capture organisation units of the current user, empty set
+     *         if no current user.
+     */
+    Set<OrganisationUnit> getCurrentUserOrganisationUnits();
     
     /**
      * @return true if the current logged in user has the ALL privileges set, false

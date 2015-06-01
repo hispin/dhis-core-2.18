@@ -454,8 +454,26 @@ public interface OrganisationUnitService
      */
     Collection<OrganisationUnit> getOrganisationUnitByCoordinate( double longitude, double latitude, String topOrgUnitUid,
         Integer targetLevel );
-    
+
+    /**
+     * Indicates whether the given organisation unit is part of the hierarchy
+     * of the organisation units of the current user.
+     * 
+     * @param organisationUnit the organisation unit.
+     * @return true if the given organisation unit is part of the hierarchy.
+     */
     boolean isInUserHierarchy( OrganisationUnit organisationUnit );
+
+    /**
+     * Indicates whether the given organisation unit is part of the hierarchy
+     * of the given user organisation units.
+     * 
+     * @param uid the uid of the organisation unit.
+     * @param organisationUnits the set of organisation units associated with a 
+     *        user.
+     * @return true if the organisation unit with the given uid is part of the hierarchy.
+     */
+    boolean isInUserHierarchy( String uid, Set<OrganisationUnit> organisationUnits );
     
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy

@@ -763,6 +763,14 @@ public class DefaultOrganisationUnitService
         return user != null ? user.isInUserHierarchy( organisationUnit ) : false;
     }
 
+    @Override
+    public boolean isInUserHierarchy( String uid, Set<OrganisationUnit> organisationUnits )
+    {
+        OrganisationUnit organisationUnit = organisationUnitStore.getByUid( uid );
+        
+        return User.isInUserHierarchy( organisationUnit, organisationUnits );
+    }
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------

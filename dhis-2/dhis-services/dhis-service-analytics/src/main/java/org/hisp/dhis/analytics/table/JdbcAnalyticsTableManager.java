@@ -43,7 +43,6 @@ import java.util.concurrent.Future;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.analytics.DataQueryParams;
-import org.hisp.dhis.dataapproval.DataApprovalLevelService;
 import org.hisp.dhis.dataelement.CategoryOptionGroupSet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;

@@ -28,6 +28,10 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.security.spring.AbstractSpringSecurityCurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,6 +96,14 @@ public class DefaultCurrentUserService
         }
 
         return userCredentials.isSuper();
+    }
+
+    @Override
+    public Set<OrganisationUnit> getCurrentUserOrganisationUnits()
+    {
+        User user = getCurrentUser();
+        
+        return user != null ? new HashSet<OrganisationUnit>( user.getOrganisationUnits() ) : new HashSet<OrganisationUnit>();
     }
     
     @Override

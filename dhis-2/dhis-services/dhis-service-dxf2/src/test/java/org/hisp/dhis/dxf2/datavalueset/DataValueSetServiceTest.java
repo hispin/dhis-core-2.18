@@ -56,6 +56,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
+import org.hisp.dhis.mock.MockCurrentUserService;
 import org.hisp.dhis.mock.batchhandler.MockBatchHandler;
 import org.hisp.dhis.mock.batchhandler.MockBatchHandlerFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -64,9 +65,13 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+
+import com.google.common.collect.Sets;
 
 /**
  * @author Lars Helge Overland
@@ -110,8 +115,11 @@ public class DataValueSetServiceTest
     private DataSet dsA;
     private OrganisationUnit ouA;
     private OrganisationUnit ouB;
+    private OrganisationUnit ouC;
     private Period peA;
     private Period peB;
+    
+    private User user;
     
     private InputStream in;
 
@@ -141,6 +149,7 @@ public class DataValueSetServiceTest
         dsA = createDataSet( 'A', new MonthlyPeriodType() );
         ouA = createOrganisationUnit( 'A' );
         ouB = createOrganisationUnit( 'B' );
+        ouC = createOrganisationUnit( 'C' );
         peA = createPeriod( PeriodType.getByNameIgnoreCase( MonthlyPeriodType.NAME ), getDate( 2012, 1, 1 ), getDate( 2012, 1, 31 ) );
         peB = createPeriod( PeriodType.getByNameIgnoreCase( MonthlyPeriodType.NAME ), getDate( 2012, 2, 1 ), getDate( 2012, 2, 29 ) );
 
@@ -152,6 +161,7 @@ public class DataValueSetServiceTest
         dsA.setUid( "pBOMPrpg1QX" );
         ouA.setUid( "DiszpKrYNg8" );
         ouB.setUid( "BdfsJfj87js" );
+        ouC.setUid( "j7Hg26FpoIa" );
 
         ocA.setCode( "OC_A" );
         ocB.setCode( "OC_B" );
@@ -162,6 +172,7 @@ public class DataValueSetServiceTest
         dsA.setCode( "DS_A" );
         ouA.setCode( "OU_A" );
         ouB.setCode( "OU_B" );
+        ouC.setCode( "OU_C" );
 
         categoryService.addDataElementCategoryOption( categoryOptionA );
         categoryService.addDataElementCategoryOption( categoryOptionB );
@@ -177,8 +188,14 @@ public class DataValueSetServiceTest
         dataSetService.addDataSet( dsA );
         organisationUnitService.addOrganisationUnit( ouA );
         organisationUnitService.addOrganisationUnit( ouB );
+        organisationUnitService.addOrganisationUnit( ouC );
         periodService.addPeriod( peA );
-        periodService.addPeriod( peB );        
+        periodService.addPeriod( peB );
+        
+        user = createUser( 'A' );
+        user.setOrganisationUnits( Sets.newHashSet( ouA, ouB ) );
+        CurrentUserService currentUserService = new MockCurrentUserService( user );
+        setDependency( dataValueSetService, "currentUserService", currentUserService );
     }
 
     // -------------------------------------------------------------------------
@@ -196,7 +213,7 @@ public class DataValueSetServiceTest
         assertNotNull( summary );
         assertNotNull( summary.getDataValueCount() );
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
-        assertEquals( 0, summary.getConflicts().size() );
+        assertEquals( summary.getConflicts().toString(), 0, summary.getConflicts().size() );
         
         Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
@@ -226,7 +243,7 @@ public class DataValueSetServiceTest
         assertNotNull( summary );
         assertNotNull( summary.getDataValueCount() );
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
-        assertEquals( 0, summary.getConflicts().size() );
+        assertEquals( summary.getConflicts().toString(), 0, summary.getConflicts().size() );
 
         Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
@@ -254,7 +271,7 @@ public class DataValueSetServiceTest
         ImportSummary summary = dataValueSetService.saveDataValueSet( in );
 
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
-        assertEquals( 0, summary.getConflicts().size() );
+        assertEquals( summary.getConflicts().toString(), 0, summary.getConflicts().size() );
         
         assertImportDataValues( summary );
     }
@@ -270,6 +287,7 @@ public class DataValueSetServiceTest
 
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
         assertEquals( 0, summary.getConflicts().size() );
+        assertEquals( summary.getConflicts().toString(), 0, summary.getConflicts().size() );
         
         assertImportDataValues( summary );
     }
@@ -288,6 +306,7 @@ public class DataValueSetServiceTest
         assertEquals( 0, summary.getDataValueCount().getUpdated() );
         assertEquals( 0, summary.getDataValueCount().getDeleted() );
         assertEquals( 0, summary.getDataValueCount().getIgnored() );
+        assertEquals( summary.getConflicts().toString(), 0, summary.getConflicts().size() );
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
         
         assertImportDataValues( summary );
@@ -301,6 +320,7 @@ public class DataValueSetServiceTest
         
         ImportSummary summary = dataValueSetService.saveDataValueSetCsv( in, null, null );
 
+        assertEquals( summary.getConflicts().toString(), 1, summary.getConflicts().size() ); // Header row
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
         
         assertImportDataValues( summary );
@@ -317,7 +337,7 @@ public class DataValueSetServiceTest
         ImportSummary summary = dataValueSetService.saveDataValueSet( in, options );
 
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
-        assertEquals( 0, summary.getConflicts().size() );
+        assertEquals( summary.getConflicts().toString(), 0, summary.getConflicts().size() );
         
         Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
@@ -336,7 +356,7 @@ public class DataValueSetServiceTest
         ImportSummary summary = dataValueSetService.saveDataValueSet( in, options );
 
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
-        assertEquals( 0, summary.getConflicts().size() );
+        assertEquals( summary.getConflicts().toString(), 0, summary.getConflicts().size() );
         
         Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
@@ -351,7 +371,7 @@ public class DataValueSetServiceTest
         ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetC.xml" ).getInputStream() );
 
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
-        assertEquals( 0, summary.getConflicts().size() );
+        assertEquals( summary.getConflicts().toString(), 0, summary.getConflicts().size() );
         
         Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
@@ -368,7 +388,7 @@ public class DataValueSetServiceTest
         ImportSummary summary = dataValueSetService.saveDataValueSet( in );
 
         assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
-        assertEquals( 0, summary.getConflicts().size() );
+        assertEquals( summary.getConflicts().toString(), 0, summary.getConflicts().size() );
         
         Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
         
@@ -377,6 +397,24 @@ public class DataValueSetServiceTest
         assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, ocDef, ocA ) ) );
         assertTrue( dataValues.contains( new DataValue( deB, peA, ouA, ocDef, ocA ) ) );
         assertTrue( dataValues.contains( new DataValue( deC, peA, ouA, ocDef, ocA ) ) );        
+    }
+
+    @Test
+    public void testImportDataValuesWithOrgUnitOutsideHierarchy()
+        throws Exception
+    {
+        in = new ClassPathResource( "datavalueset/dataValueSetE.xml" ).getInputStream();
+        
+        ImportSummary summary = dataValueSetService.saveDataValueSet( in );
+
+        assertEquals( ImportStatus.SUCCESS, summary.getStatus() );
+        assertEquals( summary.getConflicts().toString(), 2, summary.getConflicts().size() );
+        
+        Collection<DataValue> dataValues = mockDataValueBatchHandler.getInserts();
+        
+        assertNotNull( dataValues );
+        assertEquals( 1, dataValues.size() );
+        assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, ocDef, ocA ) ) );
     }
 
     @Test
@@ -392,6 +430,7 @@ public class DataValueSetServiceTest
         assertNotNull( dataValues );
         assertEquals( 0, dataValues.size() );
         assertEquals( ImportStatus.ERROR, summary.getStatus() );     
+        assertEquals( summary.getConflicts().toString(), 1, summary.getConflicts().size() );
     }
 
     // -------------------------------------------------------------------------

@@ -245,9 +245,10 @@ public class User
      * of the organisation units of this user.
      * 
      * @param organisationUnit the organisation unit.
+     * @param the user organisation units.
      * @return true if the given organisation unit is part of the hierarchy.
      */
-    public boolean isInUserHierarchy( OrganisationUnit organisationUnit )
+    public static boolean isInUserHierarchy( OrganisationUnit organisationUnit, Set<OrganisationUnit> organisationUnits )
     {
         if ( organisationUnits == null )
         {
@@ -265,6 +266,18 @@ public class User
         }
         
         return false;
+    }
+    
+    /**
+     * Indicates whether the given organisation unit is part of the hierarchy
+     * of the organisation units of this user.
+     * 
+     * @param organisationUnit the organisation unit.
+     * @return true if the given organisation unit is part of the hierarchy.
+     */
+    public boolean isInUserHierarchy( OrganisationUnit organisationUnit )
+    {
+        return User.isInUserHierarchy( organisationUnit, organisationUnits );
     }
     
     public String getUsername()
