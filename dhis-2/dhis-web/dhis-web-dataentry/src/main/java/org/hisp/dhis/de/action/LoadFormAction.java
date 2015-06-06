@@ -29,6 +29,7 @@ package org.hisp.dhis.de.action;
  */
 
 import com.opensymphony.xwork2.Action;
+
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
@@ -36,6 +37,7 @@ import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -91,6 +93,13 @@ public class LoadFormAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private DataElementCategoryService categoryService;
+    
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
     }
 
     private I18n i18n;
@@ -286,7 +295,9 @@ public class LoadFormAction
 
             for ( DataElementCategory dec : categoryCombo.getCategories() )
             {
-                optionsMap.put( dec.getId(), dec.getCategoryOptions() );
+                DataElementCategory category = categoryService.getDataElementCategory( dec.getId(), true );
+                
+                optionsMap.put( category.getId(), category.getCategoryOptions() );
             }
 
             orderedOptionsMap.put( categoryCombo.getId(), optionsMap );

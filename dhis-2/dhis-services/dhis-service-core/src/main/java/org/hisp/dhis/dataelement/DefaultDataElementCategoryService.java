@@ -161,6 +161,22 @@ public class DefaultDataElementCategoryService
     }
 
     @Override
+    public DataElementCategory getDataElementCategory( int id, boolean i18nCategoryOptions )
+    {
+        DataElementCategory category = getDataElementCategory( id );
+        
+        if ( category != null )
+        {
+            if ( i18nCategoryOptions )
+            {
+                i18n( i18nService, category.getCategoryOptions() );
+            }
+        }
+        
+        return category;
+    }
+
+    @Override
     public DataElementCategory getDataElementCategory( String uid )
     {
         return i18n( i18nService, categoryStore.getByUid( uid ) );

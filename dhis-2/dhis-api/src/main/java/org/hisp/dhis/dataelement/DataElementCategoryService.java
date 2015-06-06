@@ -84,6 +84,15 @@ public interface DataElementCategoryService
     /**
      * Returns a DataElementCategory.
      * 
+     * @param id the id of the DataElementCategory to return.
+     * @param i18nCategoryOptions whether to translate category options.
+     * @return the DataElementCategory with the given id, or null if no match.
+     */
+    DataElementCategory getDataElementCategory( int id, boolean i18nCategoryOptions );
+
+    /**
+     * Returns a DataElementCategory.
+     * 
      * @param uid the uid of the DataElementCategory to return.
      * @return the DataElementCategory with the given uid, or null if no match.
      */
