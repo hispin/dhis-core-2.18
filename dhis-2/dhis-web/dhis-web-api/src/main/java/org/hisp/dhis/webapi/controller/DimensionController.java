@@ -59,6 +59,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.common.collect.Lists;
 
+/**
+ * @author Lars Helge Overland
+ */
 @Controller
 @RequestMapping( value = DimensionController.RESOURCE_PATH )
 public class DimensionController extends AbstractCrudController<DimensionalObject>
