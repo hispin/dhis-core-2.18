@@ -18,7 +18,7 @@
     });
 
     $('#deAvailable').selected({
-      url: '../api/dataElements.json',
+      url: '../api/dataElements.json?filter=domainType:eq:AGGREGATE',
       target: $('#deSelected'),
       search: $('#deAvailableSearch'),
       iterator: 'dataElements'
