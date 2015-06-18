@@ -55,9 +55,19 @@ function formValidations()
 		
 		//http://rbf.gov.la/birt/run?__report=/home/dhis/tomcat-8/webapps/birt/report/Healthprovider_HC_report4.rptdesign&__format=pdf&startDate=2014-01-01&endDate=2014-01-31&orgUnit=zlPRdyn2sA6&groupId=1518
 		
+		// url for la server
 		baseUrl = "http://rbf.gov.la";
-		
 		var birtReportURL = baseUrl + "/birt/run?__report=/home/dhis/tomcat-8/webapps/birt/report/"+reportRPTDesignFile+"&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId+"&groupId="+reportOrgUnitGroupId;
+		
+		// url for testing
+		/*
+		baseUrl = "http://hospdev.hispindia.org";
+		var birtReportURL = baseUrl + "/birt_rbf/run?__report=/home/hisp/tomcat_rbf_testing/webapps/birt_rbf/report/"+reportRPTDesignFile+"&__format="+reportFormat+"&startDate="+startPeriod+"&endDate="+endPeriod+"&orgUnit="+orgUnitId+"&groupId="+reportOrgUnitGroupId;
+		*/
+		
+		
+		
+		
 		//window.location.href =  birtReportURL;
 		
 		window.open(birtReportURL, '_blank');

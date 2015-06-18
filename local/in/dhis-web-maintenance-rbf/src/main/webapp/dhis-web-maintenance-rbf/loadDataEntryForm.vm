@@ -91,11 +91,12 @@
 	<tr bgcolor="#CBDDEB">
 		<th style="width:35%;">$i18n.getString( "dataelement" )</th>
 		
-		<th style="width:35%;">$i18n.getString( "partner" )</th>
+		<!-- for RBF Rowanda -->
+		<!--<th style="width:35%;">$i18n.getString( "partner" )</th>-->
 		
-		<th style="text-align: center;width:15%;">$i18n.getString( "qty_reported" )</th>
+		<th style="text-align: center;width:15%;">$i18n.getString( "qty_unverified" )</th>
 		
-		<th style="text-align: center;width:15%;">$i18n.getString( "qty_validated" )</th>
+		<th style="text-align: center;width:15%;">$i18n.getString( "qty_verified" )</th>
 		
 		<th style="text-align: center;width:15%;">$i18n.getString( "qty_external_verification" )</th>
 		
@@ -132,14 +133,16 @@
 			
 			#set( $count = 0)						
 			#set( $pbfDataValue = $!pbfDataValueMap.get( $dataElement ) )
-
-            <!--<td><label>$!pbfDataValue.getOption().getDisplayName()</label></td>-->				
 			
+			<!-- for RBF Rowanda -->
+            <!--<td><label>$!pbfDataValue.getOption().getDisplayName()</label></td>-->				
+			<!--
 			#if( $pbfDataValue.getOption().getDisplayName() && $!pbfDataValue.getOption().getDisplayName() != "" )
 				<td><label>$!pbfDataValue.getOption().getDisplayName()</label></td>
 			#else
 				<td><label>Ministry of Health</label></td>
 			#end
+-->
 				##if( $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfAdminDataEntry" ) )
 					<td>
         				<input onblur="savePBFDataValue('$dataElement.id', 1 )" type="text" name="pbfdv_qty_reported_$dataElement.id" id="pbfdv_qty_reported_$dataElement.id" 
@@ -329,7 +332,7 @@
 	#if( $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityValidated") || $auth.hasAccess( "dhis-web-maintenance-rbf", "quanitityExternalVerification") || $auth.hasAccess( "dhis-web-maintenance-rbf", "pbfAdminDataEntry" ) )
 		<tr>
 			<td >&nbsp;</td>
-			<td >&nbsp;</td>
+			<!--<td >&nbsp;</td>--><!-- for RBF Rowanda -->
 			<td >&nbsp;</td>
 			<td >&nbsp;</td>
 			<td >&nbsp;</td>
