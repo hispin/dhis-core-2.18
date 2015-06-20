@@ -5,7 +5,8 @@
 	countryTags = $orgUnitList;
 	currentDiv = 'paymentAdjustmentForm';
 	
-    }); 
+    });
+	
     function adjustPer()
 	{
 		var amountAvail = $("#amountAvail").val();	

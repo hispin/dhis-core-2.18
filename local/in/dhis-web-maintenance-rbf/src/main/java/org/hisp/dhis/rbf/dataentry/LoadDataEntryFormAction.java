@@ -447,11 +447,49 @@ public class LoadDataEntryFormAction implements Action
         
         for ( DataElement de : dataElements )
         {
+            Double tariffAmount = tariffDataValueMap.get( de.getId() );
+            
             Option option = partnerMap.get( de.getId() );
             
+            PBFDataValue pbfDataValue = pbfDataValueService.getPBFDataValue( organisationUnit, dataSet, period, de );
+            
+            if( pbfDataValue == null )
+            {
+                pbfDataValue = new PBFDataValue();
+                
+                pbfDataValue.setDataSet( dataSet );
+                pbfDataValue.setDataElement( de );
+                pbfDataValue.setPeriod( period );
+                pbfDataValue.setOrganisationUnit( organisationUnit );
+                pbfDataValue.setStoredBy( currentUserService.getCurrentUsername() );
+                
+                if ( option != null )
+                {
+                    pbfDataValue.setOption( option );
+                }
+                if ( tariffAmount != null )
+                {
+                    pbfDataValue.setTariffAmount( tariffAmount );
+                }
+                
+                pbfDataValue.setTimestamp( new Date() );
+                
+                pbfDataValueService.addPBFDataValue( pbfDataValue );
+            }
+
+            else
+            {
+                pbfDataValue.setOption( option );
+                pbfDataValue.setTariffAmount( tariffAmount );
+                pbfDataValue.setTimestamp( new Date() );
+                pbfDataValue.setStoredBy( currentUserService.getCurrentUsername() );
+                
+                pbfDataValueService.updatePBFDataValue( pbfDataValue );
+            }
+            
+            /*
             if ( option != null )
             {   
-                //System.out.println( " Inside add partner in PBF Data Value  is : " + de.getName() );
                 
                 PBFDataValue pbfDataValue = pbfDataValueService.getPBFDataValue( organisationUnit, dataSet, period, de );
                 
@@ -472,8 +510,6 @@ public class LoadDataEntryFormAction implements Action
 
                 else
                 {
-                    //System.out.println( " Inside update partner In PBF Data Value is : " +  de.getName() );
-                    
                     pbfDataValue.setOption( option );
                     pbfDataValue.setTimestamp( new Date() );
                     pbfDataValue.setStoredBy( currentUserService.getCurrentUsername() );
@@ -482,6 +518,7 @@ public class LoadDataEntryFormAction implements Action
                 }
                                 
             }
+            */
             
         }
 
@@ -705,10 +742,12 @@ public class LoadDataEntryFormAction implements Action
         }
         else
         {        
-            Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
-        	
-            OrganisationUnitGroupSet orgUnitGroupSet = orgUnitGroupService.getOrganisationUnitGroupSet( (int) tariff_authority.getValue() );
-        	
+            //Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+            
+            Lookup tariff_orgUnit_groupSet_id_lookup =  lookupService.getLookupByName(  Lookup.TARIFF_SETTING_ORGUNIT_GROUPSET_ID ) ;
+            
+            OrganisationUnitGroupSet orgUnitGroupSet = orgUnitGroupService.getOrganisationUnitGroupSet( Integer.parseInt( tariff_orgUnit_groupSet_id_lookup.getValue() ) );
+            
             orgUnitGroup = organisationUnit.getGroupInGroupSet( orgUnitGroupSet );
             
             //System.out.println( " 2 orgUnitGroup : " + orgUnitGroup.getId()  );

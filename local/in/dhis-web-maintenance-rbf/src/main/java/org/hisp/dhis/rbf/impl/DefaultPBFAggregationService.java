@@ -482,6 +482,8 @@ public class DefaultPBFAggregationService
                 qualityScore = rs1.getDouble( 1 );
             }
             
+            System.out.println( "In side Service : maxScore -- " + maxScore + " and qualityScore -- "  + qualityScore );
+            
             try
             {
                 if( maxScore != 0.0 )

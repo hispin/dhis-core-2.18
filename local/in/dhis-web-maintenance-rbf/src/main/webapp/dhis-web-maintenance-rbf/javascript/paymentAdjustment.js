@@ -7,7 +7,7 @@
 	var COLOR_GREY = '#cccccc';
 	var LocaleColor = 'black';
 	
-function orgUnitHasBeenSelected( orgUnitIds )
+function orgUnitHasBeenSelected( orgUnitIds, orgUnitNames )
 {    
 	$( '#paymentDiv' ).html( '' );
 	var bValue = false;
@@ -18,6 +18,7 @@ function orgUnitHasBeenSelected( orgUnitIds )
     		bValue = true;
     	}
 	}
+	
 	if(bValue == false)
 	{
 		disable('dataSetId');

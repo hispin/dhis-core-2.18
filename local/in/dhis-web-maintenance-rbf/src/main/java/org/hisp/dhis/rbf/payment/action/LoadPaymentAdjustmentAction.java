@@ -228,7 +228,9 @@ public class LoadPaymentAdjustmentAction
             overAllQualityScore = defaultPBFAggregationService.calculateOverallQualityScore( period,
                 qualityScoreDataSet.getSources(), qualityScoreDataSet.getId(), tariffOrgUnit.getId() );
         }
-
+        
+        //System.out.println( " Over All Quality Score  " + overAllQualityScore );
+        
         // -------------------------------------------------------------
         // Availbale Amount
         // -------------------------------------------------------------

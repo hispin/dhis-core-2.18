@@ -293,32 +293,66 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
             
             String query = "select td.dataelementid,td.value from "+
                             "( " +
-                                "select max(asd.orgunitlevelid) as level,asd.dataelementid,asd.orgunitgroupid,datasetid " +
+                                "select max(asd.orgunitlevelid) as level,asd.dataelementid,asd.orgunitgroupid,datasetid, asd.sd, asd.ed " +
                                 " from " +
                                     "( "+
-                                        " select td.orgunitgroupid,td.organisationunitid,td.datasetid,td.dataelementid,td.orgunitlevelid,td.value " +
+                                        " select td.orgunitgroupid,td.organisationunitid,td.datasetid,td.dataelementid,td.orgunitlevelid,td.value, date(td.startdate) as sd, date(td.enddate) as ed " +
                                             " from tariffdatavalue td "+
                                             " where '" + curPeriod + "'  between date(td.startdate) and date(td.enddate) " +
                                                 " and orgunitgroupid in ( " + orgUnitGroup.getId() + ") " +
                                                 " and datasetid in ( " +dataSet.getId() + ") "+
                                                 " and organisationunitid in ("+ orgUnitBranchIds +") "+
                                                 " )asd "+
-                                                " group by asd.dataelementid,asd.orgunitgroupid,datasetid " +
+                                                " group by asd.dataelementid,asd.orgunitgroupid,datasetid, asd.sd, asd.ed " +
                                                 " )sag1 " +
                                                 " inner join tariffdatavalue td on td.dataelementid=sag1.dataelementid " +
                                                 " where td.orgunitgroupid=sag1.orgunitgroupid " + 
                                                 " and td.datasetid=sag1.datasetid " +
-                                                " and sag1.level=td.orgunitlevelid ";
+                                                " and sag1.level=td.orgunitlevelid " +
+                                                " and sag1.sd=td.startdate " +
+                                                " and sag1.ed=td.enddate ";
                                                 //" and td.organisationunitid in ("+ orgUnitBranchIds +") ";
             
+            
+            /*    
+            String query = "select td.dataelementid,td.value from "+
+                "( " +
+                    "select max(asd.orgunitlevelid) as level,asd.dataelementid,asd.orgunitgroupid,datasetid " +
+                    " from " +
+                        "( "+
+                            " select td.orgunitgroupid,td.organisationunitid,td.datasetid,td.dataelementid,td.orgunitlevelid,td.value " +
+                                " from tariffdatavalue td "+
+                                " where '" + curPeriod + "'  between date(td.startdate) and date(td.enddate) " +
+                                    " and orgunitgroupid in ( " + orgUnitGroup.getId() + ") " +
+                                    " and datasetid in ( " +dataSet.getId() + ") "+
+                                    " and organisationunitid in ("+ orgUnitBranchIds +") "+
+                                    " )asd "+
+                                    " group by asd.dataelementid,asd.orgunitgroupid,datasetid " +
+                                    " )sag1 " +
+                                    " inner join tariffdatavalue td on td.dataelementid=sag1.dataelementid " +
+                                    " where td.orgunitgroupid=sag1.orgunitgroupid " + 
+                                    " and td.datasetid=sag1.datasetid " +
+                                    " and sag1.level=td.orgunitlevelid ";
+            */                        
+                                    //" and td.organisationunitid in ("+ orgUnitBranchIds +") ";            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             System.out.println(" tariff Query: " + query );
+            
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
                 Integer dataElementId = rs.getInt( 1 );
                 Double value = rs.getDouble( 2 );
                 tariffDataValueMap.put( dataElementId, value );
-                //System.out.println( dataElementId + " : " + value );
+                System.out.println( dataElementId + " : " + value );
             }
         }
         catch( Exception e )

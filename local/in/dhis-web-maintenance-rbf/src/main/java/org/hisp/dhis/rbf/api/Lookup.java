@@ -34,6 +34,9 @@ public class Lookup extends BaseNameableObject implements Serializable
     
     public static final String QUALITY_OVERHEAD_PAYMENT = "QUALITY_OVERHEAD_PAYMENT";
     
+    public static final String TARIFF_SETTING_ORGUNIT_GROUPSET_ID = "TARIFF_SETTING_ORGUNIT_GROUPSET_ID";
+    
+    public static final String IS_TARIFF_DATAELEMENT_ATTRIBUTE_ID = "IS_TARIFF_DATAELEMENT_ATTRIBUTE_ID";
     
     private String type;
     

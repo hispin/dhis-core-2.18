@@ -84,11 +84,14 @@
 				<td>$!dataElement.name</td>
 				<td align="center"><input type="text" name="pbfQty_$dataElement.id" id="pbfQty_$dataElement.id" style="text-align:center;" size="10" value="$!mathTool.round( $!pbfQtyMap.get( $dataElement.id ) )" readonly="readonly"/></td>
 				<td align="center"><input type="text" name="pbfTariff_$dataElement.id" id="pbfTariff_$dataElement.id" style="text-align:center;" size="10" value="$!mathTool.round( $!pbfTariffMap.get( $dataElement.id ) )" readonly="readonly"/></td>
+				
 				#set( $tariffVal = $!pbfQtyMap.get( $dataElement.id ) * $!pbfTariffMap.get( $dataElement.id ) )
 				<td id="pbfAmt_$dataElement.id" align="center">$!mathTool.round( $tariffVal )</td>
+				
 				#set( $pbfAmtIncQS = ( $!tariffVal * $!overAllQualityScore )/100 )
 				<td id="pbfAmtIncQS_$dataElement.id" align="center">$!mathTool.round( $!pbfAmtIncQS )</td>
-				#set( $pbfTotalUnadjustedAmount = $!pbfTotalUnadjustedAmount + $!pbfAmtIncQS )					
+				
+				#set( $pbfTotalUnadjustedAmount = $!pbfTotalUnadjustedAmount + $!pbfAmtIncQS )	
 				<td><input type="text" name="adjusted_$dataElement.id" id="adjusted_$dataElement.id" style="text-align:center;" size="10" /></td>
 	            <td align="center"><input type="text" name="adjustedAmt_$dataElement.id" id="adjustedAmt_$dataElement.id" style="text-align:center;" size="15" /></td>
 	            <td align="center"><input type="text" name="adjAmtIncQS_$dataElement.id" id="adjAmtIncQS_$dataElement.id" style="text-align:center;" size="15" /></td>

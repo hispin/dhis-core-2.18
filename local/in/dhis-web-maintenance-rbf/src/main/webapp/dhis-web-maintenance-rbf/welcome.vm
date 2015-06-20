@@ -21,11 +21,11 @@
     #end
 	
 	<!-- for RBF Rowanda -->
-	<!--
+	
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "partnerFundManagementForm") )
         #introListImgItem( "partnerFundManagementForm.action" "partner_management" "partner" )
     #end
-		-->
+	
     #if( $auth.hasAccess( "dhis-web-maintenance-rbf", "bankDetailsManagement") )
         #introListImgItem( "bankDetailsManagement.action" "bank_details_management" "bank_details" )
     #end
