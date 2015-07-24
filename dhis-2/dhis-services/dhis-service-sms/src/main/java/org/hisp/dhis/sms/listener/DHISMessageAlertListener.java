@@ -119,8 +119,6 @@ public class DHISMessageAlertListener
         if ( userGroup != null )
         {
             List<User> users = userService.getUsersByPhoneNumber( senderPhoneNumber );
-            System.out.println(">>>>>>>>>>> User phone Number: " + senderPhoneNumber);
-            System.out.println("Number of users: " + users.size());
             if ( users != null && users.size() > 1 )
             {
                 String messageMoreThanOneUser = smsCommand.getMoreThanOneOrgUnitMessage();
