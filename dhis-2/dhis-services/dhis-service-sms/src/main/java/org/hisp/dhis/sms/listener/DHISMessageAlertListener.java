@@ -31,6 +31,7 @@ package org.hisp.dhis.sms.listener;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -117,8 +118,9 @@ public class DHISMessageAlertListener
 
         if ( userGroup != null )
         {
-            Collection<User> users = userService.getUsersByPhoneNumber( senderPhoneNumber );
-
+            List<User> users = userService.getUsersByPhoneNumber( senderPhoneNumber );
+            System.out.println(">>>>>>>>>>> User phone Number: " + senderPhoneNumber);
+            System.out.println("Number of users: " + users.size());
             if ( users != null && users.size() > 1 )
             {
                 String messageMoreThanOneUser = smsCommand.getMoreThanOneOrgUnitMessage();
