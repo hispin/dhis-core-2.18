@@ -33,6 +33,7 @@ import org.hisp.dhis.dxf2.synch.AvailabilityStatus;
 import org.hisp.dhis.dxf2.synch.SynchronizationManager;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,6 +56,7 @@ public class SynchronizationController
     @Autowired
     private SynchronizationManager synchronizationManager;
 
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_EXPORT_DATA')" )
     @RequestMapping( method = RequestMethod.POST )
     public void execute( HttpServletResponse response )
         throws IOException
